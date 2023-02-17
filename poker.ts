@@ -1,5 +1,5 @@
-import {head, tail, List, Pair, list, pair, set_tail, append} from './list'
-import {lg_permute_list} from './homework10'
+import {head, tail, List, Pair, list, pair, set_tail, append} from '../lib/list'
+import {lg_permute_list} from './helpers'
 function holdem(){
     type card = {suit: number, value: number};
     type deck = List<card>;
