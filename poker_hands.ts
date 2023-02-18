@@ -3,7 +3,7 @@ import {Hand, Card, Pokerhand } from './poker_types'
 
 /**
  * Checks if a given hand has a pair or not
- * @param hand (Hand) a hand of cards, which already contain a pair
+ * @param hand (Hand) a hand of cards
  * @param card_number (number) states how many cards the hand has
  * @returns a Pokerhand tagged with "pair", with a boolean and the value of the pair
  */
