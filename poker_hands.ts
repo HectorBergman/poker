@@ -47,7 +47,7 @@ function count_same_cards(hand: Hand, value: number, i: number = 0, j: number = 
 
 /**
  * Checks if a hand has a three of a kind
- * @param hand (Hand) a hand of cards, which already contain a pair
+ * @param hand (Hand) a hand of cards
  * @param card_number (number) states how many cards the hand has
  * @returns a Pokerhand tagged with "three of a kind", with a boolean and the value of the three of a kind
  */
@@ -65,7 +65,7 @@ function has_three_of_akind(hand: Hand, card_number: number = 7): Pokerhand {
 
 /**
  * Checks if a hand has a three of a kind
- * @param hand (Hand) a hand of cards, which already contain a pair
+ * @param hand (Hand) a hand of cards
  * @param card_number (number) states how many cards the hand has
  * @returns a Pokerhand tagged with "four of a kind", with a boolean and the value of the four of a kind
  */
@@ -105,7 +105,7 @@ function make_new_hand(hand: Hand, new_hand: Hand, value: number, i: number = 0,
 
 /**
  * Checks if a hand has two pairs
- * @param hand (Hand) a hand of cards, which already contain a pair
+ * @param hand (Hand) a hand of cards
  * @param card_number (number) states how many cards the hand has
  * @returns a Pokerhand tagged with "two pairs", with a boolean and values of the two pairs
  */
@@ -126,7 +126,7 @@ function has_two_pairs(hand: Hand, card_number: number = 7): Pokerhand{
 
 /**
 * Checks if a hand has full house 
-* @param hand (Hand) a hand of cards, which already contain a pair
+* @param hand (Hand) a hand of cards
 * @param card_number (number) states how many cards the hand has
 * @returns a Pokerhand tagged with "full house", with a boolean and values of the three of a kind and the pair
 */
