@@ -10,7 +10,7 @@ import { Card, Hand, Pokerhand } from "./poker_types";
 function royal_flush(hand: Hand): Pokerhand {
     let arr = helper_straight_array(hand);
     if (arr.length >= 5) {
-        if (flush(arr) === true) {
+        if (flush(arr).exists === true) {
             if (find_value(arr[0]) === 10) {
                 return {exists: true};
             } 
@@ -27,7 +27,7 @@ function royal_flush(hand: Hand): Pokerhand {
 function straight_flush(hand: Hand): Pokerhand {
     let arr = helper_straight_array(hand);
     if (arr.length >= 5) {
-        if (flush(arr) === true) {
+        if (flush(arr).exists === true) {
             return {exists: true};
         }
     }
@@ -40,28 +40,44 @@ function straight_flush(hand: Hand): Pokerhand {
  * @returns Returns a boolean that's true if there is a flush and false if there's not.
  */
 function flush(hand: Hand): Pokerhand {
-    let clubs_count = 0;
-    let diamonds_count = 0;
-    let spades_count = 0;
-    let hearts_count = 0;
-    for (let i = 0; i < hand.length; i++) {
-        if (find_suit(hand[i]) === 0) {
-            clubs_count++;
-        } else if (find_suit(hand[i]) === 1) {
-            diamonds_count++;
-        } else if (find_suit(hand[i]) === 2) {
-            spades_count++;
+    let clubs: Hand = [];
+    let diamonds: Hand =[];
+    let spades: Hand = [];
+    let hearts: Hand = [];
+    function flush_helper(hand: Hand, i: number = 0, c: number = 0, d: number = 0, s: number = 0, h: number = 0): Pokerhand {
+        if (hand[i] !== undefined) {
+            if (find_suit(hand[i]) == 0) {
+                clubs[c] = hand[i];
+                return flush_helper(hand, i + 1, c + 1, d, s, h);
+            } else if (find_suit(hand[i]) == 1) {
+                diamonds[d] = hand[i];
+                return flush_helper(hand, i + 1, c, d + 1, s, h);
+            } else if (find_suit(hand[i]) == 2) {
+                spades[h] = hand[i];
+                return flush_helper(hand, i + 1, c, d, s + 1, h);
+            } else {
+                hearts[h] = hand[i]
+                return flush_helper(hand, i + 1, c, d, s, h + 1);
+            }
         } else {
-            hearts_count++;
+            if (clubs.length >= 5) {
+                return {exists: true, flush: clubs, suit: "clubs"};
+            } else if (diamonds.length >= 5) {
+                return {exists: true, flush: diamonds, suit: "diamonds"};
+            } else if (spades.length >= 5) {
+                return {exists: true, flush: spades, suit: "spades"};
+            } else if (hearts.length >= 5) {
+                return {exists: true, flush: hearts, suit: "hearts"};
+            } else {
+                return {exists: false};
+            }
         }
     }
-
-    if (clubs_count >= 5 || diamonds_count >= 5 || spades_count >= 5 || hearts_count >= 5) {
-        return {exists: true};
-    }
-
-    return {exists: false};
+    return flush_helper(hand);
 }
+
+
+
 
 /**
  * Checks whether a given hand contains a straight of not.
@@ -112,9 +128,9 @@ const hand1 = [card1, card2, card3, card4, card5, card6, card7];
 
 
 console.log(flush(hand1));
-console.log(straight(hand1));
-console.log(straight_flush(hand1));
-console.log(royal_flush(hand1));
+//console.log(straight(hand1));
+//console.log(straight_flush(hand1));
+//console.log(royal_flush(hand1));
 
 
-console.log(helper_straight_array(hand1));
+//console.log(helper_straight_array(hand1));
