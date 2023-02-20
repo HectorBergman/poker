@@ -25,9 +25,10 @@ function royal_flush(hand: Hand): Pokerhand {
  * @returns A boolean that shows true if a straight flush exist and false if it doesn't
  */
 function straight_flush(hand: Hand): Pokerhand {
-    let arr = helper_straight_array(hand);
-    if (arr.length >= 5) {
-        if (flush(arr).exists === true) {
+    const fl: Pokerhand = flush(hand)
+    if (fl.exists === true && fl.flush !== undefined) {
+        let check = straight(fl.flush);
+        if (check.exists) {
             return {exists: true};
         }
     }
@@ -116,9 +117,9 @@ function helper_straight_array(arr: Array<Card>): Array<Card> {
 
 
 
-const card1: Card = {suit: 2, value: 5};
-const card2: Card = {suit: 3, value: 9};
-const card3: Card = {suit: 0, value: 9};
+const card1: Card = {suit: 2, value: 9};
+const card2: Card = {suit: 0, value: 9};
+const card3: Card = {suit: 3, value: 8};
 const card4: Card = {suit: 0, value: 10};
 const card5: Card = {suit: 0, value: 11};
 const card6: Card = {suit: 0, value: 12};
@@ -127,7 +128,7 @@ const card7: Card = {suit: 0, value: 13};
 const hand1 = [card1, card2, card3, card4, card5, card6, card7];
 
 
-console.log(flush(hand1));
+console.log(straight_flush(hand1));
 //console.log(straight(hand1));
 //console.log(straight_flush(hand1));
 //console.log(royal_flush(hand1));
