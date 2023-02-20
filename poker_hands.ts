@@ -7,7 +7,7 @@ import {Hand, Card, Pokerhand } from './poker_types'
  * @param card_number (number) states how many cards the hand has
  * @returns a Pokerhand tagged with "pair", with a boolean and the value of the pair
  */
-function has_pair(hand: Hand, card_number: number = 7): Pokerhand {
+function has_pair2(hand: Hand, card_number: number = 7): Pokerhand {
     if (hand[card_number - 2] === undefined) {
         return {exists: false, name: "pair"};
     } else {
@@ -19,9 +19,26 @@ function has_pair(hand: Hand, card_number: number = 7): Pokerhand {
             continue
         }
     }
-    return has_pair(hand, card_number - 1);
+    return has_pair2(hand, card_number - 1);
 }
 }
+function has_pair(hand: Hand, j: number = 0): Pokerhand {
+    if (hand[j] === undefined) {
+        return {exists: false, name: "pair"};
+    } else {
+    let card: Card = hand[j]
+    for (let i = j + 1; hand[i] !== undefined; i += 1) {
+        if (card.value === hand[i].value) {
+            return {exists: true, value: card.value, name: "pair"};
+        } else {
+            continue
+        }
+    }
+    return has_pair(hand, j+1);
+}
+}
+
+
 
 
 
@@ -51,8 +68,8 @@ function count_same_cards(hand: Hand, value: number, i: number = 0, j: number = 
  * @param card_number (number) states how many cards the hand has
  * @returns a Pokerhand tagged with "three of a kind", with a boolean and the value of the three of a kind
  */
-function has_three_of_akind(hand: Hand, card_number: number = 7): Pokerhand {
-    const pair = has_pair(hand, card_number);
+function has_three_of_akind(hand: Hand): Pokerhand {
+    const pair = has_pair(hand);
     if (pair.exists && pair.value !== undefined) {
         const i = count_same_cards(hand, pair.value);
         return i >= 3 
@@ -69,8 +86,8 @@ function has_three_of_akind(hand: Hand, card_number: number = 7): Pokerhand {
  * @param card_number (number) states how many cards the hand has
  * @returns a Pokerhand tagged with "four of a kind", with a boolean and the value of the four of a kind
  */
-function has_four_of_akind(hand: Hand, card_number: number = 7): Pokerhand {
-    const pair = has_pair(hand, card_number);
+function has_four_of_akind(hand: Hand): Pokerhand {
+    const pair = has_pair(hand);
     if (pair.exists && pair.value !== undefined) {
         const i = count_same_cards(hand, pair.value);
         return i === 4 
@@ -109,11 +126,11 @@ function make_new_hand(hand: Hand, new_hand: Hand, value: number, i: number = 0,
  * @param card_number (number) states how many cards the hand has
  * @returns a Pokerhand tagged with "two pairs", with a boolean and values of the two pairs
  */
-function has_two_pairs(hand: Hand, card_number: number = 7): Pokerhand{
-    const pair = has_pair(hand, card_number);
+function has_two_pairs(hand: Hand): Pokerhand{
+    const pair = has_pair(hand);
     if (pair.exists && pair.value !== undefined) {
         const new_hand: Hand = make_new_hand(hand, [], pair.value);
-        const second_pair =  has_pair(new_hand, new_hand.length);
+        const second_pair =  has_pair(new_hand);
         if (second_pair.exists) {
             return {exists: true, value: pair.value, value2: second_pair.value, name: "two pairs"}
         } else {
@@ -130,11 +147,11 @@ function has_two_pairs(hand: Hand, card_number: number = 7): Pokerhand{
 * @param card_number (number) states how many cards the hand has
 * @returns a Pokerhand tagged with "full house", with a boolean and values of the three of a kind and the pair
 */
-function has_fullhouse(hand: Hand, card_number: number = 7): Pokerhand {
+function has_fullhouse(hand: Hand): Pokerhand {
     const trio: Pokerhand = has_three_of_akind(hand);
     if (trio.exists && trio.value !== undefined) {
         const new_hand = make_new_hand(hand, [], trio.value);
-        const add_pair = has_pair(new_hand, new_hand.length);
+        const add_pair = has_pair(new_hand);
         return add_pair.exists
             ? {exists: true, value: trio.value, value2: add_pair.value, name: "full house"}
             : {exists: false, name: "full house"};
