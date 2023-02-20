@@ -1,4 +1,6 @@
 import { find_suit, find_value } from "./helpers";
+import { Card, Hand, Pokerhand } from "./poker_types";
+
 /*
 function straight2(arr: Array<number>): boolean {
     let count = 0;
@@ -24,16 +26,13 @@ console.log(straight2(arr1));
 console.log(straight2(arr2));
 */
 
-type Card = {suit: number, value: number};
-
-
 /**
  * Checks if a given hand is a royal flush
  * @preconditions There is only one of each value, the array is sorted in increasing value, and if the lowest card in straight is 10.
  * @param hand Array of cards to be evaluated
  * @returns A boolean that shows if there is a royal flush or not.
  */
-function royal_flush(hand: Array<Card>): boolean {
+function royal_flush(hand: Hand): boolean {
     let arr = helper_straight_array(hand);
     if (arr.length >= 5) {
         if (flush(arr) === true) {
@@ -50,7 +49,7 @@ function royal_flush(hand: Array<Card>): boolean {
  * @param hand Array of cards to be evaluated
  * @returns A boolean that shows true if a straight flush exist and false if it doesn't
  */
-function straight_flush(hand: Array<Card>): boolean {
+function straight_flush(hand: Hand): boolean {
     let arr = helper_straight_array(hand);
     if (arr.length >= 5) {
         if (flush(arr) === true) {
@@ -66,7 +65,7 @@ function straight_flush(hand: Array<Card>): boolean {
  * 
  * @returns Returns a boolean that's true if there is a flush and false if there's not.
  */
-function flush(hand: Array<Card>): boolean {
+function flush(hand: Hand): boolean {
     let clubs_count = 0;
     let diamonds_count = 0;
     let spades_count = 0;
@@ -96,7 +95,7 @@ function flush(hand: Array<Card>): boolean {
  * @param hand Array of cards that is to be evaluated
  * @returns Returns a boolean which shows true if
  */
-function straight(hand: Array<Card>): boolean {
+function straight(hand: Hand): boolean {
     if (helper_straight_array(hand).length >= 5) {
         return true;
     }
