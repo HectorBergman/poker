@@ -1,31 +1,6 @@
 import { find_suit, find_value } from "./helpers";
 import { Card, Hand, Pokerhand } from "./poker_types";
 
-/*
-function straight2(arr: Array<number>): boolean {
-    let count = 0;
-    for(let i = 0; i < 4; i++) {
-        if (arr[i] === (arr[i + 1] - 1)){
-            count++;
-        } else {
-            return false;
-        }
-    }
-    if (count === 4) {
-        return true
-    }
-    return false;
-}
-
-
-
-const arr1: Array<number> = [2, 3, 4, 5, 9];
-const arr2: Array<number> = [2, 3, 4, 5, 6];
-
-console.log(straight2(arr1));
-console.log(straight2(arr2));
-*/
-
 /**
  * Checks if a given hand is a royal flush
  * @preconditions There is only one of each value, the array is sorted in increasing value, and if the lowest card in straight is 10.
