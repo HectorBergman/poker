@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-exports.lg_permute_list = exports.random_permutation = exports.array_to_list = exports.list_to_array = void 0;
+exports.find_value = exports.find_suit = exports.lg_permute_list = exports.random_permutation = exports.array_to_list = exports.list_to_array = void 0;
 var list_1 = require("../lib/list");
 function list_to_array(list) {
     var arr = [];
@@ -78,3 +78,11 @@ function lg_permute_list(xs) {
     return make_list(randarr, 0);
 }
 exports.lg_permute_list = lg_permute_list;
+function find_suit(card) {
+    return card.suit;
+}
+exports.find_suit = find_suit;
+function find_value(card) {
+    return card.value;
+}
+exports.find_value = find_value;
