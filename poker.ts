@@ -1,5 +1,5 @@
 import {head, tail, List, Pair, list, pair, set_tail, append} from '../lib/list'
-import {lg_permute_list} from './helpers'
+import {random_list} from './helpers'
 function holdem(players: number){ //kanske temporär lösning på hur många spelare som är med, kan väl ändras sen
     type card = {suit: number, value: number};
     type deck = List<card>;
@@ -15,7 +15,7 @@ function holdem(players: number){ //kanske temporär lösning på hur många spe
                 newdeck = temp;
             }
         }
-        return lg_permute_list(newdeck); //Makes a list random
+        return random_list(newdeck); //Makes a list random
     }
     let newdeck: deck = createdeck();
     let allhands: Array<hand> = [];
