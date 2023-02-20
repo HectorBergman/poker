@@ -1,5 +1,6 @@
 import {List, head, tail, is_null, pair} from '../lib/list';
 import {length} from '../lib/list_prelude';
+import { Card } from './poker_types';
 
 type Permutation = Array<number>;
 
@@ -75,4 +76,12 @@ export function lg_permute_list<T>(xs: List<T>): List<T> {
     const randarr: Array<T> = random_array(xs, sigma, arr, 0);
     return make_list(randarr, 0);
 
+}
+
+export function find_suit(card: Card): number {
+    return card.suit;
+}
+
+export function find_value(card: Card): number {
+    return card.value;
 }
