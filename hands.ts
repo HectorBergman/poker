@@ -110,7 +110,7 @@ function straight(hand: Array<Card>): boolean {
 }
 
 function helper_straight_array(arr: Array<Card>): Array<Card> {
-    let conseq_array = [];
+    let conseq_array: Array<Card> = [];
     let adder = 0;
     for (let i = 0; i < (arr.length - 1); i++) {
         if (find_value(arr[i]) === (find_value(arr[i + 1]) - 1)) {
