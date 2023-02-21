@@ -1,6 +1,10 @@
 import {head, tail, List, Pair, list, pair, set_tail, append} from '../lib/list'
 import {lg_permute_list} from './helpers'
 import {Deck, Hand, Board, Pocketcards, Pokerhand, Card} from './poker_types'
+import {question} from 'readline-sync'
+
+
+
 function holdem(players: number){ //kanske temporär lösning på hur många spelare som är med, kan väl ändras sen
     /**
      * Generates a deck of 52 cards in random order
@@ -19,9 +23,11 @@ function holdem(players: number){ //kanske temporär lösning på hur många spe
         return lg_permute_list(newdeck); //Makes a list random
     }
     let newdeck: Deck = createdeck();
-    let allhands: Array<Hand> = [];
+    let allhands: Array<Hand> = []; //Player one's hand is index 0, player two index 1, and so on.
+    let river: Hand = []
     function dealcards(players: number): void{
-        let river: Hand = [head(newdeck!), head(tail(newdeck!)!), head(tail(tail(newdeck!)!)!)];
+        river = [head(newdeck!), head(tail(newdeck!)!), head(tail(tail(newdeck!)!)!)];
+        //river actually only refers to the fifth card dealt, the first 3 are called 'flop' and the 4th 'turn'.
         newdeck = tail(tail(tail(newdeck!)!)!);
         /* Dealcardshelper gives a player the two cards on the top of the deck,
         dealing cards like this would get you shot in the wild west,
@@ -41,5 +47,18 @@ function holdem(players: number){ //kanske temporär lösning på hur många spe
     console.log(allhands)
     console.log(allhands[0])
     console.log(createdeck());*/
+    function roundstart(){
+        var bet = question('Prompt1 ');
+        river[3] = head(newdeck!);
+        newdeck = tail(newdeck!);
+        console.log(river);
+        var bet2 = question('Prompt2 ');
+        river[4] = head(newdeck!);
+        newdeck = tail(newdeck!);
+        console.log(river);
+    }
 }
+
 holdem(2);
+
+
