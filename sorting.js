@@ -1,12 +1,6 @@
 "use strict";
+//Found using ChatGPT
 exports.__esModule = true;
-function sortNumbersAscending(numbers) {
-    return numbers.sort(function (a, b) { return a - b; });
-}
-var sorter = [5, 8, 2, 9, 11];
-console.log(sorter);
-sortNumbersAscending(sorter);
-console.log(sorter);
 function sortRecordsByValue(records, key) {
     return records.sort(function (a, b) {
         if (a[key] < b[key]) {

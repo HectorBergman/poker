@@ -54,7 +54,7 @@ function make_list<T>(arr: Array<T>, i: number): List<T> {
     }
 }
 
-export function lg_permute_list<T>(xs: List<T>): List<T> {
+export function random_list<T>(xs: List<T>): List<T> {
     function length<T>(xs: List<T>, i: number): number {
         if (is_null(xs)) {
             return i;

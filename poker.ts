@@ -1,9 +1,7 @@
 import {head, tail, List, Pair, list, pair, set_tail, append} from '../lib/list'
-import {lg_permute_list} from './helpers'
+import {random_list} from './helpers'
 import {Deck, Hand, Board, Pocketcards, Pokerhand, Card} from './poker_types'
 import {question} from 'readline-sync'
-
-
 
 function holdem(players: number){ //kanske temporär lösning på hur många spelare som är med, kan väl ändras sen
     /**
@@ -20,7 +18,7 @@ function holdem(players: number){ //kanske temporär lösning på hur många spe
                 newdeck = temp;
             }
         }
-        return lg_permute_list(newdeck); //Makes a list random
+        return random_list(newdeck); //Makes a list random
     }
     let newdeck: Deck = createdeck();
     let allhands: Array<Hand> = []; //Player one's hand is index 0, player two index 1, and so on.

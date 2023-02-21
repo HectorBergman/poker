@@ -1,37 +1,21 @@
-import {Hand, Card, Pokerhand } from './poker_types'
+import {Hand, Card, Pokerhand } from './poker_types';
 //function highcard()
 
 /**
  * Checks if a given hand has a pair or not
  * @param hand (Hand) a hand of cards
- * @param card_number (number) states how many cards the hand has
  * @returns a Pokerhand tagged with "pair", with a boolean and the value of the pair
  */
-function has_pair2(hand: Hand, card_number: number = 7): Pokerhand {
-    if (hand[card_number - 2] === undefined) {
-        return {exists: false, name: "pair"};
-    } else {
-    let card: Card = hand[card_number - 1]
-    for (let i = 0; i < card_number - 1; i += 1) {
-        if (card.value === hand[i].value) {
-            return {exists: true, value: card.value, name: "pair"};
-        } else {
-            continue
-        }
-    }
-    return has_pair2(hand, card_number - 1);
-}
-}
-function has_pair(hand: Hand, j: number = 0): Pokerhand {
+export function has_pair(hand: Hand, j = 0): Pokerhand {
     if (hand[j] === undefined) {
         return {exists: false, name: "pair"};
     } else {
-    let card: Card = hand[j]
+    const card: Card = hand[j];
     for (let i = j + 1; hand[i] !== undefined; i += 1) {
         if (card.value === hand[i].value) {
             return {exists: true, value: card.value, name: "pair"};
         } else {
-            continue
+            continue;
         }
     }
     return has_pair(hand, j+1);
@@ -45,12 +29,11 @@ function has_pair(hand: Hand, j: number = 0): Pokerhand {
 /**
  * Helper function: checks if a hand has more than a pair of a given value
  * @param hand (Hand) a hand of cards, which already contain a pair
- * @param card_number (number) states how many cards the hand has
  * @param i (number) is for indexing
  * @param j (number) count number of cards which are the same
  * @returns number of cards with the same value
  */
-function count_same_cards(hand: Hand, value: number, i: number = 0, j: number = 0): number {
+function count_same_cards(hand: Hand, value: number, i = 0, j = 0): number {
     if (hand[i] === undefined) {
         return j;
     } else {
@@ -68,33 +51,32 @@ function count_same_cards(hand: Hand, value: number, i: number = 0, j: number = 
  * @param card_number (number) states how many cards the hand has
  * @returns a Pokerhand tagged with "three of a kind", with a boolean and the value of the three of a kind
  */
-function has_three_of_akind(hand: Hand): Pokerhand {
+export function has_three_of_akind(hand: Hand): Pokerhand {
     const pair = has_pair(hand);
     if (pair.exists && pair.value !== undefined) {
         const i = count_same_cards(hand, pair.value);
         return i >= 3 
             ? {exists: true, value: pair.value, name: "three of a kind"}
-            : {exists: false, name: "three of a kind"}
+            : {exists: false, name: "three of a kind"};
     } else {
-        return {exists:false, name:"three of a kind"}
+        return {exists:false, name:"three of a kind"};
     }
 }
 
 /**
  * Checks if a hand has a three of a kind
  * @param hand (Hand) a hand of cards
- * @param card_number (number) states how many cards the hand has
  * @returns a Pokerhand tagged with "four of a kind", with a boolean and the value of the four of a kind
  */
-function has_four_of_akind(hand: Hand): Pokerhand {
+export function has_four_of_akind(hand: Hand): Pokerhand {
     const pair = has_pair(hand);
     if (pair.exists && pair.value !== undefined) {
         const i = count_same_cards(hand, pair.value);
         return i === 4 
             ? {exists: true, value: pair.value, name: "four of a kind"}
-            : {exists: false, name: "four of a kind"}
+            : {exists: false, name: "four of a kind"};
     } else {
-        return {exists:false, name:"four of a kind"}
+        return {exists:false, name:"four of a kind"};
     }
 }
 
@@ -107,7 +89,7 @@ function has_four_of_akind(hand: Hand): Pokerhand {
  * @param j (number) for indexing the new hand
  * @returns a new hand, which does not contain a specified pair
  */
-function make_new_hand(hand: Hand, new_hand: Hand, value: number, i: number = 0, j: number = 0): Hand {
+function make_new_hand(hand: Hand, new_hand: Hand, value: number, i = 0, j = 0): Hand {
     if (hand[i] === undefined) {
         return new_hand;
     } else {
@@ -115,7 +97,7 @@ function make_new_hand(hand: Hand, new_hand: Hand, value: number, i: number = 0,
             return make_new_hand(hand, new_hand, value, i + 1, j);
         } else {
             new_hand[j] = hand[i];
-            return make_new_hand(hand, new_hand, value, i + 1, j + 1)
+            return make_new_hand(hand, new_hand, value, i + 1, j + 1);
         }
     }
 }
@@ -123,31 +105,29 @@ function make_new_hand(hand: Hand, new_hand: Hand, value: number, i: number = 0,
 /**
  * Checks if a hand has two pairs
  * @param hand (Hand) a hand of cards
- * @param card_number (number) states how many cards the hand has
  * @returns a Pokerhand tagged with "two pairs", with a boolean and values of the two pairs
  */
-function has_two_pairs(hand: Hand): Pokerhand{
+export function has_two_pairs(hand: Hand): Pokerhand {
     const pair = has_pair(hand);
     if (pair.exists && pair.value !== undefined) {
         const new_hand: Hand = make_new_hand(hand, [], pair.value);
         const second_pair =  has_pair(new_hand);
         if (second_pair.exists) {
-            return {exists: true, value: pair.value, value2: second_pair.value, name: "two pairs"}
+            return {exists: true, value: pair.value, value2: second_pair.value, name: "two pairs"};
         } else {
-            return  {exists: false, name: "two pairs"}
+            return  {exists: false, name: "two pairs"};
         }
     } else {
-        return {exists: false, name: "two pairs"}
+        return {exists: false, name: "two pairs"};
     }
 }
 
 /**
 * Checks if a hand has full house 
 * @param hand (Hand) a hand of cards
-* @param card_number (number) states how many cards the hand has
 * @returns a Pokerhand tagged with "full house", with a boolean and values of the three of a kind and the pair
 */
-function has_fullhouse(hand: Hand): Pokerhand {
+export function has_fullhouse(hand: Hand): Pokerhand {
     const trio: Pokerhand = has_three_of_akind(hand);
     if (trio.exists && trio.value !== undefined) {
         const new_hand = make_new_hand(hand, [], trio.value);

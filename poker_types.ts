@@ -1,4 +1,4 @@
-import {type List, type Pair} from '../lib/list'
+import {type List, type Pair} from '../lib/list';
 
 export type Permutation = Array<number>;
 
@@ -17,11 +17,25 @@ export type Hand = Array<Card>;
 export type Pocketcards = Array<Card>;
 
 export type Pokerhand = {
-    exists: Boolean,
+    exists: boolean,
     value?: number,
     value2?: number, 
-    flush?: Array<Card>,
+    flush?: Hand,
     rang?: number,
     name?: string,
     suit?: string,
-}
+};
+
+export type Chip = number;
+
+export type Pile = {
+    color: number
+    number: number,
+    chip: Chip
+};
+
+export type Bet = Pair<string, number>;
+
+export type Pot = Array<Pile>;
+
+export type Stack = Array<Pile>;
