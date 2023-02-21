@@ -45,13 +45,13 @@ function holdem(players: number){ //kanske temporär lösning på hur många spe
     console.log(allhands)
     console.log(allhands[0])
     console.log(createdeck());*/
-    function roundstart(){
+    function roundstart(){ //temporary, just imagining how a round could look like
         var bet = question('Prompt1 ');
-        river[3] = head(newdeck!);
+        river[3] = head(newdeck!); //turn
         newdeck = tail(newdeck!);
         console.log(river);
         var bet2 = question('Prompt2 ');
-        river[4] = head(newdeck!);
+        river[4] = head(newdeck!); //river
         newdeck = tail(newdeck!);
         console.log(river);
     }
