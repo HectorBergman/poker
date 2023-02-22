@@ -42,13 +42,21 @@ function winners(one: Hand, two: Hand): string {
     let player2 = hand_rating(two);
     if (player1.rang !== undefined  && player2.rang !== undefined) {
         if (player1.rang < player2.rang) {
-            return "Player 1 wins"
+            return "Player 1 wins";
         } else if (player1.rang > player2.rang) {
-            return "Player 2 wins"
+            return "Player 2 wins";
         } else {
-            if (player1)
-            return "It's a tie"
+            if (player1.value !== undefined && player2.value !== undefined) {
+                if (player1.value > player2.value) {
+                    return "Player 1 wins";
+                } else if (player1.value < player2.value) {
+                    return "Player 2 wins";
+                } else {
+                    return "It's a tie";
+                }
+            }
+            return "It's a tie";
         }
     }
-    return "Unvalid game"
+    return "Unvalid game";
 }
