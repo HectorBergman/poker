@@ -1,5 +1,5 @@
 import {royal_flush, straight_flush, flush, straight} from './hands';
-import {Hand} from './poker_types';
+import {Hand, Pokerhand} from './poker_types';
 import {has_four_of_akind, has_fullhouse, has_pair, has_three_of_akind, has_two_pairs} from './poker_hands'
 
 /**
@@ -9,26 +9,26 @@ import {has_four_of_akind, has_fullhouse, has_pair, has_three_of_akind, has_two_
  * @returns a number which represent how much each hand is worth
  */
 
-function hand_rating(hand: Hand): number {
+function hand_rating(hand: Hand): Pokerhand {
     return royal_flush(hand)
-           ? 1
+           ? {exists: true, rang: 1}
            : straight_flush(hand)
-           ? 2
+           ? {exists: true, rang: 2}
            :has_four_of_akind(hand)
-           ? 3
+           ? {exists: true, rang: 3}
            : has_fullhouse(hand)
-           ? 4
+           ? {exists: true, rang: 4}
            : flush(hand)
-           ? 5
+           ? {exists: true, rang: 5}
            : straight(hand)
-           ? 6
+           ? {exists: true, rang: 6}
            : has_three_of_akind(hand)
-           ? 7
+           ? {exists: true, rang: 7}
            : has_two_pairs(hand)
-           ? 8
+           ? {exists: true, rang: 8}
            : has_pair(hand)
-           ? 9
-           : 10;
+           ? {exists: true, rang: 9}
+           : {exists: true, rang: 10};
 }
 
 /**
@@ -40,11 +40,15 @@ function hand_rating(hand: Hand): number {
 function winners(one: Hand, two: Hand): string {
     let player1 = hand_rating(one);
     let player2 = hand_rating(two);
-    if (player1 < player2) {
-        return "Player 1 wins"
-    } else if (player1 > player2) {
-        return "Player 2 wins"
-    } else {
-        return "It's a tie"
+    if (player1.rang !== undefined  && player2.rang !== undefined) {
+        if (player1.rang < player2.rang) {
+            return "Player 1 wins"
+        } else if (player1.rang > player2.rang) {
+            return "Player 2 wins"
+        } else {
+            if (player1)
+            return "It's a tie"
+        }
     }
+    return "Unvalid game"
 }
