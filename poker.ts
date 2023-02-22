@@ -47,16 +47,53 @@ export function holdem(players: number){ //kanske temporär lösning på hur må
     console.log(allhands[0])
     console.log(createdeck());*/
     function roundstart(){ //temporary, just imagining how a round could look like
-        var bet = question('Prompt1 ');
+        selection(0);
         board[3] = head(newdeck!); //turn
         console.log(`The turn is a ${describe(board[3])}.`);
         newdeck = tail(newdeck!);
         console.log(board);
-        var bet2 = question('Prompt2 ');
+        selection(0);
         board[4] = head(newdeck!); //river
         console.log(`${describe(board[4])} on the river!`);
         newdeck = tail(newdeck!);
         console.log(board);
+    }
+    /*
+    ** Code for player input after cards have been dealt, den är lite dålig
+    ** så man måste nog ändra den lite
+    */
+    function selection(player: number){
+        var prompt = question('What do you want to do? ');
+        if (prompt.toLowerCase() === "bet"){
+            console.log("Bet");
+        }
+        else if (prompt.toLowerCase() === "help"){
+            console.log('Type "bet" to bet, "hand" to look at your cards, "board" to look at the board, and "fold" to fold.')
+        }
+        else if (prompt.toLowerCase() === "hand"){
+            console.log(`You have the ${describe(allhands[player][0])} and the ${describe(allhands[player][1])}`);
+        }
+        else if (prompt.toLowerCase() === "board" ){
+            if (board[4] === undefined){
+                if (board[3] === undefined){
+                    console.log(`On the board there's the ${describe(board[0])}, the ${describe(board[1])} and the ${describe(board[2])}`)
+                }
+                else{
+                console.log(`On the board there's the ${describe(board[0])}, the ${describe(board[1])}, the ${describe(board[2])} and the ${describe(board[3])}`)
+                }
+            }   
+            else{
+            console.log(`On the board there's the ${describe(board[0])}, the ${describe(board[1])}, the ${describe(board[2])}, the ${describe(board[3])} and the ${describe(board[4])}`)
+            }
+        }
+        else if (prompt.toLowerCase() === "fold" ){
+            console.log("You fold");
+            return;
+        }
+        else{
+            console.log('Not a proper input. Type "help" for help.')
+        }
+        selection(player);
     }
     roundstart();
 }
