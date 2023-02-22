@@ -18,14 +18,14 @@ function holdem(players) {
                 newdeck = temp;
             }
         }
-        return (0, helpers_1.lg_permute_list)(newdeck); //Makes a list random
+        return (0, helpers_1.random_list)(newdeck); //Makes a list random
     }
     var newdeck = createdeck();
     var allhands = []; //Player one's hand is index 0, player two index 1, and so on.
-    var river = [];
+    var board = [];
     function dealcards(players) {
-        river = [(0, list_1.head)(newdeck), (0, list_1.head)((0, list_1.tail)(newdeck)), (0, list_1.head)((0, list_1.tail)((0, list_1.tail)(newdeck)))];
-        //river actually only refers to the fifth card dealt, the first 3 are called 'flop' and the 4th 'turn'.
+        board = [(0, list_1.head)(newdeck), (0, list_1.head)((0, list_1.tail)(newdeck)), (0, list_1.head)((0, list_1.tail)((0, list_1.tail)(newdeck)))];
+        //this will be the 5 cards in the center of the table. Currently it's only the flop
         newdeck = (0, list_1.tail)((0, list_1.tail)((0, list_1.tail)(newdeck)));
         /* Dealcardshelper gives a player the two cards on the top of the deck,
         dealing cards like this would get you shot in the wild west,
@@ -47,41 +47,16 @@ function holdem(players) {
     console.log(createdeck());*/
     function roundstart() {
         var bet = (0, readline_sync_1.question)('Prompt1 ');
-        river[3] = (0, list_1.head)(newdeck);
+        board[3] = (0, list_1.head)(newdeck); //turn
+        console.log("The turn is a ".concat((0, helpers_1.describe)(board[3]), "."));
         newdeck = (0, list_1.tail)(newdeck);
-        console.log(river);
+        console.log(board);
         var bet2 = (0, readline_sync_1.question)('Prompt2 ');
-        river[4] = (0, list_1.head)(newdeck);
+        board[4] = (0, list_1.head)(newdeck); //river
+        console.log("".concat((0, helpers_1.describe)(board[4]), " on the river!"));
         newdeck = (0, list_1.tail)(newdeck);
-        console.log(river);
+        console.log(board);
     }
-    function describe(card) {
-        function describesuit(suit) {
-            return suit === 0
-                ? "Clubs"
-                : suit === 1
-                    ? "Diamonds"
-                    : suit === 2
-                        ? "Spades"
-                        : suit === 3
-                            ? "Hearts"
-                            : "error";
-        }
-        function describevalue(value) {
-            return value === 11
-                ? "Jack"
-                : value === 12
-                    ? "Queen"
-                    : value === 13
-                        ? "King"
-                        : value === 14
-                            ? "Ace"
-                            : value.toString();
-        }
-        return "".concat(describevalue(card.value), " of ").concat(describesuit(card.suit));
-        //0 = clubs 1 = diamond 2 = spades 3 = hearts
-        //ace 14, king 13, queen 12, jack 11s
-    }
-    console.log("You have ".concat(describe(allhands[0][0]), " and ").concat(describe(allhands[0][1])));
+    roundstart();
 }
 holdem(2);

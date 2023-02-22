@@ -91,7 +91,7 @@ export function find_value(card: Card): number {
     * @returns A string that tells you which card it is.
     * @example describe({suit: 0, value: 12}) returns "Queen of Clubs".
     */
-    function describe(card: Card): string {
+export function describe(card: Card): string {
         function describesuit(suit: number): string{
             return suit === 0
                 ? "Clubs"

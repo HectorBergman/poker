@@ -1,9 +1,10 @@
 import {head, tail, List, Pair, list, pair, set_tail, append} from '../lib/list'
-import {random_list} from './helpers'
+import {random_list, describe} from './helpers'
 import {Deck, Hand, Board, Pocketcards, Pokerhand, Card} from './poker_types'
 import {question} from 'readline-sync'
+import {Bet, Pot, Stack, Pile} from './poker_types';
 
-function holdem(players: number){ //kanske temporär lösning på hur många spelare som är med, kan väl ändras sen
+export function holdem(players: number){ //kanske temporär lösning på hur många spelare som är med, kan väl ändras sen
     /**
      * Generates a deck of 52 cards in random order
      */
@@ -22,10 +23,10 @@ function holdem(players: number){ //kanske temporär lösning på hur många spe
     }
     let newdeck: Deck = createdeck();
     let allhands: Array<Hand> = []; //Player one's hand is index 0, player two index 1, and so on.
-    let river: Hand = []
+    let board: Hand = []
     function dealcards(players: number): void{
-        river = [head(newdeck!), head(tail(newdeck!)!), head(tail(tail(newdeck!)!)!)];
-        //river actually only refers to the fifth card dealt, the first 3 are called 'flop' and the 4th 'turn'.
+        board = [head(newdeck!), head(tail(newdeck!)!), head(tail(tail(newdeck!)!)!)];
+        //this will be the 5 cards in the center of the table. Currently it's only the flop
         newdeck = tail(tail(tail(newdeck!)!)!);
         /* Dealcardshelper gives a player the two cards on the top of the deck,
         dealing cards like this would get you shot in the wild west,
@@ -47,14 +48,17 @@ function holdem(players: number){ //kanske temporär lösning på hur många spe
     console.log(createdeck());*/
     function roundstart(){ //temporary, just imagining how a round could look like
         var bet = question('Prompt1 ');
-        river[3] = head(newdeck!); //turn
+        board[3] = head(newdeck!); //turn
+        console.log(`The turn is a ${describe(board[3])}.`);
         newdeck = tail(newdeck!);
-        console.log(river);
+        console.log(board);
         var bet2 = question('Prompt2 ');
-        river[4] = head(newdeck!); //river
+        board[4] = head(newdeck!); //river
+        console.log(`${describe(board[4])} on the river!`);
         newdeck = tail(newdeck!);
-        console.log(river);
+        console.log(board);
     }
+    roundstart();
 }
 
 holdem(2);
