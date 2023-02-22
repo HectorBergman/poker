@@ -4,6 +4,7 @@ import {has_four_of_akind, has_fullhouse, has_pair, has_three_of_akind, has_two_
 
 /**
  * Checks how much the hand is worth.
+ * @precondition The hand evaluated is a valid hand
  * @param hand Hand to be evaluated
  * @returns a number which represent how much each hand is worth
  */
