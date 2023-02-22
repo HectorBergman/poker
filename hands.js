@@ -1,26 +1,27 @@
 "use strict";
 exports.__esModule = true;
+exports.straight = exports.flush = exports.straight_flush = exports.royal_flush = void 0;
 var helpers_1 = require("./helpers");
 /**
  * Checks if a given hand is a royal flush
- * @preconditions There is only one of each value, the array is sorted in increasing value, and if the lowest card in straight is 10.
+ * @preconditions The array is sorted in increasing value.
  * @param hand Array of cards to be evaluated
  * @returns A boolean that shows if there is a royal flush or not.
  */
 function royal_flush(hand) {
-    var arr = helper_straight_array(hand);
-    if (arr.length >= 5) {
-        if (flush(arr).exists === true) {
-            if ((0, helpers_1.find_value)(arr[0]) === 10) {
-                return { exists: true };
-            }
+    var check = straight_flush(hand);
+    if (check.exists === true && check.flush !== undefined) {
+        var el = check.flush.length;
+        if ((0, helpers_1.find_value)(check.flush[el - 1]) === 14) {
+            return { exists: true };
         }
     }
     return { exists: false };
 }
+exports.royal_flush = royal_flush;
 /**
  * Checks if a given hand is a straight flush.
- * @preconditions There are no repeats of values, and the parameter array is sorted in increasing value.
+ * @preconditions The parameter array is sorted in increasing value.
  * @param hand Array of cards to be evaluated
  * @returns A boolean that shows true if a straight flush exist and false if it doesn't
  */
@@ -29,11 +30,12 @@ function straight_flush(hand) {
     if (fl.exists === true && fl.flush !== undefined) {
         var check = straight(fl.flush);
         if (check.exists) {
-            return { exists: true };
+            return { exists: true, flush: fl.flush };
         }
     }
     return { exists: false };
 }
+exports.straight_flush = straight_flush;
 /**
  * Checks if a given hand is a flush or not.
  * @precondition The hand only contains valid cards.
@@ -89,6 +91,7 @@ function flush(hand) {
     }
     return flush_helper(hand);
 }
+exports.flush = flush;
 /**
  * Checks whether a given hand contains a straight of not.
  * @preconditions Array is sorted in increasing value order.
@@ -101,6 +104,7 @@ function straight(hand) {
     }
     return { exists: false };
 }
+exports.straight = straight;
 function helper_straight_array(arr) {
     var conseq_array = [];
     var adder = 0;
@@ -125,16 +129,16 @@ function helper_straight_array(arr) {
     }
     return conseq_array;
 }
-var card1 = { suit: 2, value: 9 };
-var card2 = { suit: 0, value: 9 };
-var card3 = { suit: 3, value: 8 };
-var card4 = { suit: 0, value: 10 };
-var card5 = { suit: 0, value: 11 };
-var card6 = { suit: 0, value: 12 };
-var card7 = { suit: 0, value: 13 };
+var card1 = { suit: 0, value: 9 };
+var card2 = { suit: 1, value: 9 };
+var card3 = { suit: 3, value: 10 };
+var card4 = { suit: 3, value: 11 };
+var card5 = { suit: 3, value: 12 };
+var card6 = { suit: 3, value: 13 };
+var card7 = { suit: 3, value: 14 };
 var hand1 = [card1, card2, card3, card4, card5, card6, card7];
+console.log(flush(hand1));
+console.log(straight(hand1));
 console.log(straight_flush(hand1));
-//console.log(straight(hand1));
-//console.log(straight_flush(hand1));
-//console.log(royal_flush(hand1));
+console.log(royal_flush(hand1));
 //console.log(helper_straight_array(hand1));
