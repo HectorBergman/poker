@@ -12,7 +12,7 @@ export function royal_flush(hand: Hand): Pokerhand {
     if (check.exists === true && check.flush !== undefined) {
         let el = check.flush.length;
         if (find_value(check.flush[el - 1]) === 14) {
-            return {exists: true};
+            return {exists: true, name: 'royal flush'};
         }
     }
     return {exists: false};
@@ -29,7 +29,7 @@ export function straight_flush(hand: Hand): Pokerhand {
     if (fl.exists === true && fl.flush !== undefined) {
         let check = straight(fl.flush);
         if (check.exists) {
-            return {exists: true, flush: fl.flush};
+            return {exists: true, flush: fl.flush, name: 'straight flush'};
         }
     }
     return {exists: false};
@@ -88,7 +88,7 @@ export function flush(hand: Hand): Pokerhand {
  */
 export function straight(hand: Hand): Pokerhand {
     if (helper_straight_array(hand).length >= 5) {
-        return {exists: true};
+        return {exists: true, name: 'straight'};
     }
     return {exists: false};
 }
