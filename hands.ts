@@ -3,33 +3,33 @@ import { Card, Hand, Pokerhand } from "./poker_types";
 
 /**
  * Checks if a given hand is a royal flush
- * @preconditions There is only one of each value, the array is sorted in increasing value, and if the lowest card in straight is 10.
+ * @preconditions The array is sorted in increasing value.
  * @param hand Array of cards to be evaluated
  * @returns A boolean that shows if there is a royal flush or not.
  */
-function royal_flush(hand: Hand): Pokerhand {
-    let arr = helper_straight_array(hand);
-    if (arr.length >= 5) {
-        if (flush(arr).exists === true) {
-            if (find_value(arr[0]) === 10) {
-                return {exists: true};
-            } 
+export function royal_flush(hand: Hand): Pokerhand {
+    const check = straight_flush(hand);
+    if (check.exists === true && check.flush !== undefined) {
+        let el = check.flush.length;
+        if (find_value(check.flush[el - 1]) === 14) {
+            return {exists: true};
         }
     }
-    return {exists: false};}
+    return {exists: false};
+}
 
 /**
  * Checks if a given hand is a straight flush.
- * @preconditions There are no repeats of values, and the parameter array is sorted in increasing value.
+ * @preconditions The parameter array is sorted in increasing value.
  * @param hand Array of cards to be evaluated
  * @returns A boolean that shows true if a straight flush exist and false if it doesn't
  */
-function straight_flush(hand: Hand): Pokerhand {
-    const fl: Pokerhand = flush(hand)
+export function straight_flush(hand: Hand): Pokerhand {
+    const fl: Pokerhand = flush(hand);
     if (fl.exists === true && fl.flush !== undefined) {
         let check = straight(fl.flush);
         if (check.exists) {
-            return {exists: true};
+            return {exists: true, flush: fl.flush};
         }
     }
     return {exists: false};
@@ -40,7 +40,7 @@ function straight_flush(hand: Hand): Pokerhand {
  * @param hand An array of the cards that are avaliable for your hand.
  * @returns Returns a boolean that's true if there is a flush and false if there's not.
  */
-function flush(hand: Hand): Pokerhand {
+export function flush(hand: Hand): Pokerhand {
     let clubs: Hand = [];
     let diamonds: Hand =[];
     let spades: Hand = [];
@@ -86,7 +86,7 @@ function flush(hand: Hand): Pokerhand {
  * @param hand Array of cards that is to be evaluated
  * @returns Returns a boolean which shows true if it contains a straight and false if it doesn't.
  */
-function straight(hand: Hand): Pokerhand {
+export function straight(hand: Hand): Pokerhand {
     if (helper_straight_array(hand).length >= 5) {
         return {exists: true};
     }
@@ -117,21 +117,21 @@ function helper_straight_array(arr: Array<Card>): Array<Card> {
 
 
 
-const card1: Card = {suit: 2, value: 9};
-const card2: Card = {suit: 0, value: 9};
-const card3: Card = {suit: 3, value: 8};
-const card4: Card = {suit: 0, value: 10};
-const card5: Card = {suit: 0, value: 11};
-const card6: Card = {suit: 0, value: 12};
-const card7: Card = {suit: 0, value: 13};
+const card1: Card = {suit: 0, value: 9};
+const card2: Card = {suit: 1, value: 9};
+const card3: Card = {suit: 3, value: 10};
+const card4: Card = {suit: 3, value: 11};
+const card5: Card = {suit: 3, value: 12};
+const card6: Card = {suit: 3, value: 13};
+const card7: Card = {suit: 3, value: 14};
 
 const hand1 = [card1, card2, card3, card4, card5, card6, card7];
 
 
+console.log(flush(hand1));
+console.log(straight(hand1));
 console.log(straight_flush(hand1));
-//console.log(straight(hand1));
-//console.log(straight_flush(hand1));
-//console.log(royal_flush(hand1));
+console.log(royal_flush(hand1));
 
 
 //console.log(helper_straight_array(hand1));
