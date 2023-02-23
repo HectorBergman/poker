@@ -2,6 +2,7 @@ import {head, tail, List, Pair, list, pair, set_tail, append} from '../lib/list'
 import {random_list, describe} from './helpers'
 import {Deck, Hand, Board, Pocketcards, Pokerhand, Card} from './poker_types'
 import {question} from 'readline-sync'
+import {cardimages, stepbystepdisplay, displaycards} from './cardimages'
 import {Bet, Pot, Stack, Pile} from './poker_types';
 
 export function holdem(players: number){ //kanske temporär lösning på hur många spelare som är med, kan väl ändras sen
@@ -51,12 +52,11 @@ export function holdem(players: number){ //kanske temporär lösning på hur må
         board[3] = head(newdeck!); //turn
         console.log(`The turn is a ${describe(board[3])}.`);
         newdeck = tail(newdeck!);
-        console.log(board);
         selection(0);
         board[4] = head(newdeck!); //river
         console.log(`${describe(board[4])} on the river!`);
         newdeck = tail(newdeck!);
-        console.log(board);
+        selection(0);
     }
     /*
     ** Code for player input after cards have been dealt, den är lite dålig
@@ -71,24 +71,28 @@ export function holdem(players: number){ //kanske temporär lösning på hur må
             console.log('Type "bet" to bet, "hand" to look at your cards, "board" to look at the board, and "fold" to fold.')
         }
         else if (prompt.toLowerCase() === "hand"){
+            displaycards([describe(allhands[player][0]), describe(allhands[player][1])])
             console.log(`You have the ${describe(allhands[player][0])} and the ${describe(allhands[player][1])}`);
         }
         else if (prompt.toLowerCase() === "board" ){
             if (board[4] === undefined){
                 if (board[3] === undefined){
+                    displaycards([describe(board[0]), describe(board[1]),describe(board[2])])
                     console.log(`On the board there's the ${describe(board[0])}, the ${describe(board[1])} and the ${describe(board[2])}`)
                 }
                 else{
-                console.log(`On the board there's the ${describe(board[0])}, the ${describe(board[1])}, the ${describe(board[2])} and the ${describe(board[3])}`)
+                    displaycards([describe(board[0]), describe(board[1]),describe(board[2]),describe(board[3])])
+                    console.log(`On the board there's the ${describe(board[0])}, the ${describe(board[1])}, the ${describe(board[2])} and the ${describe(board[3])}`)
                 }
             }   
             else{
+                displaycards([describe(board[0]), describe(board[1]),describe(board[2]),describe(board[3]),describe(board[4])])
             console.log(`On the board there's the ${describe(board[0])}, the ${describe(board[1])}, the ${describe(board[2])}, the ${describe(board[3])} and the ${describe(board[4])}`)
             }
         }
         else if (prompt.toLowerCase() === "fold" ){
             console.log("You fold");
-            return;
+            return; //end round if 1 player left
         }
         else{
             console.log('Not a proper input. Type "help" for help.')
