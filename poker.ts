@@ -52,12 +52,10 @@ export function holdem(players: number){ //kanske temporär lösning på hur må
         board[3] = head(newdeck!); //turn
         console.log(`The turn is a ${describe(board[3])}.`);
         newdeck = tail(newdeck!);
-        console.log(board);
         selection(0);
         board[4] = head(newdeck!); //river
         console.log(`${describe(board[4])} on the river!`);
         newdeck = tail(newdeck!);
-        console.log(board);
         selection(0);
     }
     /*
@@ -73,22 +71,22 @@ export function holdem(players: number){ //kanske temporär lösning på hur må
             console.log('Type "bet" to bet, "hand" to look at your cards, "board" to look at the board, and "fold" to fold.')
         }
         else if (prompt.toLowerCase() === "hand"){
-            console.log(displaycards([describe(allhands[player][0]), describe(allhands[player][1])]))
+            displaycards([describe(allhands[player][0]), describe(allhands[player][1])])
             console.log(`You have the ${describe(allhands[player][0])} and the ${describe(allhands[player][1])}`);
         }
         else if (prompt.toLowerCase() === "board" ){
             if (board[4] === undefined){
                 if (board[3] === undefined){
-                    console.log(displaycards([describe(board[0]), describe(board[1]),describe(board[2])]))
+                    displaycards([describe(board[0]), describe(board[1]),describe(board[2])])
                     console.log(`On the board there's the ${describe(board[0])}, the ${describe(board[1])} and the ${describe(board[2])}`)
                 }
                 else{
-                    console.log(displaycards([describe(board[0]), describe(board[1]),describe(board[2]),describe(board[3])]))
+                    displaycards([describe(board[0]), describe(board[1]),describe(board[2]),describe(board[3])])
                     console.log(`On the board there's the ${describe(board[0])}, the ${describe(board[1])}, the ${describe(board[2])} and the ${describe(board[3])}`)
                 }
             }   
             else{
-                console.log(displaycards([describe(board[0]), describe(board[1]),describe(board[2]),describe(board[3]),describe(board[4])]))
+                displaycards([describe(board[0]), describe(board[1]),describe(board[2]),describe(board[3]),describe(board[4])])
             console.log(`On the board there's the ${describe(board[0])}, the ${describe(board[1])}, the ${describe(board[2])}, the ${describe(board[3])} and the ${describe(board[4])}`)
             }
         }

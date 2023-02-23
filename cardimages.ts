@@ -1,5 +1,5 @@
 
-
+//Ascii art by ejm98
 export let cardimages = {
     'blank':'                                                                   ',
     'Ace of Diamonds':
@@ -315,7 +315,7 @@ export let cardimages = {
 |3    |
 | o o |
 |     |
-|  o  | 
+|  o  |
 |____E|`,
 '3 of Hearts':
 ` _____ 
@@ -403,7 +403,6 @@ export function displaycards(cards: Array<string>){
     stepbystepdisplay(temp);
 }
 
-//Note: Inside of poker.ts, there is always a "undefined" printed whenever you call upon card images. No idea why.
 
 //stepbystepdisplay([cardimages['2 of Diamonds'], cardimages['3 of Hearts'], cardimages['4 of Clubs'],cardimages['5 of Spades'],cardimages['blank']]);
 
