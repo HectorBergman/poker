@@ -2,6 +2,35 @@ import {Bet, Pot, Stack, Pile, GameState} from './poker_types';
 //import * as PromptSync from "prompt-sync";
 import {tail, head} from '../lib/list';
 
+
+const white = 0;
+const red = 1;
+const blue = 2;
+const green = 3;
+
+
+//helper functions not exported
+/*
+function to_color(color: string): number {
+    return color === "white" 
+        ? white
+        : color === "red"
+        ? red
+        : color === "blue"
+        ? blue
+        : green;
+}*/
+
+function to_string(col: number): string {
+    return col === white
+        ? "white"
+        : col === red
+        ? "red"
+        : col === blue
+        ? "blue"
+        : "green";
+
+}
 /**
  * Makes a pile of chips of a given color
  * @param col (number) color of the chips in the pile, used later for indexing the stack and pot arrays
@@ -13,18 +42,11 @@ function make_pile(col: number, val: number, num: number): Pile {
     return {color: col, chip: {value: val}, number: num};
 }
 
-const white = 0;
-const red = 1;
-const blue = 2;
-const green = 3;
-
-
 /**
  * Makes a new chip stack with four piles
  * @returns a new stack with white, red, blue and green chips in a 4:3:2:1 ratio
  */
-// https://www.thesprucecrafts.com/standard-poker-chip-denominations-412236  4:3:2:1 ratio
-function make_new_stack(): Stack {
+export function make_new_stack(): Stack {
         return [make_pile(white, 1, 4), 
                 make_pile(red, 5, 3),
                 make_pile(blue, 10, 2),
@@ -50,13 +72,13 @@ function parse_bet(bet: Bet): Pile {
 }
 
 /**
- * Removes a parsed bet from a stack
+ * Removes a bet from a stack
  * @param stack (array) an array of different colored piles 
- * @param bet_pile (typerecord) a typerecord which contains the color (for indexing), the value 
- *                  and the number of chips for a given bet
+ * @param bet (array) an array of a string which gives the color and a number which give the number of chips
  * @returns The initial stack but with the bet pile removed
  */
-function remove_from_stack(stack: Stack, bet_pile: Pile): Stack {
+function remove_from_stack(stack: Stack, bet: Bet): Stack {
+    const bet_pile: Pile = parse_bet(bet);
     const color = bet_pile.color;
     const number = bet_pile.number;
     stack[color].number = stack[color].number - number;
@@ -67,31 +89,47 @@ function remove_from_stack(stack: Stack, bet_pile: Pile): Stack {
  * Makes a new empty pot
  * @returns 
  */
-function make_pot(): Pot {
+export function make_pot(): Pot {
     return [ make_pile(white, 1, 0),
              make_pile(red, 5, 0),
              make_pile(blue, 10, 0),
-             make_pile(green, 25, 0), ];
+             make_pile(green, 25, 0) ];
 }
 
 /**
  * Adds a given bet pile to pot
- * @param pot (array) an array which marks the places for chip piles according to color
- * @param bet_pile (type record) a parsed bet to be added to the pot
- * @returns a pot with the given bet added
+ * @param pot an array which marks the places for chip piles according to color
+ * @param bet an array of a string which gives the color and a number which give the number of chips
+ * @returns a  with the given bet added
  */
-function add_bet(pot: Pot, bet_pile: Pile): Pot {
+function place_bet(pot: Pot, bet: Bet): Pot {
+    const bet_pile: Pile = parse_bet(bet);
     const color = bet_pile.color;
     pot[color].number = bet_pile.number + pot[color].number; 
     return pot;
 } 
 
 /**
+ * Adds pot to the rounds' winners' stack
+ * @param pot an array which marks the places for chip piles according to color
+ * @param stack an array of chip piles with color as index
+ * @returns the original stack with the pot added
+ */
+function add_pot(pot: Pot, stack: Stack): Stack {
+    for (let i = 0; i < 4; i += 1) {
+        stack[i].number = stack[i].number + pot[i].number;
+    } 
+    return stack;
+}
+
+
+// ____________________________________________________________________________________
+/**
  * Counts what a given pot is worth
  * @param pot (Array) a Pot with Piles of chips with different values and sizes
  * @returns the value of the pot in dollar
  */
-function pot_value(pot: Pot): number {
+export function pot_value(pot: Pot): number {
     let value = 0;
     for (let i = 0; i <= 3; i += 1) {
         value = value + pot[i].chip.value * pot[i].number;
@@ -99,12 +137,59 @@ function pot_value(pot: Pot): number {
     return value;
 }
 
+/**
+ * Checks if a bet made by a player is valid
+ * @param bet an array of a string wich specifies the color of the bet's chips, and their number
+ * @param stack the stack of the player who made the bet
+ * @returns If the bet is valid True/false
+ */
+export function is_valid_bet(bet: Bet, stack: Stack): boolean {
+    const bet_pile: Pile = parse_bet(bet);
+    return stack[bet_pile.color].number >= bet_pile.number;
+}
+
+/**
+ * Puts together helper functions to make a bet
+ * @param bet an array of a string wich specifies the color of the bet's chips, and their number
+ * @param stack a players array of chip piles 
+ * @param pot an array of the chip piles which are wagered
+ */
+export function make_bet(bet: Bet, stack: Stack, pot: Pot): void {
+    if (is_valid_bet(bet, stack)) {
+        remove_from_stack(stack, bet);
+        place_bet(pot, bet);
+    } else {}
+}
+/**
+ * Automated betting system for when a player choses to hold a bet
+ * @param pot1 the wagered chips of the betting player
+ * @param pot2 new pot which contains the holding player's wager
+ * @param stack2 the stack of the holding player
+ */
+export function hold_bet(pot1: Pot, pot2: Pot, stack2: Stack): void {
+    let bet_value = pot_value(pot1) - pot_value(pot2);
+    for (let i = 3; i >= 0; i -= 1) {
+        for (let j = stack2[i].number; j > 0; j -= 1) {
+            const max = stack2[i].chip.value * j; 
+            if (bet_value < max) {
+                continue;
+            } else if (bet_value >= max) {
+                make_bet([to_string(i), j], stack2, pot2);
+                bet_value = bet_value - max; 
+            } else if (bet_value == 0) {
+                break;
+            }
+        }
+    }
+}
+
+
 
 /**
  * Prints the players chip stack
  * @param gs (Gamestate) an array of the players' stacks
  */ 
-function show_game_state(gs: GameState): void {
+export function show_game_state(gs: GameState): void {
     console.log("Color             player1's Stack                player2's Stack");
     console.log("");
     console.log("white                   " +  gs[0][0].number + "                               " + gs[1][0].number );
@@ -112,16 +197,6 @@ function show_game_state(gs: GameState): void {
     console.log("blue                    " +  gs[0][2].number + "                               " + gs[1][2].number );
     console.log("green                   " +  gs[0][3].number + "                               " + gs[1][3].number );
     
-}
-
-/**
- * Checks if a bet made by a player is valid
- * @param bet_pile An input bet parsed
- * @param stack the stack of the player who made the bet
- * @returns If the bet is valid True/false
- */
-function is_valid_bet(bet_pile: Pile, stack: Stack): boolean {
-    return stack[bet_pile.color].number === bet_pile.number;
 }
 
 // Test
@@ -155,19 +230,22 @@ function play(gs: GameState): void {
 }
 */
 
+//main();
+
 const stack1: Stack = make_new_stack();
-const bet = parse_bet(['white', 2]);
-const pot = make_pot();
-//const pile1: Pile = make_pile(3)
-remove_from_stack(stack1, bet);
-console.log(bet);
-console.log(stack1);
+const stack2: Stack = make_new_stack();
+const pot1 = make_pot();
+const pot2 = make_pot();
+make_bet(["white", 3], stack1, pot1);
+make_bet(["red", 2], stack1, pot1);
+make_bet(["green", 1], stack1, pot1);
 
-const pot2 = add_bet(pot, bet);
-console.log(pot2);
-console.log(pot_value(pot2));
-console.log(is_valid_bet(bet, stack1));
+hold_bet(pot1, pot2, stack2);
 
-main();
+show_game_state([stack1, stack2]);
+
+console.log("pot2 value    " + pot_value(pot1));
+console.log("pot1 value    " + pot_value(pot2));
+
 
 
