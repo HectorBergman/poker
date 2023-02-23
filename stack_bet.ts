@@ -160,6 +160,29 @@ export function make_bet(bet: Bet, stack: Stack, pot: Pot): void {
         place_bet(pot, bet);
     } else {}
 }
+
+
+function can_hold(pot1: Pot, stack2: Stack): boolean {
+    return pot_value(pot1) <= pot_value(stack2);
+}
+
+
+
+
+function change_currency(stack2: Stack, high: number, low = 0): void {
+    let h = stack2[high].chip.value;
+    let l = stack2[low].chip.value;
+    if (high == 25 && low == 10) {
+        stack2[high].number = stack2[high].number - 1;
+        stack2[low].number = stack2[low].number + 2;
+        stack2[1].number = stack2[1].number + 2;
+    } else {
+        let change = h / l;
+        stack2[high].number = stack2[high].number - 1;
+        stack2[low].number = stack2[low].number + change;
+    }
+}
+
 /**
  * Automated betting system for when a player choses to hold a bet
  * @param pot1 the wagered chips of the betting player
@@ -178,10 +201,11 @@ export function hold_bet(pot1: Pot, pot2: Pot, stack2: Stack): void {
                 bet_value = bet_value - max; 
             } else if (bet_value == 0) {
                 break;
-            }
+            } 
         }
     }
 }
+
 
 
 
@@ -242,10 +266,15 @@ make_bet(["green", 1], stack1, pot1);
 
 hold_bet(pot1, pot2, stack2);
 
+
+change_currency(stack2, 2, 0);
 show_game_state([stack1, stack2]);
 
 console.log("pot2 value    " + pot_value(pot1));
 console.log("pot1 value    " + pot_value(pot2));
+
+change_currency(stack2, 2, 0);
+
 
 
 

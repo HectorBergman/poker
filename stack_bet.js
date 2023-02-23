@@ -8,15 +8,16 @@ var red = 1;
 var blue = 2;
 var green = 3;
 //helper functions not exported
-function to_color(color) {
+/*
+function to_color(color: string): number {
     return color === "white"
         ? white
         : color === "red"
-            ? red
-            : color === "blue"
-                ? blue
-                : green;
-}
+        ? red
+        : color === "blue"
+        ? blue
+        : green;
+}*/
 function to_string(col) {
     return col === white
         ? "white"
@@ -151,6 +152,24 @@ function make_bet(bet, stack, pot) {
     else { }
 }
 exports.make_bet = make_bet;
+function can_hold(pot1, stack2) {
+    return pot_value(pot1) <= pot_value(stack2);
+}
+function change_currency(stack2, high, low) {
+    if (low === void 0) { low = 0; }
+    var h = stack2[high].chip.value;
+    var l = stack2[low].chip.value;
+    if (high == 25 && low == 10) {
+        stack2[high].number = stack2[high].number - 1;
+        stack2[low].number = stack2[low].number + 2;
+        stack2[1].number = stack2[1].number + 2;
+    }
+    else {
+        var change = h / l;
+        stack2[high].number = stack2[high].number - 1;
+        stack2[low].number = stack2[low].number + change;
+    }
+}
 /**
  * Automated betting system for when a player choses to hold a bet
  * @param pot1 the wagered chips of the betting player
@@ -227,6 +246,8 @@ make_bet(["white", 3], stack1, pot1);
 make_bet(["red", 2], stack1, pot1);
 make_bet(["green", 1], stack1, pot1);
 hold_bet(pot1, pot2, stack2);
+change_currency(stack2, 2, 0);
 show_game_state([stack1, stack2]);
 console.log("pot2 value    " + pot_value(pot1));
 console.log("pot1 value    " + pot_value(pot2));
+change_currency(stack2, 2, 0);
