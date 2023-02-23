@@ -85,3 +85,37 @@ export function find_suit(card: Card): number {
 export function find_value(card: Card): number {
     return card.value;
 }
+    /**
+    * Translates the card format to a more readable string.
+    * @param card The card that is being translated
+    * @returns A string that tells you which card it is.
+    * @example describe({suit: 0, value: 12}) returns "Queen of Clubs".
+    */
+export function describe(card: Card): string {
+        function describesuit(suit: number): string{
+            return suit === 0
+                ? "Clubs"
+                : suit === 1
+                    ? "Diamonds"
+                    : suit === 2
+                        ? "Spades"
+                        : suit === 3
+                            ? "Hearts"
+                            : "error"
+        }
+        function describevalue(value: number): string{
+            return value === 11
+                ? "Jack"
+                : value === 12
+                    ? "Queen"
+                    : value === 13
+                        ? "King"
+                        : value === 14
+                            ? "Ace"
+                            : value.toString();
+        }
+        return `${describevalue(card.value)} of ${describesuit(card.suit)}`
+    }
+    //Example: (only available inside of poker.ts)
+    //console.log(`You have ${describe(allhands[0][0])} and ${describe(allhands[0][1])}`)
+    

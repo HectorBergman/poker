@@ -1,10 +1,14 @@
 "use strict";
 exports.__esModule = true;
+exports.holdem = void 0;
 var list_1 = require("../lib/list");
 var helpers_1 = require("./helpers");
+var readline_sync_1 = require("readline-sync");
 function holdem(players) {
+    /**
+     * Generates a deck of 52 cards in random order
+     */
     function createdeck() {
-        //returns a deck of 52 cards in random order
         var newdeck = (0, list_1.list)();
         for (var suit = 0; suit < 4; suit++) {
             //0 = clubs 1 = diamond 2 = spades 3 = hearts
@@ -15,12 +19,14 @@ function holdem(players) {
                 newdeck = temp;
             }
         }
-        return (0, helpers_1.lg_permute_list)(newdeck); //Makes a list random
+        return (0, helpers_1.random_list)(newdeck); //Makes a list random
     }
     var newdeck = createdeck();
-    var allhands = [];
+    var allhands = []; //Player one's hand is index 0, player two index 1, and so on.
+    var board = [];
     function dealcards(players) {
-        var river = [(0, list_1.head)(newdeck), (0, list_1.head)((0, list_1.tail)(newdeck)), (0, list_1.head)((0, list_1.tail)((0, list_1.tail)(newdeck)))];
+        board = [(0, list_1.head)(newdeck), (0, list_1.head)((0, list_1.tail)(newdeck)), (0, list_1.head)((0, list_1.tail)((0, list_1.tail)(newdeck)))];
+        //this will be the 5 cards in the center of the table. Currently it's only the flop
         newdeck = (0, list_1.tail)((0, list_1.tail)((0, list_1.tail)(newdeck)));
         /* Dealcardshelper gives a player the two cards on the top of the deck,
         dealing cards like this would get you shot in the wild west,
@@ -36,9 +42,60 @@ function holdem(players) {
         }
     }
     dealcards(players);
-    console.log(newdeck);
-    console.log(allhands);
-    console.log(allhands[0]);
-    console.log(createdeck());
+    /*console.log(newdeck)
+    console.log(allhands)
+    console.log(allhands[0])
+    console.log(createdeck());*/
+    function roundstart() {
+        selection(0);
+        board[3] = (0, list_1.head)(newdeck); //turn
+        console.log("The turn is a ".concat((0, helpers_1.describe)(board[3]), "."));
+        newdeck = (0, list_1.tail)(newdeck);
+        console.log(board);
+        selection(0);
+        board[4] = (0, list_1.head)(newdeck); //river
+        console.log("".concat((0, helpers_1.describe)(board[4]), " on the river!"));
+        newdeck = (0, list_1.tail)(newdeck);
+        console.log(board);
+    }
+    /*
+    ** Code for player input after cards have been dealt, den är lite dålig
+    ** så man måste nog ändra den lite
+    */
+    function selection(player) {
+        var prompt = (0, readline_sync_1.question)('What do you want to do? ');
+        if (prompt.toLowerCase() === "bet") {
+            console.log("Bet");
+        }
+        else if (prompt.toLowerCase() === "help") {
+            console.log('Type "bet" to bet, "hand" to look at your cards, "board" to look at the board, and "fold" to fold.');
+        }
+        else if (prompt.toLowerCase() === "hand") {
+            console.log("You have the ".concat((0, helpers_1.describe)(allhands[player][0]), " and the ").concat((0, helpers_1.describe)(allhands[player][1])));
+        }
+        else if (prompt.toLowerCase() === "board") {
+            if (board[4] === undefined) {
+                if (board[3] === undefined) {
+                    console.log("On the board there's the ".concat((0, helpers_1.describe)(board[0]), ", the ").concat((0, helpers_1.describe)(board[1]), " and the ").concat((0, helpers_1.describe)(board[2])));
+                }
+                else {
+                    console.log("On the board there's the ".concat((0, helpers_1.describe)(board[0]), ", the ").concat((0, helpers_1.describe)(board[1]), ", the ").concat((0, helpers_1.describe)(board[2]), " and the ").concat((0, helpers_1.describe)(board[3])));
+                }
+            }
+            else {
+                console.log("On the board there's the ".concat((0, helpers_1.describe)(board[0]), ", the ").concat((0, helpers_1.describe)(board[1]), ", the ").concat((0, helpers_1.describe)(board[2]), ", the ").concat((0, helpers_1.describe)(board[3]), " and the ").concat((0, helpers_1.describe)(board[4])));
+            }
+        }
+        else if (prompt.toLowerCase() === "fold") {
+            console.log("You fold");
+            return;
+        }
+        else {
+            console.log('Not a proper input. Type "help" for help.');
+        }
+        selection(player);
+    }
+    roundstart();
 }
+exports.holdem = holdem;
 holdem(2);
