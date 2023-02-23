@@ -26,7 +26,9 @@ export type Pokerhand = {
     suit?: string,
 };
 
-export type Chip = number;
+export type Chip = {
+    value: number
+    color?: string };
 
 export type Pile = {
     color: number
@@ -39,3 +41,5 @@ export type Bet = Pair<string, number>;
 export type Pot = Array<Pile>;
 
 export type Stack = Array<Pile>;
+
+export type GameState = Array<Stack>;
