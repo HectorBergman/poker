@@ -87,33 +87,33 @@ export function flush(hand: Hand): Pokerhand {
  * @returns Returns a boolean which shows true if it contains a straight and false if it doesn't.
  */
 export function straight(hand: Hand): Pokerhand {
-    if (helper_straight_array(hand).length >= 5) {
+    function straight_helper(arr: Array<Card>): Array<Card> {
+        let conseq_array: Array<Card> = [];
+        let adder = 0;
+        for (let i = 0; i < (arr.length - 1); i++) {
+            if (find_value(arr[i]) === (find_value(arr[i + 1]) - 1)) {
+                conseq_array[adder] = arr[i];
+                adder++;
+                conseq_array[adder] = arr[i + 1];
+            } else if (find_value(arr[i]) === find_value(arr[i + 1])) {
+                continue;
+            } else {
+                if (conseq_array.length >= 5) {
+                    return conseq_array;
+                } else {
+                    conseq_array = [];
+                    adder = 0;
+                }
+            }
+        }
+        return conseq_array;
+    }
+    if (straight_helper(hand).length >= 5) {
         return {exists: true, name: 'straight'};
     }
     return {exists: false};
 }
 
-function helper_straight_array(arr: Array<Card>): Array<Card> {
-    let conseq_array: Array<Card> = [];
-    let adder = 0;
-    for (let i = 0; i < (arr.length - 1); i++) {
-        if (find_value(arr[i]) === (find_value(arr[i + 1]) - 1)) {
-            conseq_array[adder] = arr[i];
-            adder++;
-            conseq_array[adder] = arr[i + 1];
-        } else if (find_value(arr[i]) === find_value(arr[i + 1])) {
-            continue;
-        } else {
-            if (conseq_array.length >= 5) {
-                return conseq_array;
-            } else {
-                conseq_array = [];
-                adder = 0;
-            }
-        }
-    }
-    return conseq_array;
-}
 
 
 
