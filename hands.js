@@ -13,7 +13,7 @@ function royal_flush(hand) {
     if (check.exists === true && check.flush !== undefined) {
         var el = check.flush.length;
         if ((0, helpers_1.find_value)(check.flush[el - 1]) === 14) {
-            return { exists: true };
+            return { exists: true, name: 'royal flush' };
         }
     }
     return { exists: false };
@@ -30,7 +30,7 @@ function straight_flush(hand) {
     if (fl.exists === true && fl.flush !== undefined) {
         var check = straight(fl.flush);
         if (check.exists) {
-            return { exists: true, flush: fl.flush };
+            return { exists: true, flush: fl.flush, name: 'straight flush' };
         }
     }
     return { exists: false };
@@ -48,11 +48,6 @@ function flush(hand) {
     var spades = [];
     var hearts = [];
     function flush_helper(hand, i, c, d, s, h) {
-        if (i === void 0) { i = 0; }
-        if (c === void 0) { c = 0; }
-        if (d === void 0) { d = 0; }
-        if (s === void 0) { s = 0; }
-        if (h === void 0) { h = 0; }
         if (hand[i] !== undefined) {
             if ((0, helpers_1.find_suit)(hand[i]) == 0) {
                 clubs[c] = hand[i];
@@ -63,7 +58,7 @@ function flush(hand) {
                 return flush_helper(hand, i + 1, c, d + 1, s, h);
             }
             else if ((0, helpers_1.find_suit)(hand[i]) == 2) {
-                spades[h] = hand[i];
+                spades[s] = hand[i];
                 return flush_helper(hand, i + 1, c, d, s + 1, h);
             }
             else {
@@ -89,7 +84,7 @@ function flush(hand) {
             }
         }
     }
-    return flush_helper(hand);
+    return flush_helper(hand, 0, 0, 0, 0, 0);
 }
 exports.flush = flush;
 /**
@@ -100,7 +95,7 @@ exports.flush = flush;
  */
 function straight(hand) {
     if (helper_straight_array(hand).length >= 5) {
-        return { exists: true };
+        return { exists: true, name: 'straight' };
     }
     return { exists: false };
 }
@@ -131,11 +126,11 @@ function helper_straight_array(arr) {
 }
 var card1 = { suit: 0, value: 9 };
 var card2 = { suit: 1, value: 9 };
-var card3 = { suit: 3, value: 10 };
-var card4 = { suit: 3, value: 11 };
-var card5 = { suit: 3, value: 12 };
-var card6 = { suit: 3, value: 13 };
-var card7 = { suit: 3, value: 14 };
+var card3 = { suit: 2, value: 10 };
+var card4 = { suit: 2, value: 11 };
+var card5 = { suit: 2, value: 12 };
+var card6 = { suit: 2, value: 13 };
+var card7 = { suit: 2, value: 14 };
 var hand1 = [card1, card2, card3, card4, card5, card6, card7];
 console.log(flush(hand1));
 console.log(straight(hand1));

@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-exports.find_value = exports.find_suit = exports.random_list = exports.random_permutation = exports.array_to_list = exports.list_to_array = void 0;
+exports.describe = exports.find_value = exports.find_suit = exports.random_list = exports.random_permutation = exports.array_to_list = exports.list_to_array = void 0;
 var list_1 = require("../lib/list");
 function list_to_array(list) {
     var arr = [];
@@ -117,5 +117,6 @@ function describe(card) {
     }
     return "".concat(describevalue(card.value), " of ").concat(describesuit(card.suit));
 }
+exports.describe = describe;
 //Example: (only available inside of poker.ts)
 //console.log(`You have ${describe(allhands[0][0])} and ${describe(allhands[0][1])}`)
