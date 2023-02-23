@@ -45,7 +45,7 @@ export function flush(hand: Hand): Pokerhand {
     let diamonds: Hand =[];
     let spades: Hand = [];
     let hearts: Hand = [];
-    function flush_helper(hand: Hand, i: number = 0, c: number = 0, d: number = 0, s: number = 0, h: number = 0): Pokerhand {
+    function flush_helper(hand: Hand, i: number, c: number, d: number, s: number, h: number): Pokerhand {
         if (hand[i] !== undefined) {
             if (find_suit(hand[i]) == 0) {
                 clubs[c] = hand[i];
@@ -54,7 +54,7 @@ export function flush(hand: Hand): Pokerhand {
                 diamonds[d] = hand[i];
                 return flush_helper(hand, i + 1, c, d + 1, s, h);
             } else if (find_suit(hand[i]) == 2) {
-                spades[h] = hand[i];
+                spades[s] = hand[i];
                 return flush_helper(hand, i + 1, c, d, s + 1, h);
             } else {
                 hearts[h] = hand[i]
@@ -74,7 +74,7 @@ export function flush(hand: Hand): Pokerhand {
             }
         }
     }
-    return flush_helper(hand);
+    return flush_helper(hand, 0, 0, 0, 0, 0);
 }
 
 
@@ -119,11 +119,11 @@ function helper_straight_array(arr: Array<Card>): Array<Card> {
 
 const card1: Card = {suit: 0, value: 9};
 const card2: Card = {suit: 1, value: 9};
-const card3: Card = {suit: 3, value: 10};
-const card4: Card = {suit: 3, value: 11};
-const card5: Card = {suit: 3, value: 12};
-const card6: Card = {suit: 3, value: 13};
-const card7: Card = {suit: 3, value: 14};
+const card3: Card = {suit: 2, value: 10};
+const card4: Card = {suit: 2, value: 11};
+const card5: Card = {suit: 2, value: 12};
+const card6: Card = {suit: 2, value: 13};
+const card7: Card = {suit: 2, value: 14};
 
 const hand1 = [card1, card2, card3, card4, card5, card6, card7];
 
