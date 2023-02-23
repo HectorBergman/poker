@@ -1,6 +1,5 @@
-import {royal_flush, straight_flush, flush, straight} from './hands';
 import {Hand, Pokerhand} from './poker_types';
-import {has_four_of_akind, has_fullhouse, has_pair, has_three_of_akind, has_two_pairs} from './poker_hands'
+import {has_four_of_akind, has_fullhouse, has_pair, has_three_of_akind, has_two_pairs, royal_flush, straight_flush, flush, straight} from './poker_hands'
 
 /**
  * Checks how much the hand is worth.
