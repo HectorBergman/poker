@@ -170,14 +170,14 @@ function can_hold(pot1: Pot, stack2: Stack): boolean {
 
 
 function change_currency(stack2: Stack, high: number, low = 0): void {
-    let h = stack2[high].chip.value;
-    let l = stack2[low].chip.value;
+    const h = stack2[high].chip.value;
+    const l = stack2[low].chip.value;
     if (high == 25 && low == 10) {
         stack2[high].number = stack2[high].number - 1;
         stack2[low].number = stack2[low].number + 2;
         stack2[1].number = stack2[1].number + 2;
     } else {
-        let change = h / l;
+        const change = h / l;
         stack2[high].number = stack2[high].number - 1;
         stack2[low].number = stack2[low].number + change;
     }
