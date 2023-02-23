@@ -1,4 +1,4 @@
-import {Bet, Pot, Stack, Pile} from './poker_types';
+import {Bet, Pot, Stack, Pile, GameState} from './poker_types';
 //import * as PromptSync from "prompt-sync";
 import {tail, head} from '../lib/list';
 
@@ -10,7 +10,7 @@ import {tail, head} from '../lib/list';
  * @returns a pile of chips with the same color and value
  */
 function make_pile(col: number, val: number, num: number): Pile {
-    return {color: col, chip: val, number: num};
+    return {color: col, chip: {value: val}, number: num};
 }
 
 const white = 0;
@@ -94,16 +94,69 @@ function add_bet(pot: Pot, bet_pile: Pile): Pot {
 function pot_value(pot: Pot): number {
     let value = 0;
     for (let i = 0; i <= 3; i += 1) {
-        value = value + pot[i].chip * pot[i].number;
+        value = value + pot[i].chip.value * pot[i].number;
     }
     return value;
 }
 
-//function fair_pot
 
+/**
+ * Prints the players chip stack
+ * @param gs (Gamestate) an array of the players' stacks
+ */ 
+function show_game_state(gs: GameState): void {
+    console.log("Color             player1's Stack                player2's Stack");
+    console.log("");
+    console.log("white                   " +  gs[0][0].number + "                               " + gs[1][0].number );
+    console.log("red                     " +  gs[0][1].number + "                               " + gs[1][1].number );
+    console.log("blue                    " +  gs[0][2].number + "                               " + gs[1][2].number );
+    console.log("green                   " +  gs[0][3].number + "                               " + gs[1][3].number );
+    
+}
+
+/**
+ * Checks if a bet made by a player is valid
+ * @param bet_pile An input bet parsed
+ * @param stack the stack of the player who made the bet
+ * @returns If the bet is valid True/false
+ */
+function is_valid_bet(bet_pile: Pile, stack: Stack): boolean {
+    return stack[bet_pile.color].number === bet_pile.number;
+}
+
+// Test
+function main(): void {
+    console.log("Poker");
+    console.log("");
+    const pn = 2;
+    const gs: GameState = [];
+    for (let i = 0; i < pn; i += 1) {
+        gs[i] = make_new_stack();
+    }
+    show_game_state(gs);
+}
+
+/* 
+function play(gs: GameState): void {
+    show_game_state(gs);
+    gs = player_bet(gs);
+    if (is_winning(gs)) {
+        console.log("Player wins!");
+        main();
+    } else {
+        gs = computer_bet(gs);
+        if (is_winning(gs)) {
+            console.log("Computer won!");
+            main();
+        } else {
+            play(gs);
+        }
+    }
+}
+*/
 
 const stack1: Stack = make_new_stack();
-const bet = parse_bet(['white', 3]);
+const bet = parse_bet(['white', 2]);
 const pot = make_pot();
 //const pile1: Pile = make_pile(3)
 remove_from_stack(stack1, bet);
@@ -113,6 +166,8 @@ console.log(stack1);
 const pot2 = add_bet(pot, bet);
 console.log(pot2);
 console.log(pot_value(pot2));
+console.log(is_valid_bet(bet, stack1));
 
+main();
 
 
