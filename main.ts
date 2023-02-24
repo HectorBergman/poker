@@ -2,12 +2,12 @@
 import {holdem} from "./poker";
 import {Pot, GameState, Hands} from "./poker_types";
 import {make_pot, make_new_stack, show_game_state, add_pot} from "./stack_bet"
-import {}  from "./hand_rankings"
+import {}  from "./hands_ranking"
 
 function round(gs: GameState) {
     let pot1 = make_pot();
     let pot2 = make_pot();
-    const hands: Hands | undefined = holdem(2, pot1, pot2, gs);
+    const hands: Hands | undefined = holdem(2, gs, pot1, pot2);
     if (hands == undefined) {
         add_pot(pot1, gs[1]);
         add_pot(pot2, gs[1])
