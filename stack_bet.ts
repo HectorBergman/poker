@@ -115,7 +115,7 @@ function place_bet(pot: Pot, bet: Bet): Pot {
  * @param stack an array of chip piles with color as index
  * @returns the original stack with the pot added
  */
-function add_pot(pot: Pot, stack: Stack): Stack {
+export function add_pot(pot: Pot, stack: Stack): Stack {
     for (let i = 0; i < 4; i += 1) {
         stack[i].number = stack[i].number + pot[i].number;
     } 
