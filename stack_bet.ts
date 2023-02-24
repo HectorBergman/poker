@@ -173,12 +173,12 @@ export function make_bet(bet: Bet, stack: Stack, pot: Pot): void {
 
 /**
  * Decides if the player can hold a bet or not 
- * @param pot1 The wager of the other player
+ * @param bet value of the other player's bet
  * @param stack2 The stack of the player which wants to hold
  * @returns wether the player can hot true/false
  */
-function can_hold(pot1: Pot, stack2: Stack): boolean {
-    return pot_value(pot1) - pot_value(pot2) >= pot_value(stack2);
+function can_hold(bet_value: number, stack2: Stack): boolean {
+    return bet_value <= pot_value(stack2);
 }
 
 /**
@@ -284,7 +284,7 @@ export function hold_bet(pot1: Pot, pot2: Pot, stack2: Stack): void {
                 } else if (bet_value >= max) {
                     make_bet([to_string(i), j], stack2, pot2);
                     bet_value = bet_value - max; 
-                } else if (bet_value == 0) {
+                } else if (bet_value <= 0) {
                     break;
                 } else if (j === 0 && bet_value <= stack2[i].chip.value) {
                     auto_change(stack2, i, bet_value);
@@ -293,9 +293,9 @@ export function hold_bet(pot1: Pot, pot2: Pot, stack2: Stack): void {
             }
         }
     }
-    return can_hold(pot1, stack2)
+    return can_hold(bet_value, stack2)
         ? hold(bet_value, stack2)
-        : all_in(stack2, pot2)
+        : all_in(stack2, pot2);
 
 }
 
@@ -343,25 +343,26 @@ const stack2: Stack = make_new_stack();
 const pot1 = make_pot();
 const pot2 = make_pot();
 
+//manual_change(stack1, "red", "blue", 2);
+//all_in(stack1, pot1);
 
-manual_change(stack1, "red", "blue", 2);
-all_in(stack1, pot1);
-
+//0
 show_game_state([stack1, stack2]);
+console.log("pot2 value    " + pot_value(pot1));
+console.log("pot1 value    " + pot_value(pot2));
 
-
-make_bet(["white", 10], stack1, pot1);
-make_bet(["red", 1], stack1, pot1);
+//1
+make_bet(["white", 3], stack1, pot1);
 make_bet(["green", 1], stack1, pot1);
-
 hold_bet(pot1, pot2, stack2);
+show_game_state([stack1, stack2]);
+console.log("pot2 value    " + pot_value(pot1));
+console.log("pot1 value    " + pot_value(pot2));
 
-//show_game_state([stack1, stack2]);
-
-//change_currency(stack2, 2, 0);
-//show_game_state([stack1, stack2]);
-
-
+//2
+make_bet(["red", 1], stack1, pot1);
+hold_bet(pot1, pot2, stack2);
+show_game_state([stack1, stack2]);
 console.log("pot2 value    " + pot_value(pot1));
 console.log("pot1 value    " + pot_value(pot2));
 
