@@ -168,7 +168,23 @@ function can_hold(pot1: Pot, stack2: Stack): boolean {
     return pot_value(pot1) <= pot_value(stack2);
 }
 
+/**
+ * Makes an all in
+ * @param stack2 Array of chip piles of a given player
+ * @param pot2 Array for player's chip wager
+ */
+function all_in(stack2: Stack, pot2: Pot) {
+    for (let i = 0; i < 4; i += 1) {
+        make_bet([to_string(i), stack2[i].number], stack2, pot2);
+    }
+}
 
+/**
+ * Changes from a higher value chip to a lower chip pile, 
+ * @param stack2 Array of chip piles of a given player
+ * @param high 
+ * @param low 
+ */
 function change_currency(stack2: Stack, high: number, low = 0): void {
     const h = stack2[high].chip.value;
     const l = stack2[low].chip.value;
@@ -252,7 +268,10 @@ export function hold_bet(pot1: Pot, pot2: Pot, stack2: Stack): void {
             }
         }
     }
-    return hold(bet_value, stack2);
+    return can_hold(pot1, stack2)
+        ? hold(bet_value, stack2)
+        : all_in(stack2, pot2)
+
 }
 
 
@@ -273,7 +292,7 @@ export function show_game_state(gs: GameState): void {
 }
 
 // Test
-function main(): void {
+function stack_main(): void {
     console.log("Poker");
     console.log("");
     const pn = 2;
@@ -284,7 +303,7 @@ function main(): void {
     show_game_state(gs);
 }
 
-/* 
+/*
 function play(gs: GameState): void {
     show_game_state(gs);
     gs = player_bet(gs);
@@ -312,6 +331,7 @@ const pot2 = make_pot();
 
 
 manual_change(stack1, "red", "blue", 2);
+all_in(stack1, pot1);
 
 show_game_state([stack1, stack2]);
 
