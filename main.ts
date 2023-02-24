@@ -7,7 +7,7 @@ import {}  from "./hands_ranking"
 function round(gs: GameState) {
     let pot1 = make_pot();
     let pot2 = make_pot();
-    const hands: Hands | undefined = holdem(2, pot1, pot2, gs);
+    const hands: Hands | undefined = holdem(2, gs, pot1, pot2);
     if (hands == undefined) {
         add_pot(pot1, gs[1]);
         add_pot(pot2, gs[1])
