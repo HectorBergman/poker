@@ -4,6 +4,7 @@ exports.holdem = void 0;
 var list_1 = require("../lib/list");
 var helpers_1 = require("./helpers");
 var readline_sync_1 = require("readline-sync");
+var cardimages_1 = require("./cardimages");
 function holdem(players) {
     /**
      * Generates a deck of 52 cards in random order
@@ -51,12 +52,11 @@ function holdem(players) {
         board[3] = (0, list_1.head)(newdeck); //turn
         console.log("The turn is a ".concat((0, helpers_1.describe)(board[3]), "."));
         newdeck = (0, list_1.tail)(newdeck);
-        console.log(board);
         selection(0);
         board[4] = (0, list_1.head)(newdeck); //river
         console.log("".concat((0, helpers_1.describe)(board[4]), " on the river!"));
         newdeck = (0, list_1.tail)(newdeck);
-        console.log(board);
+        selection(0);
     }
     /*
     ** Code for player input after cards have been dealt, den är lite dålig
@@ -71,24 +71,28 @@ function holdem(players) {
             console.log('Type "bet" to bet, "hand" to look at your cards, "board" to look at the board, and "fold" to fold.');
         }
         else if (prompt.toLowerCase() === "hand") {
+            (0, cardimages_1.displaycards)([(0, helpers_1.describe)(allhands[player][0]), (0, helpers_1.describe)(allhands[player][1])]);
             console.log("You have the ".concat((0, helpers_1.describe)(allhands[player][0]), " and the ").concat((0, helpers_1.describe)(allhands[player][1])));
         }
         else if (prompt.toLowerCase() === "board") {
             if (board[4] === undefined) {
                 if (board[3] === undefined) {
+                    (0, cardimages_1.displaycards)([(0, helpers_1.describe)(board[0]), (0, helpers_1.describe)(board[1]), (0, helpers_1.describe)(board[2])]);
                     console.log("On the board there's the ".concat((0, helpers_1.describe)(board[0]), ", the ").concat((0, helpers_1.describe)(board[1]), " and the ").concat((0, helpers_1.describe)(board[2])));
                 }
                 else {
+                    (0, cardimages_1.displaycards)([(0, helpers_1.describe)(board[0]), (0, helpers_1.describe)(board[1]), (0, helpers_1.describe)(board[2]), (0, helpers_1.describe)(board[3])]);
                     console.log("On the board there's the ".concat((0, helpers_1.describe)(board[0]), ", the ").concat((0, helpers_1.describe)(board[1]), ", the ").concat((0, helpers_1.describe)(board[2]), " and the ").concat((0, helpers_1.describe)(board[3])));
                 }
             }
             else {
+                (0, cardimages_1.displaycards)([(0, helpers_1.describe)(board[0]), (0, helpers_1.describe)(board[1]), (0, helpers_1.describe)(board[2]), (0, helpers_1.describe)(board[3]), (0, helpers_1.describe)(board[4])]);
                 console.log("On the board there's the ".concat((0, helpers_1.describe)(board[0]), ", the ").concat((0, helpers_1.describe)(board[1]), ", the ").concat((0, helpers_1.describe)(board[2]), ", the ").concat((0, helpers_1.describe)(board[3]), " and the ").concat((0, helpers_1.describe)(board[4])));
             }
         }
         else if (prompt.toLowerCase() === "fold") {
             console.log("You fold");
-            return;
+            return; //end round if 1 player left
         }
         else {
             console.log('Not a proper input. Type "help" for help.');
