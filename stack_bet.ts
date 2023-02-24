@@ -10,7 +10,11 @@ const green = 3;
 
 
 //helper functions not exported
-
+/**
+ * Changes a color string into it's index number
+ * @param color string which gives the colorrs name
+ * @returns index number of the color
+ */
 function to_color(color: string): number {
     return color === "white" 
         ? white
@@ -20,7 +24,11 @@ function to_color(color: string): number {
         ? blue
         : green;
 }
-
+/**
+ * Changes a color index into it's string name
+ * @param col index number of a color
+ * @returns string name of the color 
+ */
 function to_string(col: number): string {
     return col === white
         ? "white"
@@ -115,7 +123,7 @@ function place_bet(pot: Pot, bet: Bet): Pot {
  * @param stack an array of chip piles with color as index
  * @returns the original stack with the pot added
  */
-function add_pot(pot: Pot, stack: Stack): Stack {
+export function add_pot(pot: Pot, stack: Stack) {
     for (let i = 0; i < 4; i += 1) {
         stack[i].number = stack[i].number + pot[i].number;
     } 
@@ -163,7 +171,12 @@ export function make_bet(bet: Bet, stack: Stack, pot: Pot): void {
     }
 }
 
-
+/**
+ * Decides if the player can hold a bet or not 
+ * @param pot1 The wager of the other player
+ * @param stack2 The stack of the player which wants to hold
+ * @returns wether the player can hot true/false
+ */
 function can_hold(pot1: Pot, stack2: Stack): boolean {
     return pot_value(pot1) <= pot_value(stack2);
 }
@@ -182,8 +195,8 @@ function all_in(stack2: Stack, pot2: Pot) {
 /**
  * Changes from a higher value chip to a lower chip pile, 
  * @param stack2 Array of chip piles of a given player
- * @param high 
- * @param low 
+ * @param high the higher chip value which the player wants to change from
+ * @param low the lower chip value which the player wants to change into
  */
 function change_currency(stack2: Stack, high: number, low = 0): void {
     const h = stack2[high].chip.value;
@@ -202,7 +215,13 @@ function change_currency(stack2: Stack, high: number, low = 0): void {
 }
 
 
-
+/**
+ * Alloes player to manually change a higher value chip pile into a pile with a lower value
+ * @param stack  Array of chip piles of a given player
+ * @param to the lower chip value which the player wants to change into
+ * @param from the higher chip value which the player wants to change from
+ * @param count How many chips the player wants to change
+ */
 function manual_change(stack: Stack, to: string, from: string, count = 1): void {
     const to_col = to_color(to);
     const from_col = to_color(from); 
@@ -211,6 +230,12 @@ function manual_change(stack: Stack, to: string, from: string, count = 1): void 
     }
 }
 
+/**
+ * changes higher value coins to arrange the wanted valaue made up of the chips of the given value 
+ * @param stack Array of chip piles of a given player
+ * @param color Gives the color of the chips the player wants
+ * @param needed Amount which is needed in the given chip
+ */
 function auto_change(stack: Stack, color: number, needed: number): void {
     if (needed <= 0) {}
     else {
