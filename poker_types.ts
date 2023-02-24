@@ -14,6 +14,8 @@ export type Board = Array<Card>;
 
 export type Hand = Array<Card>;
 
+export type Hands = Array<Hand>;
+
 export type Pocketcards = Array<Card>;
 
 export type Pokerhand = {
