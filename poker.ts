@@ -3,9 +3,10 @@ import {random_list, describe} from './helpers'
 import {Deck, Hand, Board, Pocketcards, Pokerhand, Card} from './poker_types'
 import {question} from 'readline-sync'
 import {cardimages, stepbystepdisplay, displaycards} from './cardimages'
-import {Bet, Pot, Stack, Pile} from './poker_types';
+import {Bet, Pot, Stack, Pile, GameState} from './poker_types';
+import {make_bet, hold_bet, pot_value, make_pot} from './stack_bet';
 
-export function holdem(players: number){ //kanske temporär lösning på hur många spelare som är med, kan väl ändras sen
+export function holdem(players: number, gamestate: GameState, pot1: Pot, pot2: Pot){ //kanske temporär lösning på hur många spelare som är med, kan väl ändras sen
     /**
      * Generates a deck of 52 cards in random order
      */
