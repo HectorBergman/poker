@@ -1,12 +1,11 @@
 import {head, tail, List, Pair, list, pair, set_tail, append} from '../lib/list'
 import {random_list, describe} from './helpers'
-import {Deck, Hand, Board, Pocketcards, Pokerhand, Card} from './poker_types'
+import {Deck, Hand, Board, Pocketcards, Pokerhand, Card, Bet, Pot, Stack, Pile, GameState} from './poker_types'
 import {question} from 'readline-sync'
 import {cardimages, stepbystepdisplay, displaycards} from './cardimages'
-import {Bet, Pot, Stack, Pile, GameState} from './poker_types';
 import {make_bet, hold_bet, pot_value, make_pot} from './stack_bet';
 
-export function holdem(players: number, gamestate: GameState, pot1: Pot, pot2: Pot){ //kanske temporär lösning på hur många spelare som är med, kan väl ändras sen
+export function holdem(players: number, gamestate?: GameState, pot1?: Pot, pot2?: Pot): Array<Hand> | undefined{ //kanske temporär lösning på hur många spelare som är med, kan väl ändras sen
     /**
      * Generates a deck of 52 cards in random order
      */
@@ -49,15 +48,31 @@ export function holdem(players: number, gamestate: GameState, pot1: Pot, pot2: P
     console.log(allhands[0])
     console.log(createdeck());*/
     function roundstart(){ //temporary, just imagining how a round could look like
-        selection(0);
-        board[3] = head(newdeck!); //turn
-        console.log(`The turn is a ${describe(board[3])}.`);
-        newdeck = tail(newdeck!);
-        selection(0);
-        board[4] = head(newdeck!); //river
-        console.log(`${describe(board[4])} on the river!`);
-        newdeck = tail(newdeck!);
-        selection(0);
+        let selectionresult = selection(0);
+        if(selectionresult === undefined){
+            return undefined;
+        }
+        else{
+            board[3] = head(newdeck!); //turn
+            console.log(`The turn is a ${describe(board[3])}.`);
+            newdeck = tail(newdeck!);
+            selectionresult = selection(0);
+            if(selectionresult === undefined){
+                return undefined;
+            }
+            else{
+                board[4] = head(newdeck!); //river
+                console.log(`${describe(board[4])} on the river!`);
+                newdeck = tail(newdeck!);
+                selectionresult = selection(0);
+                if(selectionresult=== undefined){
+                    return undefined;
+                }
+                else{
+                    return allhands;
+                }
+            }
+        }
     }
     /*
     ** Code for player input after cards have been dealt, den är lite dålig
@@ -67,6 +82,7 @@ export function holdem(players: number, gamestate: GameState, pot1: Pot, pot2: P
         var prompt = question('What do you want to do? ');
         if (prompt.toLowerCase() === "bet"){
             console.log("Bet");
+            return 1;
         }
         else if (prompt.toLowerCase() === "help"){
             console.log('Type "bet" to bet, "hand" to look at your cards, "board" to look at the board, and "fold" to fold.')
@@ -93,14 +109,20 @@ export function holdem(players: number, gamestate: GameState, pot1: Pot, pot2: P
         }
         else if (prompt.toLowerCase() === "fold" ){
             console.log("You fold");
-            return; //end round if 1 player left
+            return undefined; //end round if 1 player left
         }
         else{
             console.log('Not a proper input. Type "help" for help.')
         }
-        selection(player);
+        return selection(player);
     }
-    roundstart();
+    let roundstartresult = roundstart();
+    if (roundstartresult === undefined){
+        return undefined
+    }
+    else if (roundstartresult === allhands){
+        return allhands
+    }  
 }
 
 holdem(2);

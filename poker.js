@@ -5,7 +5,7 @@ var list_1 = require("../lib/list");
 var helpers_1 = require("./helpers");
 var readline_sync_1 = require("readline-sync");
 var cardimages_1 = require("./cardimages");
-function holdem(players) {
+function holdem(players, gamestate, pot1, pot2) {
     /**
      * Generates a deck of 52 cards in random order
      */
@@ -48,15 +48,39 @@ function holdem(players) {
     console.log(allhands[0])
     console.log(createdeck());*/
     function roundstart() {
-        selection(0);
-        board[3] = (0, list_1.head)(newdeck); //turn
-        console.log("The turn is a ".concat((0, helpers_1.describe)(board[3]), "."));
-        newdeck = (0, list_1.tail)(newdeck);
-        selection(0);
-        board[4] = (0, list_1.head)(newdeck); //river
-        console.log("".concat((0, helpers_1.describe)(board[4]), " on the river!"));
-        newdeck = (0, list_1.tail)(newdeck);
-        selection(0);
+        var selectionresult = selection(0);
+        if (selectionresult === undefined) {
+            return undefined;
+        }
+        else if (selectionresult === allhands) {
+            return allhands;
+        }
+        else {
+            board[3] = (0, list_1.head)(newdeck); //turn
+            console.log("The turn is a ".concat((0, helpers_1.describe)(board[3]), "."));
+            newdeck = (0, list_1.tail)(newdeck);
+            selectionresult = selection(0);
+            if (selectionresult === undefined) {
+                console.log("undefined");
+                return undefined;
+            }
+            else if (selectionresult === allhands) {
+                console.log("allhands");
+                return allhands;
+            }
+            else {
+                board[4] = (0, list_1.head)(newdeck); //river
+                console.log("".concat((0, helpers_1.describe)(board[4]), " on the river!"));
+                newdeck = (0, list_1.tail)(newdeck);
+                selectionresult = selection(0);
+                if (selectionresult === undefined) {
+                    return undefined;
+                }
+                else {
+                    return allhands;
+                }
+            }
+        }
     }
     /*
     ** Code for player input after cards have been dealt, den är lite dålig
@@ -66,6 +90,7 @@ function holdem(players) {
         var prompt = (0, readline_sync_1.question)('What do you want to do? ');
         if (prompt.toLowerCase() === "bet") {
             console.log("Bet");
+            return 1;
         }
         else if (prompt.toLowerCase() === "help") {
             console.log('Type "bet" to bet, "hand" to look at your cards, "board" to look at the board, and "fold" to fold.');
@@ -92,14 +117,23 @@ function holdem(players) {
         }
         else if (prompt.toLowerCase() === "fold") {
             console.log("You fold");
-            return; //end round if 1 player left
+            return undefined; //end round if 1 player left
+        }
+        else if (prompt.toLowerCase() === "lol") {
+            return allhands;
         }
         else {
             console.log('Not a proper input. Type "help" for help.');
         }
-        selection(player);
+        return selection(player);
     }
-    roundstart();
+    var roundstartresult = roundstart();
+    if (roundstartresult === undefined) {
+        return undefined;
+    }
+    else if (roundstartresult === allhands) {
+        return allhands;
+    }
 }
 exports.holdem = holdem;
 holdem(2);
