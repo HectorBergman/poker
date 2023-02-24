@@ -291,17 +291,6 @@ export function show_game_state(gs: GameState): void {
     
 }
 
-// Test
-function stack_main(): void {
-    console.log("Poker");
-    console.log("");
-    const pn = 2;
-    const gs: GameState = [];
-    for (let i = 0; i < pn; i += 1) {
-        gs[i] = make_new_stack();
-    }
-    show_game_state(gs);
-}
 
 /*
 function play(gs: GameState): void {
