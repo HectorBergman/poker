@@ -10,7 +10,7 @@ const green = 3;
 
 
 //helper functions not exported
-/*
+
 function to_color(color: string): number {
     return color === "white" 
         ? white
@@ -19,7 +19,7 @@ function to_color(color: string): number {
         : color === "blue"
         ? blue
         : green;
-}*/
+}
 
 function to_string(col: number): string {
     return col === white
@@ -158,7 +158,9 @@ export function make_bet(bet: Bet, stack: Stack, pot: Pot): void {
     if (is_valid_bet(bet, stack)) {
         remove_from_stack(stack, bet);
         place_bet(pot, bet);
-    } else {}
+    } else {
+        console.log("invalid bet");
+    }
 }
 
 
@@ -167,19 +169,60 @@ function can_hold(pot1: Pot, stack2: Stack): boolean {
 }
 
 
-
-
 function change_currency(stack2: Stack, high: number, low = 0): void {
     const h = stack2[high].chip.value;
     const l = stack2[low].chip.value;
-    if (high == 25 && low == 10) {
+    if (high == 25 && low == 10 && stack2[high].number < 0) {
         stack2[high].number = stack2[high].number - 1;
         stack2[low].number = stack2[low].number + 2;
         stack2[1].number = stack2[1].number + 2;
-    } else {
+    } else if (stack2[high].number > 0) {
         const change = h / l;
         stack2[high].number = stack2[high].number - 1;
         stack2[low].number = stack2[low].number + change;
+    } else {
+        console.log("Invalid change");
+    }
+}
+
+
+
+function manual_change(stack: Stack, to: string, from: string, count = 1): void {
+    const to_col = to_color(to);
+    const from_col = to_color(from); 
+    for (let l = 0; l < count; l += 1)  {
+        change_currency(stack, from_col, to_col);
+    }
+}
+
+function auto_change(stack: Stack, color: number, needed: number): void {
+    if (needed <= 0) {}
+    else {
+        if (color === white) {
+            if (needed > 10 && stack[green].number > 0) {
+                change_currency(stack, green, white);
+                auto_change(stack, color, needed - 25);
+            } else if (needed > 5 && stack[blue].number > 0) {
+                change_currency(stack, blue, white);
+                auto_change(stack, color, needed - 10);
+            } else if (needed >= 1 && stack[red].number > 0) {
+                change_currency(stack, red, white);
+                auto_change(stack, color, needed - 5);
+            }
+        } else if (color === red) {
+            if (needed > 10 && stack[green].number > 0) {
+                change_currency(stack, green, red);
+                auto_change(stack, color, needed - 25);
+            } else if (needed >= 5 && stack[blue].number > 0) {
+                change_currency(stack, blue, red);
+                auto_change(stack, color, needed - 10);
+            }
+        } else if (color === blue) {
+            if (needed > 10 && stack[green].number > 0) {
+                change_currency(stack, green, blue);
+                auto_change(stack, color, needed - 25); 
+            }  
+        } else {}
     }
 }
 
@@ -190,20 +233,26 @@ function change_currency(stack2: Stack, high: number, low = 0): void {
  * @param stack2 the stack of the holding player
  */
 export function hold_bet(pot1: Pot, pot2: Pot, stack2: Stack): void {
-    let bet_value = pot_value(pot1) - pot_value(pot2);
-    for (let i = 3; i >= 0; i -= 1) {
-        for (let j = stack2[i].number; j > 0; j -= 1) {
-            const max = stack2[i].chip.value * j; 
-            if (bet_value < max) {
-                continue;
-            } else if (bet_value >= max) {
-                make_bet([to_string(i), j], stack2, pot2);
-                bet_value = bet_value - max; 
-            } else if (bet_value == 0) {
-                break;
-            } 
+    const bet_value = pot_value(pot1) - pot_value(pot2);
+    function hold(bet_value: number, stack2: Stack): void {
+        for (let i = 3; i >= 0; i -= 1) {
+            for (let j = stack2[i].number; j >= 0 ; j -= 1) {
+                const max = stack2[i].chip.value * j; 
+                if (bet_value < max) {
+                    continue;
+                } else if (bet_value >= max) {
+                    make_bet([to_string(i), j], stack2, pot2);
+                    bet_value = bet_value - max; 
+                } else if (bet_value == 0) {
+                    break;
+                } else if (j === 0 && bet_value <= stack2[i].chip.value) {
+                    auto_change(stack2, i, bet_value);
+                    hold(bet_value, stack2);
+                }
+            }
         }
     }
+    return hold(bet_value, stack2);
 }
 
 
@@ -260,21 +309,26 @@ const stack1: Stack = make_new_stack();
 const stack2: Stack = make_new_stack();
 const pot1 = make_pot();
 const pot2 = make_pot();
-make_bet(["white", 3], stack1, pot1);
-make_bet(["red", 2], stack1, pot1);
+
+
+manual_change(stack1, "red", "blue", 2);
+
+show_game_state([stack1, stack2]);
+
+
+make_bet(["white", 10], stack1, pot1);
+make_bet(["red", 1], stack1, pot1);
 make_bet(["green", 1], stack1, pot1);
 
 hold_bet(pot1, pot2, stack2);
 
+//show_game_state([stack1, stack2]);
 
-change_currency(stack2, 2, 0);
-show_game_state([stack1, stack2]);
+//change_currency(stack2, 2, 0);
+//show_game_state([stack1, stack2]);
+
 
 console.log("pot2 value    " + pot_value(pot1));
 console.log("pot1 value    " + pot_value(pot2));
-
-change_currency(stack2, 2, 0);
-
-
 
 
