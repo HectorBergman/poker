@@ -178,7 +178,7 @@ export function make_bet(bet: Bet, stack: Stack, pot: Pot): void {
  * @returns wether the player can hot true/false
  */
 function can_hold(pot1: Pot, stack2: Stack): boolean {
-    return pot_value(pot1) <= pot_value(stack2);
+    return pot_value(pot1) - pot_value(pot2) >= pot_value(stack2);
 }
 
 /**
