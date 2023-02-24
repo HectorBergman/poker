@@ -1,6 +1,6 @@
 //File for unit tests of the code
-import {Hand, Card} from './poker_types';
-import {straight, flush} from './poker_hands';
+import {Hand, Card, Pokerhand} from './poker_types';
+import {has_four_of_akind, has_fullhouse, has_pair, has_three_of_akind, has_two_pairs, straight, flush} from './poker_hands'
 
 test('straight function is valid', () => {
     const card1: Card = {suit: 0, value: 7};
@@ -54,8 +54,6 @@ test('flush function is valid', () => {
     expect(flush(hand2).exists).toBe(false);
 });
 
-import {Pokerhand } from './poker_types'
-import {has_four_of_akind, has_fullhouse, has_pair, has_three_of_akind, has_two_pairs} from './poker_hands'
 
 const hand1: Hand = [{suit: 3, value: 3}, {suit: 0, value: 2}, {suit: 1, value: 3}, 
     {suit: 1, value: 5}, {suit: 1, value: 2}, {suit: 3, value: 3}, {suit: 2, value: 3}];
