@@ -8,7 +8,7 @@ import {has_four_of_akind, has_fullhouse, has_pair, has_three_of_akind, has_two_
  * @returns a number which represent how much each hand is worth
  */
 
-function hand_rating(hand: Hand): Pokerhand {
+export function hand_rating(hand: Hand): Pokerhand {
     return royal_flush(hand).exists
            ? {exists: true, rang: 1}
            : straight_flush(hand).exists
@@ -37,7 +37,7 @@ function hand_rating(hand: Hand): Pokerhand {
  * @param two The hand of the second player
  * @returns String that tells who had won the round
  */
-function winners(one: Hand, two: Hand): string {
+export function winners(one: Hand, two: Hand): string {
     let player1 = hand_rating(one);
     let player2 = hand_rating(two);
     if (player1.rang !== undefined  && player2.rang !== undefined) {
