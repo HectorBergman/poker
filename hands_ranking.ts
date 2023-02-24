@@ -1,6 +1,5 @@
-import {royal_flush, straight_flush, flush, straight} from './hands';
 import {Hand, Pokerhand} from './poker_types';
-import {has_four_of_akind, has_fullhouse, has_pair, has_three_of_akind, has_two_pairs} from './poker_hands'
+import {has_four_of_akind, has_fullhouse, has_pair, has_three_of_akind, has_two_pairs, royal_flush, straight_flush, flush, straight} from './poker_hands'
 
 /**
  * Checks how much the hand is worth.
@@ -10,29 +9,30 @@ import {has_four_of_akind, has_fullhouse, has_pair, has_three_of_akind, has_two_
  */
 
 function hand_rating(hand: Hand): Pokerhand {
-    return royal_flush(hand)
+    return royal_flush(hand).exists
            ? {exists: true, rang: 1}
-           : straight_flush(hand)
+           : straight_flush(hand).exists
            ? {exists: true, rang: 2}
-           :has_four_of_akind(hand)
+           :has_four_of_akind(hand).exists
            ? {exists: true, rang: 3}
-           : has_fullhouse(hand)
+           : has_fullhouse(hand).exists
            ? {exists: true, rang: 4}
-           : flush(hand)
+           : flush(hand).exists
            ? {exists: true, rang: 5}
-           : straight(hand)
+           : straight(hand).exists
            ? {exists: true, rang: 6}
-           : has_three_of_akind(hand)
+           : has_three_of_akind(hand).exists
            ? {exists: true, rang: 7}
-           : has_two_pairs(hand)
+           : has_two_pairs(hand).exists
            ? {exists: true, rang: 8}
-           : has_pair(hand)
+           : has_pair(hand).exists
            ? {exists: true, rang: 9}
            : {exists: true, rang: 10};
 }
 
 /**
  * Tells who is the winner of the round
+ * @precondition There is only two players
  * @param one The hand of the first player
  * @param two The hand of the second player
  * @returns String that tells who had won the round
