@@ -11,7 +11,7 @@ const green = 3;
 
 //helper functions not exported
 /**
- * Changes a color string into it's index number
+ * Changes a color string into its index number
  * @param color string which gives the colorrs name
  * @returns index number of the color
  */
@@ -25,7 +25,7 @@ function to_color(color: string): number {
         : green;
 }
 /**
- * Changes a color index into it's string name
+ * Changes a color index into its string name
  * @param col index number of a color
  * @returns string name of the color 
  */
