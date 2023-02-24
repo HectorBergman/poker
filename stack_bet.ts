@@ -198,7 +198,7 @@ function all_in(stack2: Stack, pot2: Pot) {
  * @param high the higher chip value which the player wants to change from
  * @param low the lower chip value which the player wants to change into
  */
-function change_currency(stack2: Stack, high: number, low = 0): void {
+export function change_currency(stack2: Stack, high: number, low = 0): void {
     const h = stack2[high].chip.value;
     const l = stack2[low].chip.value;
     if (high == 25 && low == 10 && stack2[high].number < 0) {
@@ -222,7 +222,7 @@ function change_currency(stack2: Stack, high: number, low = 0): void {
  * @param from the higher chip value which the player wants to change from
  * @param count How many chips the player wants to change
  */
-function manual_change(stack: Stack, to: string, from: string, count = 1): void {
+export function manual_change(stack: Stack, to: string, from: string, count = 1): void {
     const to_col = to_color(to);
     const from_col = to_color(from); 
     for (let l = 0; l < count; l += 1)  {
@@ -236,7 +236,7 @@ function manual_change(stack: Stack, to: string, from: string, count = 1): void 
  * @param color Gives the color of the chips the player wants
  * @param needed Amount which is needed in the given chip
  */
-function auto_change(stack: Stack, color: number, needed: number): void {
+export function auto_change(stack: Stack, color: number, needed: number): void {
     if (needed <= 0) {}
     else {
         if (color === white) {
@@ -259,7 +259,7 @@ function auto_change(stack: Stack, color: number, needed: number): void {
                 auto_change(stack, color, needed - 10);
             }
         } else if (color === blue) {
-            if (needed > 10 && stack[green].number > 0) {
+            if (needed >= 10 && stack[green].number > 0) {
                 change_currency(stack, green, blue);
                 auto_change(stack, color, needed - 25); 
             }  
@@ -336,16 +336,19 @@ function play(gs: GameState): void {
 }
 */
 
-//main();
+//test
 
 const stack1: Stack = make_new_stack();
 const stack2: Stack = make_new_stack();
 const pot1 = make_pot();
 const pot2 = make_pot();
 
+console.log(pot_value(stack1))
+
 //manual_change(stack1, "red", "blue", 2);
 //all_in(stack1, pot1);
 
+/*
 //0
 show_game_state([stack1, stack2]);
 console.log("pot2 value    " + pot_value(pot1));
@@ -365,5 +368,8 @@ hold_bet(pot1, pot2, stack2);
 show_game_state([stack1, stack2]);
 console.log("pot2 value    " + pot_value(pot1));
 console.log("pot1 value    " + pot_value(pot2));
+*/
+
+
 
 
