@@ -239,11 +239,12 @@ export function manual_change(stack: Stack, to: string, from: string, count = 1)
  * @param needed Amount which is needed in the given chip
  */
 export function auto_change(stack: Stack, color: number, needed: number): void {
-    function change_helper(high: number, low: number): void {
-        for (let h = high; h > low; h -=1 ) {
+    function change_helper(high: number): void {
+        for (let h = high; h > color; h -=1 ) {
             if (stack[h].number > 0) {
-            change_currency(stack, h, low);
-            auto_change(stack, color, needed - stack2[h].chip.value);
+                change_currency(stack, h, color);
+                auto_change(stack, color, needed - stack2[h].chip.value);
+                break
             }
         }
     }
@@ -251,21 +252,21 @@ export function auto_change(stack: Stack, color: number, needed: number): void {
     else {
         if (color === white) {
             if (needed > 10 ) {
-                change_helper(green, white);
+                change_helper(green);
             } else if (needed > 5 ) {
-                change_helper(blue, white);
+                change_helper(blue);
             } else if (needed >= 1) { 
-                change_helper(red, white);
+                change_helper(red);
             }
         } else if (color === red) {
             if (needed > 10 ) {
-                change_helper(green, red);
+                change_helper(green);
             } else if (needed >= 5 ) {
-                change_helper(blue, red);
+                change_helper(blue);
             }     
         } else if (color == blue) {
             if (needed >= 10 ) {
-                change_helper(green, blue);
+                change_helper(green);
             } else {}
         }
     }
@@ -284,12 +285,13 @@ export function hold_bet(pot1: Pot, pot2: Pot, stack2: Stack): void {
             for (let c = change_from; c > 0; c -= 1) {
                 if (stack2[c].number > 0) {
                     auto_change(stack2, c - 1, bet_value);
+                    hold(bet_value, stack2); 
                     break; 
                 } else {
                     continue;
                 }
             }
-            hold(bet_value, stack2); 
+            
         }
         for (let i = 3; i >= 0; i -= 1) {
             for (let j = stack2[i].number; j >= 0 ; j -= 1) {
@@ -306,13 +308,10 @@ export function hold_bet(pot1: Pot, pot2: Pot, stack2: Stack): void {
                     } else {
                         hold_helper(1);
                     }
-                } else if (bet_value >= max) {
+                } else if (bet_value >= max ) {
                     make_bet([to_string(i), j], stack2, pot2);
                     bet_value = bet_value - max; 
-                } else if (j === 0 && bet_value >= stack2[i].chip.value && i != 3) {   
-                    auto_change(stack2, j, bet_value);
-                    hold(bet_value, stack2); 
-                }
+                } /*else if (j === 0 && bet_value >= stack2[i].chip.value && i != 3) {} */ 
             }
         }
     }
@@ -414,6 +413,7 @@ hold_bet(pot1, pot2, stack2);
 show_game_state([stack1, stack2]);
 console.log("pot1 value    " + pot_value(pot1));
 console.log("pot2 value    " + pot_value(pot2));
+
 
 
 
