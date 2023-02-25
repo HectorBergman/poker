@@ -239,51 +239,34 @@ export function manual_change(stack: Stack, to: string, from: string, count = 1)
  * @param needed Amount which is needed in the given chip
  */
 export function auto_change(stack: Stack, color: number, needed: number): void {
-    function change_helper(high: number, low: number, value: number) {
-        change_currency(stack, high, low);
-        auto_change(stack, color, needed - value);
+    function change_helper(high: number, low: number) {
+        for (let h = high; h > low; h -=1 ){
+            if (stack[h].number > 0) {
+            change_currency(stack, h, low);
+            auto_change(stack, color, needed - stack2[h].chip.value);
+            }
+        }
     }
     if (needed <= 0) {}
     else {
         if (color === white) {
             if (needed > 10 ) {
-                if (stack[green].number > 0) {
-                    change_helper(green, white, 25);
-                } else if (stack[blue].number > 0 ) {
-                    change_helper(blue, white, 10);
-                } else if (stack[red].number > 0) {
-                    change_helper(red, white, 5);
-                }
+                change_helper(green, white)
             } else if (needed > 5 ) {
-                if (stack[blue].number > 0) {
-                    change_helper(blue, white, 10);
-                } else if (stack[red].number > 0) {
-                    change_helper(red, white, 5);
-                }
+                change_helper(blue, white)
             } else if (needed >= 1) { 
-                if (stack[red].number > 0) {
-                    change_helper(red, white, 5);
-                }
+                change_helper(red, white)
             }
         } else if (color === red) {
             if (needed > 10 ) {
-                if (stack[green].number > 0) {
-                    change_helper(green, red, 25);
-                } else if (stack[blue].number > 0 ) {
-                    change_helper(blue, red, 10);
-                }
+                change_helper(green, red)
             } else if (needed >= 5 ) {
-                if (stack[blue].number > 0) {
-                    change_helper(blue, red, 10);
-                }
+                change_helper(blue, red)
             }     
         } else if (color == blue) {
             if (needed >= 10 ) {
-                if (stack[green].number > 0) {
-                    change_helper(green, blue, 25);
-                } else {}
-            }
-        else {}
+                change_helper(green, blue)
+            } else {}
         }
     }
 }
@@ -297,6 +280,17 @@ export function auto_change(stack: Stack, color: number, needed: number): void {
 export function hold_bet(pot1: Pot, pot2: Pot, stack2: Stack): void {
     const bet_value = pot_value(pot1) - pot_value(pot2);
     function hold(bet_value: number, stack2: Stack): void {
+        function hold_helper(change_from: number) {
+            for (let c = change_from; c > 0; c -= 1) {
+                if (stack2[c].number > 0) {
+                    auto_change(stack2, c - 1, bet_value)
+                    break 
+                } else {
+                    continue
+                }
+            }
+            hold(bet_value, stack2); 
+        }
         for (let i = 3; i >= 0; i -= 1) {
             for (let j = stack2[i].number; j >= 0 ; j -= 1) {
                 const max = stack2[i].chip.value * j; 
@@ -306,22 +300,18 @@ export function hold_bet(pot1: Pot, pot2: Pot, stack2: Stack): void {
                     continue;
                 } else if (i == 0 && j == 0 && bet_value > 0) {
                     if (bet_value >= 10) {
-                        auto_change(stack2, 2, bet_value);
-                        hold(bet_value, stack2); 
-                    }
-                    else if (bet_value >= 5) {
-                        auto_change(stack2, 1, bet_value);
-                        hold(bet_value, stack2); }
-                    else {
-                        auto_change(stack2, 0, bet_value);
-                        hold(bet_value, stack2); 
+                        hold_helper(3)
+                    } else if (bet_value >= 5) {
+                        hold_helper(2)
+                    } else {
+                        hold_helper(1);
                     }
                 } else if (bet_value >= max) {
                     make_bet([to_string(i), j], stack2, pot2);
                     bet_value = bet_value - max; 
-                } else if (j === 0 && bet_value >= stack2[i].chip.value) {   
-                    auto_change(stack2, i, bet_value);
-                    hold(bet_value, stack2);
+                } else if (j === 0 && bet_value >= stack2[i].chip.value && i != 3) {   
+                    auto_change(stack2, j, bet_value);
+                    hold(bet_value, stack2); 
                 }
             }
         }
