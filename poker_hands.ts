@@ -1,6 +1,13 @@
 import {find_suit, find_value} from './helpers'
 import {Hand, Card, Pokerhand } from './poker_types';
-//function highcard()
+
+/*
+function highcard(hand: Hand): number {
+    const highest: Card = hand[hand.length - 1]
+    return highest.value
+}
+*/
+
 
 /**
  * Checks if a given hand has a pair or not
@@ -9,12 +16,12 @@ import {Hand, Card, Pokerhand } from './poker_types';
  */
 export function has_pair(hand: Hand, j = 0): Pokerhand {
     if (hand[j] === undefined) {
-        return {exists: false, name: "pair"};
+        return {exists: false, name: "pair", rang: 0};
     } else {
     const card: Card = hand[j];
     for (let i = j + 1; hand[i] !== undefined; i += 1) {
         if (card.value === hand[i].value) {
-            return {exists: true, value: card.value, name: "pair"};
+            return {exists: true, value: card.value, name: "pair", rang: 9};
         } else {
             continue;
         }
@@ -57,15 +64,15 @@ export function has_three_of_akind(hand: Hand): Pokerhand {
     if (pair.exists && pair.value !== undefined) {
         const i = count_same_cards(hand, pair.value);
         return i >= 3 
-            ? {exists: true, value: pair.value, name: "three of a kind"}
-            : {exists: false, name: "three of a kind"};
+            ? {exists: true, value: pair.value, name: "three of a kind", rang: 7}
+            : {exists: false, name: "three of a kind", rang: 0};
     } else {
-        return {exists:false, name:"three of a kind"};
+        return {exists:false, name:"three of a kind", rang: 0};
     }
 }
 
 /**
- * Checks if a hand has a three of a kind
+ * Checks if a hand has a four of a kind
  * @param hand (Hand) a hand of cards
  * @returns a Pokerhand tagged with "four of a kind", with a boolean and the value of the four of a kind
  */
@@ -74,10 +81,10 @@ export function has_four_of_akind(hand: Hand): Pokerhand {
     if (pair.exists && pair.value !== undefined) {
         const i = count_same_cards(hand, pair.value);
         return i === 4 
-            ? {exists: true, value: pair.value, name: "four of a kind"}
-            : {exists: false, name: "four of a kind"};
+            ? {exists: true, value: pair.value, name: "four of a kind", rang: 3}
+            : {exists: false, name: "four of a kind", rang: 0};
     } else {
-        return {exists:false, name:"four of a kind"};
+        return {exists:false, name:"four of a kind", rang: 0};
     }
 }
 
@@ -114,12 +121,12 @@ export function has_two_pairs(hand: Hand): Pokerhand {
         const new_hand: Hand = make_new_hand(hand, [], pair.value);
         const second_pair =  has_pair(new_hand);
         if (second_pair.exists) {
-            return {exists: true, value: pair.value, value2: second_pair.value, name: "two pairs"};
+            return {exists: true, value: pair.value, value2: second_pair.value, name: "two pairs", rang: 8};
         } else {
-            return  {exists: false, name: "two pairs"};
+            return  {exists: false, name: "two pairs", rang: 0};
         }
     } else {
-        return {exists: false, name: "two pairs"};
+        return {exists: false, name: "two pairs", rang: 0};
     }
 }
 
@@ -134,10 +141,10 @@ export function has_fullhouse(hand: Hand): Pokerhand {
         const new_hand = make_new_hand(hand, [], trio.value);
         const add_pair = has_pair(new_hand);
         return add_pair.exists
-            ? {exists: true, value: trio.value, value2: add_pair.value, name: "full house"}
-            : {exists: false, name: "full house"};
+            ? {exists: true, value: trio.value, value2: add_pair.value, name: "full house", rang: 4}
+            : {exists: false, name: "full house", rang: 0};
     } else {
-        return {exists: false, name: "full house"};
+        return {exists: false, name: "full house", rang: 0};
     }
 }
 
@@ -153,10 +160,10 @@ export function royal_flush(hand: Hand): Pokerhand {
     if (check.exists === true && check.flush !== undefined) {
         let el = check.flush.length;
         if (find_value(check.flush[el - 1]) === 14) {
-            return {exists: true, name: 'royal flush'};
+            return {exists: true, suit: check.suit, name: 'royal flush', rang: 1};
         }
     }
-    return {exists: false};
+    return {exists: false, name: 'royal flush', rang: 0};
 }
 
 
@@ -171,10 +178,10 @@ export function straight_flush(hand: Hand): Pokerhand {
     if (fl.exists === true && fl.flush !== undefined) {
         let check = straight(fl.flush);
         if (check.exists) {
-            return {exists: true, flush: fl.flush, name: 'straight flush'};
+            return {exists: true, value: check.value, suit: fl.suit, flush: fl.flush, name: 'straight flush', rang: 2};
         }
     }
-    return {exists: false};
+    return {exists: false, name: 'straight flush', rang: 0};
 }
 
 
@@ -206,15 +213,15 @@ export function flush(hand: Hand): Pokerhand {
             }
         } else {
             if (clubs.length >= 5) {
-                return {exists: true, flush: clubs, suit: "clubs"};
+                return {exists: true, flush: clubs, suit: "clubs", name: 'flush', rang: 5};
             } else if (diamonds.length >= 5) {
-                return {exists: true, flush: diamonds, suit: "diamonds"};
+                return {exists: true, flush: diamonds, suit: "diamonds", name: 'flush', rang: 5};
             } else if (spades.length >= 5) {
-                return {exists: true, flush: spades, suit: "spades"};
+                return {exists: true, flush: spades, suit: "spades", name: 'flush', rang: 5};
             } else if (hearts.length >= 5) {
-                return {exists: true, flush: hearts, suit: "hearts"};
+                return {exists: true, flush: hearts, suit: "hearts", name: 'flush', rang: 5};
             } else {
-                return {exists: false};
+                return {exists: false, name: 'flush', rang: 0};
             }
         }
     }
@@ -229,7 +236,7 @@ export function flush(hand: Hand): Pokerhand {
  * @returns Returns a boolean which shows true if it contains a straight and false if it doesn't.
  */
 export function straight(hand: Hand): Pokerhand {
-    function straight_helper(arr: Array<Card>): Array<Card> {
+    function straight_helper(arr: Hand): Hand {
         let conseq_array: Array<Card> = [];
         let adder = 0;
         for (let i = 0; i < (arr.length - 1); i++) {
@@ -250,10 +257,12 @@ export function straight(hand: Hand): Pokerhand {
         }
         return conseq_array;
     }
-    if (straight_helper(hand).length >= 5) {
-        return {exists: true, name: 'straight'};
+    const help_arr = straight_helper(hand);
+    if (help_arr.length >= 5) {
+        const highest = help_arr[help_arr.length - 1]
+        return {exists: true, value: highest.value, name: 'straight', rang: 6};
     }
-    return {exists: false};
+    return {exists: false, name: 'straight', rang: 0};
 }
 
 
@@ -265,3 +274,19 @@ console.log(has_three_of_akind(hand1));
 console.log(has_four_of_akind(hand1));
 console.log(has_two_pairs(hand1));
 console.log(has_fullhouse(hand1));
+
+const card1: Card = {suit: 0, value: 9};
+const card2: Card = {suit: 1, value: 9};
+const card3: Card = {suit: 2, value: 10};
+const card4: Card = {suit: 2, value: 11};
+const card5: Card = {suit: 2, value: 12};
+const card6: Card = {suit: 2, value: 13};
+const card7: Card = {suit: 2, value: 14};
+
+const hand2 = [card1, card2, card3, card4, card5, card6, card7];
+
+
+console.log(flush(hand2));
+console.log(straight(hand2));
+console.log(straight_flush(hand2));
+console.log(royal_flush(hand2));
