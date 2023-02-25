@@ -23,7 +23,7 @@ export type Pokerhand = {
     value?: number,
     value2?: number, 
     flush?: Hand,
-    rang?: number,
+    rang: number,
     name?: string,
     suit?: string,
 };
