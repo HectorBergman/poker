@@ -5,6 +5,10 @@ var list_1 = require("../lib/list");
 var helpers_1 = require("./helpers");
 var readline_sync_1 = require("readline-sync");
 var cardimages_1 = require("./cardimages");
+/**
+ * Generates a list of 52 unique cards with suit 0-3 and value 2-14 (11 = jack, 12 = queen, 13 = king, 14 = ace)
+ * @returns A list of cards
+ */
 function createdeck() {
     var newdeck = (0, list_1.list)();
     for (var suit = 0; suit < 4; suit++) {
@@ -18,6 +22,14 @@ function createdeck() {
     }
     return (0, helpers_1.random_list)(newdeck); //Makes a list random
 }
+/**
+ * Initiates user input and either deals the next card or ends the round depending on user input
+ * @param player The player making the choice, as of right now it does nothing || MAYBE DELETE?
+ * @param board The current state of the board
+ * @param deck The list of remaining cards in the deck
+ * @param allhands Array of array of cards representing the player's hand and the computer's hand
+ * @returns undefined if player folds, else it returns allhands
+ */
 function roundstart(player, board, deck, allhands) {
     var selectionresult = selection(0, allhands, board);
     if (selectionresult === undefined) {
@@ -45,6 +57,14 @@ function roundstart(player, board, deck, allhands) {
         }
     }
 }
+/**
+ * Asks for user input and prints out a message or an image or goes into the next stage of the round depending on input.
+ * @param player The player making the choice, as of right now it does nothing of importance || MAYBE DELETE?
+ * @param allhands Array of array of cards representing the player's hand and the computer's hand
+ * @param board The current state of the board
+ * @returns number if player bets, undefined if folds
+ * NOTE: Number is nothing of importance, just had to be anything except allhands or undefined.
+ */
 function selection(player, allhands, board) {
     var prompt = (0, readline_sync_1.question)('What do you want to do? ');
     if (prompt.toLowerCase() === "bet") {
@@ -105,14 +125,13 @@ function holdem(players, gamestate, pot1, pot2) {
         }
     }
     dealcards(2);
-    console.log(allhands);
     var roundstartresult = roundstart(0, board, newdeck, allhands);
     if (roundstartresult === undefined) {
         return undefined;
     }
     else if (roundstartresult === allhands) {
+        console.log(allhands);
         return allhands;
     }
 }
 exports.holdem = holdem;
-holdem(2);

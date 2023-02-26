@@ -5,6 +5,10 @@ import {question} from 'readline-sync'
 import {displaycards} from './cardimages'
 import {make_bet, hold_bet, pot_value, make_pot} from './stack_bet';
 
+/**
+ * Generates a list of 52 unique cards with suit 0-3 and value 2-14 (11 = jack, 12 = queen, 13 = king, 14 = ace)
+ * @returns A list of cards
+ */
 function createdeck(): Deck{
     let newdeck: Deck = list()
     for (let suit = 0; suit < 4; suit++) {
@@ -19,8 +23,16 @@ function createdeck(): Deck{
     return random_list(newdeck); //Makes a list random
 }
 
+/**
+ * Initiates user input and either deals the next card or ends the round depending on user input
+ * @param player The player making the choice, as of right now it does nothing || MAYBE DELETE?
+ * @param board The current state of the board
+ * @param deck The list of remaining cards in the deck
+ * @param allhands Array of array of cards representing the player's hand and the computer's hand
+ * @returns undefined if player folds, else it returns allhands
+ */
 
-function roundstart(player: number, board: Hand, deck: Deck, allhands: Array<Hand>){ //temporary, just imagining how a round could look like
+function roundstart(player: number, board: Hand, deck: Deck, allhands: Array<Hand>): Array<Hand> | undefined{ 
     let selectionresult = selection(0, allhands, board);
     if(selectionresult === undefined){
         return undefined;
@@ -47,7 +59,18 @@ function roundstart(player: number, board: Hand, deck: Deck, allhands: Array<Han
         }
     }
 }
-function selection(player: number, allhands: Array<Hand>, board: Hand){
+
+
+/**
+ * Asks for user input and prints out a message or an image or goes into the next stage of the round depending on input.
+ * @param player The player making the choice, as of right now it does nothing of importance || MAYBE DELETE?
+ * @param allhands Array of array of cards representing the player's hand and the computer's hand
+ * @param board The current state of the board
+ * @returns number if player bets, undefined if folds
+ * NOTE: Number is nothing of importance, just had to be anything except allhands or undefined.
+ */
+
+function selection(player: number, allhands: Array<Hand>, board: Hand): number | undefined{
     var prompt = question('What do you want to do? ');
     if (prompt.toLowerCase() === "bet"){
         console.log("Bet");
@@ -110,16 +133,15 @@ export function holdem(players: number, gamestate?: GameState, pot1?: Pot, pot2?
         }
     }
     dealcards(2);
-    console.log(allhands);
     let roundstartresult = roundstart(0, board, newdeck, allhands);
     if (roundstartresult === undefined){
         return undefined
     }
     else if (roundstartresult === allhands){
+        console.log(allhands);
         return allhands
     }  
 }
 
-holdem(2);
 
 
