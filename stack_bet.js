@@ -271,26 +271,35 @@ function hold_bet(pot1, pot2, stack2) {
                 }
                 else if (bet_value < max) {
                     continue;
+                    /* } else if (i == 0 && bet_value > max) {
+                         if (bet_value >= 10) {
+                             change_helper(2);
+                         } else if (bet_value >= 5) {
+                             change_helper(1);
+                         } else {
+                             change_helper(0);
+                         }
+                         hold(bet_value, stack2);
+                         break; */
                 }
-                else if (i == 0 && bet_value > max) {
-                    if (bet_value >= 10) {
-                        change_helper(2);
-                    }
-                    else if (bet_value >= 5) {
-                        change_helper(1);
-                    }
-                    else {
-                        change_helper(0);
-                    }
-                    hold(bet_value, stack2);
-                    break;
-                }
-                else if (max == 0) {
+                else if (max == 0 && i != 0) {
                     break;
                 }
                 else if (bet_value >= max) {
                     make_bet([to_string(i), j], stack2, pot2);
                     bet_value = bet_value - max;
+                    if (i == 0 && bet_value > 0) {
+                        if (bet_value >= 10) {
+                            change_helper(2);
+                        }
+                        else if (bet_value >= 5) {
+                            change_helper(1);
+                        }
+                        else {
+                            change_helper(0);
+                        }
+                        hold(bet_value, stack2);
+                    }
                     break;
                 }
             }
