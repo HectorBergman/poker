@@ -250,7 +250,7 @@ export function auto_change(stack: Stack, color: number, needed: number): void {
     }
     if (needed <= 0) {}
     else {
-        change_helper(green);
+        change_helper();
     }
 }
 
