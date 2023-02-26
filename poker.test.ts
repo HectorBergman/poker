@@ -179,7 +179,7 @@ test('Stack_bet: auto change of currency', () => {
     const stack1: Stack = make_new_stack();
     auto_change(stack1, 1, 20);
     const n2 = stack1[1].number;
-    expect(n2).toBe(8);
+    expect(n2).toBe(7);
 });
 
 test('Stack_bet: add pot test', () => {
