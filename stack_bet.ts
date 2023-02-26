@@ -304,11 +304,25 @@ export function hold_bet(pot1: Pot, pot2: Pot, stack2: Stack): void {
 
 }
 
+/**
+ * Puts in minimal wager for a player at the start of a round, that is one white chip worth 1 dollar
+ * @param stack Stack of the player, where one white chip is removed
+ * @param pot Pot of the player, where one white chip is placed
+ */
+function min_wager(stack: Stack, pot: Pot): void {
+    if (stack[white].number == 0) {
+        auto_change(stack, white, 1);
+        make_bet(["white", 1], stack, pot);
+    } else {
+        make_bet(["white", 1], stack, pot);
+    }
+}
+
 
 
 
 /**
- * Prints the players chip stack
+ * Prints the players' chip stack
  * @param gs (Gamestate) an array of the players' stacks
  */ 
 export function show_game_state(gs: GameState): void {
@@ -321,25 +335,6 @@ export function show_game_state(gs: GameState): void {
     
 }
 
-
-/*
-function play(gs: GameState): void {
-    show_game_state(gs);
-    gs = player_bet(gs);
-    if (is_winning(gs)) {
-        console.log("Player wins!");
-        main();
-    } else {
-        gs = computer_bet(gs);
-        if (is_winning(gs)) {
-            console.log("Computer won!");
-            main();
-        } else {
-            play(gs);
-        }
-    }
-}
-*/
 
 //test
 
@@ -404,6 +399,15 @@ show_game_state([stack1, stack2]);
 console.log("pot1 value    " + pot_value(pot1));
 console.log("pot2 value    " + pot_value(pot2));
 
+
+pot1 = make_pot();
+pot2 = make_pot();
+//4
+min_wager(stack1, pot1);
+min_wager(stack2, pot2)
+show_game_state([stack1, stack2]);
+console.log("pot1 value    " + pot_value(pot1));
+console.log("pot2 value    " + pot_value(pot2));
 
 
 

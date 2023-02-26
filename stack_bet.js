@@ -231,7 +231,7 @@ exports.manual_change = manual_change;
  * @param needed Amount which is needed in the given chip
  */
 function auto_change(stack, color, needed) {
-    function change_helper(high) {
+    function change_helper() {
         for (var h = color + 1; h <= green; h += 1) {
             if (stack[h].number > 0) {
                 change_currency(stack, h, color);
@@ -242,7 +242,7 @@ function auto_change(stack, color, needed) {
     }
     if (needed <= 0) { }
     else {
-        change_helper(green);
+        change_helper();
     }
 }
 exports.auto_change = auto_change;
@@ -302,7 +302,21 @@ function hold_bet(pot1, pot2, stack2) {
 }
 exports.hold_bet = hold_bet;
 /**
- * Prints the players chip stack
+ * Puts in minimal wager for a player at the start of a round, that is one white chip worth 1 dollar
+ * @param stack Stack of the player, where one white chip is removed
+ * @param pot Pot of the player, where one white chip is placed
+ */
+function min_wager(stack, pot) {
+    if (stack[white].number == 0) {
+        auto_change(stack, white, 1);
+        make_bet(["white", 1], stack, pot);
+    }
+    else {
+        make_bet(["white", 1], stack, pot);
+    }
+}
+/**
+ * Prints the players' chip stack
  * @param gs (Gamestate) an array of the players' stacks
  */
 function show_game_state(gs) {
@@ -314,24 +328,6 @@ function show_game_state(gs) {
     console.log("green                   " + gs[0][3].number + "                               " + gs[1][3].number);
 }
 exports.show_game_state = show_game_state;
-/*
-function play(gs: GameState): void {
-    show_game_state(gs);
-    gs = player_bet(gs);
-    if (is_winning(gs)) {
-        console.log("Player wins!");
-        main();
-    } else {
-        gs = computer_bet(gs);
-        if (is_winning(gs)) {
-            console.log("Computer won!");
-            main();
-        } else {
-            play(gs);
-        }
-    }
-}
-*/
 //test
 var stack1 = make_new_stack();
 var stack2 = make_new_stack();
@@ -380,6 +376,14 @@ console.log("pot2 value    " + pot_value(pot2));
 //5
 make_bet(["red", 1], stack1, pot1);
 hold_bet(pot1, pot2, stack2);
+show_game_state([stack1, stack2]);
+console.log("pot1 value    " + pot_value(pot1));
+console.log("pot2 value    " + pot_value(pot2));
+pot1 = make_pot();
+pot2 = make_pot();
+//4
+min_wager(stack1, pot1);
+min_wager(stack2, pot2);
 show_game_state([stack1, stack2]);
 console.log("pot1 value    " + pot_value(pot1));
 console.log("pot2 value    " + pot_value(pot2));
