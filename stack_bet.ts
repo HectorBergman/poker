@@ -55,7 +55,7 @@ function make_pile(col: number, val: number, num: number): Pile {
  * @returns a new stack with white, red, blue and green chips in a 4:3:2:1 ratio
  */
 export function make_new_stack(): Stack {
-        return [make_pile(white, 1, 4), 
+        return [make_pile(white, 1, 5), 
                 make_pile(red, 5, 3),
                 make_pile(blue, 10, 2),
                 make_pile(green, 25, 1) 
@@ -334,13 +334,15 @@ export function min_wager(stack: Stack, pot: Pot): void {
  * Prints the players' chip stack
  * @param gs (Gamestate) an array of the players' stacks
  */ 
-export function show_game_state(gs: GameState): void {
+export function show_game_state(gs: GameState, pot: Pot): void {
     console.log("Color             player1's Stack                player2's Stack");
     console.log("");
     console.log("white                   " +  gs[0][0].number + "                               " + gs[1][0].number );
     console.log("red                     " +  gs[0][1].number + "                               " + gs[1][1].number );
     console.log("blue                    " +  gs[0][2].number + "                               " + gs[1][2].number );
     console.log("green                   " +  gs[0][3].number + "                               " + gs[1][3].number );
+    console.log("");
+    console.log("pot value = " + pot_value(pot));
     
 }
 
@@ -357,6 +359,7 @@ console.log(pot_value(stack1));
 //manual_change(stack1, "red", "blue", 2);
 //all_in(stack1, pot1);
 
+/*
 
 //0
 show_game_state([stack1, stack2]);
@@ -417,6 +420,8 @@ min_wager(stack2, pot2);
 show_game_state([stack1, stack2]);
 console.log("pot1 value    " + pot_value(pot1));
 console.log("pot2 value    " + pot_value(pot2));
+
+*/
 
 
 

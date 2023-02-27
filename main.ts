@@ -1,15 +1,15 @@
 //main file
 import {holdem} from "./poker";
 import {Pot, GameState, Hands} from "./poker_types";
-import {make_pot, make_new_stack, show_game_state, add_pot, min_wager, pot_value} from "./stack_bet"
+import {make_pot, make_new_stack, show_game_state, add_pot, min_wager, call_bet, pot_value} from "./stack_bet"
 import {winners}  from "./hands_ranking"
 
 function round(gs: GameState) {
-    show_game_state(gs);
     let pot1 = make_pot();
     let pot2 = make_pot();
     min_wager(gs[0], pot1);
     min_wager(gs[1], pot2);
+    show_game_state(gs, pot1);
     const hands: Hands | undefined = holdem(2, gs, pot1, pot2);
     if (hands == undefined) {
         add_pot(pot1, gs[1]);

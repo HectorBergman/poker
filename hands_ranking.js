@@ -30,6 +30,10 @@ function hand_rating(hand) {
                                         : { exists: true, value: hand[hand.length - 1].value, rang: 10 };
 }
 exports.hand_rating = hand_rating;
+var hand1 = [{ suit: 3, value: 13 }, { suit: 1, value: 3 }, { suit: 2, value: 9 }, { suit: 1, value: 10 }, { suit: 3, value: 2 }, { suit: 3, value: 7 }, { suit: 0, value: 8 }];
+var hand2 = [{ suit: 3, value: 13 }, { suit: 1, value: 3 }, { suit: 2, value: 9 }, { suit: 1, value: 10 }, { suit: 3, value: 2 }, { suit: 2, value: 2 }, { suit: 2, value: 3 }];
+console.log(hand_rating(hand1));
+console.log(hand_rating(hand2));
 /*
 New implementation in order, should work if more than two players are playing.
 
@@ -92,3 +96,4 @@ function winners(one, two) {
     return "Unvalid game";
 }
 exports.winners = winners;
+console.log(winners(hand1, hand2));
