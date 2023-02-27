@@ -3,7 +3,7 @@ import {random_list, describe} from './helpers'
 import {Deck, Hand, Board, Pocketcards, Pokerhand, Card, Bet, Pot, Stack, Pile, GameState} from './poker_types'
 import {question} from 'readline-sync'
 import {displaycards} from './cardimages'
-import {make_bet, hold_bet, pot_value, make_pot} from './stack_bet';
+import {make_bet, call_bet, pot_value, make_pot} from './stack_bet';
 
 /**
  * Generates a list of 52 unique cards with suit 0-3 and value 2-14 (11 = jack, 12 = queen, 13 = king, 14 = ace)
