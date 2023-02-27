@@ -357,6 +357,7 @@ console.log(pot_value(stack1));
 //manual_change(stack1, "red", "blue", 2);
 //all_in(stack1, pot1);
 
+/*
 
 //0
 show_game_state([stack1, stack2]);
@@ -413,10 +414,12 @@ pot1 = make_pot();
 pot2 = make_pot();
 //4
 min_wager(stack1, pot1);
-min_wager(stack2, pot2)
+min_wager(stack2, pot2);
 show_game_state([stack1, stack2]);
 console.log("pot1 value    " + pot_value(pot1));
 console.log("pot2 value    " + pot_value(pot2));
+
+*/
 
 
 

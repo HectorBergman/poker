@@ -40,6 +40,7 @@ function round(gs) {
             (0, stack_bet_1.add_pot)(pot2, gs[1]);
         }
     }
+    round(gs);
 }
 function poker_main() {
     console.log("Poker");
