@@ -3,7 +3,7 @@ import {Hand, Card, Pokerhand} from './poker_types';
 import {has_four_of_akind, has_fullhouse, has_pair, has_three_of_akind, has_two_pairs, straight, flush, straight_flush, royal_flush} from './poker_hands'
 
 import {Bet, Pot, Stack, Pile, GameState} from './poker_types';
-import {make_pot, make_new_stack, show_game_state, add_pot, make_bet, hold_bet, pot_value, change_currency,
+import {make_pot, make_new_stack, show_game_state, add_pot, make_bet, call_bet, pot_value, change_currency,
         auto_change, manual_change } from "./stack_bet"
         
 test('straight function is valid', () => {
@@ -140,14 +140,14 @@ test('Hand has fullhouse', () => {
 
 
 
-test('Stack_bet: make_bet and hold_bet return pot with the same value', () => {
+test('Stack_bet: make_bet and call_bet return pot with the same value', () => {
     const stack1: Stack = make_new_stack();
     const stack2: Stack = make_new_stack();
     const pot1 = make_pot();
     const pot2 = make_pot();
     make_bet(["white", 3], stack1, pot1);
     make_bet(["green", 1], stack1, pot1);
-    hold_bet(pot1, pot2, stack2);
+    call_bet(pot1, pot2, stack2);
     const value1 = pot_value(pot1);
     const value2 = pot_value(pot2);
     const b1 = value1 == value2;
@@ -163,7 +163,7 @@ test('Stack_bet: all in test', () => {
     stack2[1].number = 0;
     stack2[3].number = 0; 
     make_bet(["green", 1], stack1, pot1);
-    hold_bet(pot1, pot2, stack2);
+    call_bet(pot1, pot2, stack2);
     const v1: number = pot_value(pot2)
     expect(v1).toBe(20);
 });
@@ -188,7 +188,7 @@ test('Stack_bet: add pot test', () => {
     const pot1 = make_pot();
     const pot2 = make_pot();
     make_bet(["green", 1], stack1, pot1);
-    hold_bet(pot1, pot2, stack2);
+    call_bet(pot1, pot2, stack2);
     add_pot(pot1, stack1);
     add_pot(pot2, stack1);
     const v2: number = pot_value(stack1)
