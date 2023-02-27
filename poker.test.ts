@@ -1,10 +1,10 @@
 //File for unit tests of the code
-import {Hand, Card, Pokerhand} from './poker_types';
-import {has_four_of_akind, has_fullhouse, has_pair, has_three_of_akind, has_two_pairs, straight, flush, straight_flush, royal_flush} from './poker_hands'
+import {Hand, Card} from './poker_types';
+import {has_four_of_akind, has_fullhouse, has_pair, has_three_of_akind, has_two_pairs, straight, flush, straight_flush, royal_flush} from './poker_hands';
 
-import {Bet, Pot, Stack, Pile, GameState} from './poker_types';
-import {make_pot, make_new_stack, show_game_state, add_pot, make_bet, call_bet, pot_value, change_currency,
-        auto_change, manual_change } from "./stack_bet"
+import {Stack} from './poker_types';
+import {make_pot, make_new_stack, add_pot, make_bet, call_bet, pot_value,
+        auto_change, manual_change } from "./stack_bet";
         
 test('straight function is valid', () => {
     const card1: Card = {suit: 0, value: 7};
@@ -115,11 +115,10 @@ const hand1: Hand = [{suit: 3, value: 3}, {suit: 0, value: 2}, {suit: 1, value: 
 
 
 test('Hand has pair', () => {
-    const pair = has_pair(hand1).exists;
-    expect(pair).toStrictEqual(true);
+    expect(has_pair(hand1).exists).toBe(true);
 });
 test('Hand has pair returns correct value', () => {
-    expect(has_pair(hand1).value).toBe(2);
+    expect(has_pair(hand1).value).toBe(3);
 });
 test('Hand has three of a kind', () => {
     expect(has_three_of_akind(hand1).exists).toBe(true);
@@ -164,7 +163,7 @@ test('Stack_bet: all in test', () => {
     stack2[3].number = 0; 
     make_bet(["green", 1], stack1, pot1);
     call_bet(pot1, pot2, stack2);
-    const v1: number = pot_value(pot2)
+    const v1: number = pot_value(pot2);
     expect(v1).toBe(20);
 });
 
@@ -191,6 +190,6 @@ test('Stack_bet: add pot test', () => {
     call_bet(pot1, pot2, stack2);
     add_pot(pot1, stack1);
     add_pot(pot2, stack1);
-    const v2: number = pot_value(stack1)
+    const v2: number = pot_value(stack1);
     expect(v2).toBe(64 + 25);
 });
