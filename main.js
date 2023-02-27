@@ -5,11 +5,11 @@ var poker_1 = require("./poker");
 var stack_bet_1 = require("./stack_bet");
 var hands_ranking_1 = require("./hands_ranking");
 function round(gs) {
-    (0, stack_bet_1.show_game_state)(gs);
     var pot1 = (0, stack_bet_1.make_pot)();
     var pot2 = (0, stack_bet_1.make_pot)();
     (0, stack_bet_1.min_wager)(gs[0], pot1);
     (0, stack_bet_1.min_wager)(gs[1], pot2);
+    (0, stack_bet_1.show_game_state)(gs, pot1);
     var hands = (0, poker_1.holdem)(2, gs, pot1, pot2);
     if (hands == undefined) {
         (0, stack_bet_1.add_pot)(pot1, gs[1]);
