@@ -266,3 +266,17 @@ export function straight(hand: Hand): Pokerhand {
     }
     return {exists: false, name: 'straight', rang: 0};
 }
+/*
+const hand1 = [{suit: 3, value: 13}, {suit: 1, value: 3}, {suit: 2, value: 9}, {suit: 1, value: 10}, {suit: 3, value: 2}, {suit: 3, value: 7}, {suit: 0, value: 8}];
+const hand2 = [{suit: 3, value: 13}, {suit: 1, value: 3}, {suit: 2, value: 9}, {suit: 1, value: 10}, {suit: 3, value: 2}, {suit: 2, value: 2}, {suit: 2, value: 3}];
+
+console.log(has_pair(hand2));
+console.log(has_two_pairs(hand2));
+console.log(has_three_of_akind(hand2));
+console.log(straight(hand2));
+console.log(flush(hand2));
+console.log(has_four_of_akind(hand2));
+console.log(has_fullhouse(hand2));
+console.log(straight_flush(hand2));
+console.log(royal_flush(hand2));
+*/
