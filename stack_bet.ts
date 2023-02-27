@@ -319,8 +319,8 @@ export function hold_bet(pot1: Pot, pot2: Pot, stack2: Stack): void {
  * @param stack Stack of the player, where one white chip is removed
  * @param pot Pot of the player, where one white chip is placed
  */
-function min_wager(stack: Stack, pot: Pot): void {
-    if (stack[white].number == 0) {
+export function min_wager(stack: Stack, pot: Pot): void {
+    if (stack[white].number === 0) {
         auto_change(stack, white, 1);
         make_bet(["white", 1], stack, pot);
     } else {
