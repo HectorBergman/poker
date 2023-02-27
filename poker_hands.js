@@ -2,6 +2,7 @@
 exports.__esModule = true;
 exports.straight = exports.flush = exports.straight_flush = exports.royal_flush = exports.has_fullhouse = exports.has_two_pairs = exports.has_four_of_akind = exports.has_three_of_akind = exports.has_pair = void 0;
 var helpers_1 = require("./helpers");
+var sorting_1 = require("./sorting");
 /*
 function highcard(hand: Hand): number {
     const highest: Card = hand[hand.length - 1]
@@ -249,6 +250,7 @@ exports.flush = flush;
  * @returns Returns a boolean which shows true if it contains a straight and false if it doesn't.
  */
 function straight(hand) {
+    var sorted = (0, sorting_1.sorter)(hand);
     function straight_helper(arr) {
         var conseq_array = [];
         var adder = 0;
@@ -273,7 +275,7 @@ function straight(hand) {
         }
         return conseq_array;
     }
-    var help_arr = straight_helper(hand);
+    var help_arr = straight_helper(sorted);
     if (help_arr.length >= 5) {
         var highest = help_arr[help_arr.length - 1];
         return { exists: true, value: highest.value, name: 'straight', rang: 6 };
@@ -281,22 +283,3 @@ function straight(hand) {
     return { exists: false, name: 'straight', rang: 0 };
 }
 exports.straight = straight;
-var hand1 = [{ suit: 3, value: 3 }, { suit: 0, value: 2 }, { suit: 1, value: 3 },
-    { suit: 1, value: 5 }, { suit: 1, value: 2 }, { suit: 3, value: 3 }, { suit: 2, value: 3 }];
-console.log(has_pair(hand1));
-console.log(has_three_of_akind(hand1));
-console.log(has_four_of_akind(hand1));
-console.log(has_two_pairs(hand1));
-console.log(has_fullhouse(hand1));
-var card1 = { suit: 0, value: 9 };
-var card2 = { suit: 1, value: 9 };
-var card3 = { suit: 2, value: 10 };
-var card4 = { suit: 2, value: 11 };
-var card5 = { suit: 2, value: 12 };
-var card6 = { suit: 2, value: 13 };
-var card7 = { suit: 2, value: 14 };
-var hand2 = [card1, card2, card3, card4, card5, card6, card7];
-console.log(flush(hand2));
-console.log(straight(hand2));
-console.log(straight_flush(hand2));
-console.log(royal_flush(hand2));

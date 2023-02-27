@@ -1,5 +1,6 @@
 import {find_suit, find_value} from './helpers'
 import {Hand, Card, Pokerhand } from './poker_types';
+import { sorter } from './sorting';
 
 /*
 function highcard(hand: Hand): number {
@@ -236,6 +237,7 @@ export function flush(hand: Hand): Pokerhand {
  * @returns Returns a boolean which shows true if it contains a straight and false if it doesn't.
  */
 export function straight(hand: Hand): Pokerhand {
+    const sorted = sorter(hand);
     function straight_helper(arr: Hand): Hand {
         let conseq_array: Array<Card> = [];
         let adder = 0;
@@ -257,36 +259,10 @@ export function straight(hand: Hand): Pokerhand {
         }
         return conseq_array;
     }
-    const help_arr = straight_helper(hand);
+    const help_arr = straight_helper(sorted);
     if (help_arr.length >= 5) {
         const highest = help_arr[help_arr.length - 1]
         return {exists: true, value: highest.value, name: 'straight', rang: 6};
     }
     return {exists: false, name: 'straight', rang: 0};
 }
-
-
-const hand1: Hand = [{suit: 3, value: 3}, {suit: 0, value: 2}, {suit: 1, value: 3}, 
-    {suit: 1, value: 5}, {suit: 1, value: 2}, {suit: 3, value: 3}, {suit: 2, value: 3}];
-
-console.log(has_pair(hand1));
-console.log(has_three_of_akind(hand1));
-console.log(has_four_of_akind(hand1));
-console.log(has_two_pairs(hand1));
-console.log(has_fullhouse(hand1));
-
-const card1: Card = {suit: 0, value: 9};
-const card2: Card = {suit: 1, value: 9};
-const card3: Card = {suit: 2, value: 10};
-const card4: Card = {suit: 2, value: 11};
-const card5: Card = {suit: 2, value: 12};
-const card6: Card = {suit: 2, value: 13};
-const card7: Card = {suit: 2, value: 14};
-
-const hand2 = [card1, card2, card3, card4, card5, card6, card7];
-
-
-console.log(flush(hand2));
-console.log(straight(hand2));
-console.log(straight_flush(hand2));
-console.log(royal_flush(hand2));

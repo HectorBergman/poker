@@ -86,30 +86,3 @@ export function winners(one: Hand, two: Hand): string {
         }
     return "Unvalid game";
 }
-
-
-const card1: Card = {suit: 0, value: 7};
-const card2: Card = {suit: 1, value: 8};
-const card3: Card = {suit: 0, value: 9};
-const card4: Card = {suit: 3, value: 10};
-const card5: Card = {suit: 2, value: 11};
-const card6: Card = {suit: 1, value: 13};
-const card7: Card = {suit: 2, value: 14};
-
-const hand1 = [card1, card2, card3, card4, card5, card6, card7];
-
-console.log(hand_rating(hand1));
-
-const card8: Card = {suit: 0, value: 2};
-const card9: Card = {suit: 1, value: 3};
-const card10: Card = {suit: 0, value: 4};
-const card11: Card = {suit: 3, value: 5};
-const card12: Card = {suit: 2, value: 6};
-const card13: Card = {suit: 1, value: 7};
-const card14: Card = {suit: 2, value: 9};
-
-const hand2 = [card8, card9, card10, card11, card12, card13, card14];
-
-console.log(hand_rating(hand2));
-
-console.log(winners(hand2, hand1));
