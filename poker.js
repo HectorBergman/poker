@@ -108,7 +108,11 @@ function bet_number(color, number, gamestate, pot1, pot2) {
     var prompt3 = (0, readline_sync_1.question)("How much do you want to bet? You have ".concat(gamestate[0][number].number, " ").concat(color, " chips. "));
     if (Number.isNaN(Number(prompt3))) {
         console.log("Not a number. Type a number.");
-        return 1;
+        bet_number(color, number, gamestate, pot1, pot2);
+    }
+    else if (gamestate[0][number].number < Number(prompt3)) {
+        console.log("Not enough chips.");
+        bet_number(color, number, gamestate, pot1, pot2);
     }
     else {
         (0, stack_bet_1.make_bet)([color, Number(prompt3)], gamestate[0], pot1);
@@ -116,6 +120,7 @@ function bet_number(color, number, gamestate, pot1, pot2) {
     }
 }
 function betting_selection(gamestate, pot1, pot2) {
+    var test = 1;
     var prompt2 = (0, readline_sync_1.question)('What do you want to bet? ');
     if (prompt2.toLowerCase() === "white") {
         bet_number("white", 0, gamestate, pot1, pot2);
@@ -131,11 +136,19 @@ function betting_selection(gamestate, pot1, pot2) {
     }
     else if (prompt2.toLowerCase() === "help") {
         console.log("Type the corresponding colour of your stack to select it.");
+        test = 2;
     }
     else {
         console.log('Not a proper input. Type "help" for help.');
+        test = 2;
     }
-    return betmore();
+    if (test === 1) {
+        return betmore();
+    }
+    else {
+        betting_selection(gamestate, pot1, pot2);
+    }
+    ;
     function betmore() {
         var prompt4 = (0, readline_sync_1.question)('Do you want to bet more? y/n ');
         if (prompt4.toLowerCase() === "y") {
