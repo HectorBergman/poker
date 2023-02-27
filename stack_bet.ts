@@ -172,12 +172,12 @@ export function make_bet(bet: Bet, stack: Stack, pot: Pot): void {
 }
 
 /**
- * Decides if the player can hold a bet or not 
+ * Decides if the player can call a bet or not 
  * @param bet value of the other player's bet
- * @param stack2 The stack of the player which wants to hold
+ * @param stack2 The stack of the player which wants to call
  * @returns wether the player can hot true/false
  */
-function can_hold(bet_value: number, stack2: Stack): boolean {
+function can_call(bet_value: number, stack2: Stack): boolean {
     return bet_value <= pot_value(stack2);
 }
 
@@ -255,14 +255,14 @@ export function auto_change(stack: Stack, color: number, needed: number): void {
 }
 
 /**
- * Automated betting system for when a player choses to hold a bet
+ * Automated betting system for when a player choses to call a bet
  * @param pot1 the wagered chips of the betting player
- * @param pot2 new pot which contains the holding player's wager
- * @param stack2 the stack of the holding player
+ * @param pot2 new pot which contains the calling player's wager
+ * @param stack2 the stack of the calling player
  */
-export function hold_bet(pot1: Pot, pot2: Pot, stack2: Stack): void {
+export function call_bet(pot1: Pot, pot2: Pot, stack2: Stack): void {
     const bet_value = pot_value(pot1) - pot_value(pot2);
-    function hold(bet_value: number, stack2: Stack): void {
+    function call(bet_value: number, stack2: Stack): void {
         function change_helper(change_to: number): void {
             for (let c = change_to + 1; c < 4; c += 1) {
                 if (stack2[c].number > 0) {
@@ -286,7 +286,7 @@ export function hold_bet(pot1: Pot, pot2: Pot, stack2: Stack): void {
                     } else {
                         change_helper(0);
                     }
-                    hold(bet_value, stack2);
+                    call(bet_value, stack2);
                     break; */
                 } else if (max == 0 && i != 0) {
                     break;
@@ -301,17 +301,16 @@ export function hold_bet(pot1: Pot, pot2: Pot, stack2: Stack): void {
                         } else {
                             change_helper(0);
                         }
-                        hold(bet_value, stack2);
+                        call(bet_value, stack2);
                     }
                     break;
                 }  
             }
         }
     }
-    return can_hold(bet_value, stack2)
-        ? hold(bet_value, stack2)
+    return can_call(bet_value, stack2)
+        ? call(bet_value, stack2)
         : all_in(stack2, pot2);
-
 }
 
 /**
@@ -367,14 +366,14 @@ console.log("pot1 value    " + pot_value(pot2));
 //1
 make_bet(["white", 3], stack1, pot1);
 make_bet(["green", 1], stack1, pot1);
-hold_bet(pot1, pot2, stack2);
+call_bet(pot1, pot2, stack2);
 show_game_state([stack1, stack2]);
 console.log("pot1 value    " + pot_value(pot1));
 console.log("pot2 value    " + pot_value(pot2));
 
 //2
 make_bet(["red", 1], stack1, pot1);
-hold_bet(pot1, pot2, stack2);
+call_bet(pot1, pot2, stack2);
 show_game_state([stack1, stack2]);
 console.log("pot1 value    " + pot_value(pot1));
 console.log("pot2 value    " + pot_value(pot2));
@@ -387,7 +386,7 @@ pot2 = make_pot();
 //3
 make_bet(["red", 1], stack1, pot1);
 make_bet(["white", 4], stack1, pot1);
-hold_bet(pot1, pot2, stack2);
+call_bet(pot1, pot2, stack2);
 show_game_state([stack1, stack2]);
 console.log("pot1 value    " + pot_value(pot1));
 console.log("pot2 value    " + pot_value(pot2));
@@ -397,14 +396,14 @@ pot2 = make_pot();
 //4
 make_bet(["red", 1], stack1, pot1);
 make_bet(["white", 3], stack1, pot1);
-hold_bet(pot1, pot2, stack2);
+call_bet(pot1, pot2, stack2);
 show_game_state([stack1, stack2]);
 console.log("pot1 value    " + pot_value(pot1));
 console.log("pot2 value    " + pot_value(pot2));
 
 //5
 make_bet(["red", 1], stack1, pot1);
-hold_bet(pot1, pot2, stack2);
+call_bet(pot1, pot2, stack2);
 show_game_state([stack1, stack2]);
 console.log("pot1 value    " + pot_value(pot1));
 console.log("pot2 value    " + pot_value(pot2));
