@@ -20,13 +20,18 @@ function round(gs: GameState) {
             add_pot(pot1, gs[0]);
             add_pot(pot2, gs[0]);
             if (pot_value(gs[1]) === 0) {
-                
+                console.log("Player 1 wins the game");
+                poker_main();
             }
         }
         else if (winners(hands[0], hands[1]) === "Player 2 wins") {
             console.log("Player 2 wins");
             add_pot(pot1, gs[1]);
             add_pot(pot2, gs[1]);
+            if (pot_value(gs[1]) === 0) {
+                console.log("Player 1 wins the game");
+                poker_main();
+            } 
         }
         else if (winners(hands[0], hands[1]) === "It's a tie") {
             console.log("It's a tie");
@@ -36,7 +41,7 @@ function round(gs: GameState) {
     }
 }
 
-function stack_main(): void {
+function poker_main(): void {
     console.log("Poker");
     console.log("");
     const pn = 2;
