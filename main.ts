@@ -1,7 +1,7 @@
 //main file
 import {holdem} from "./poker";
 import {Pot, GameState, Hands} from "./poker_types";
-import {make_pot, make_new_stack, show_game_state, add_pot, min_wager, pot_value} from "./stack_bet"
+import {make_pot, make_new_stack, show_game_state, add_pot, min_wager, call_bet, pot_value} from "./stack_bet"
 import {winners}  from "./hands_ranking"
 
 function round(gs: GameState) {
