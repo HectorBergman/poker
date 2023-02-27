@@ -39,6 +39,7 @@ function round(gs: GameState) {
             add_pot(pot2, gs[1]);
         } 
     }
+    round(gs);
 }
 
 function poker_main(): void {
