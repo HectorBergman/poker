@@ -20,7 +20,6 @@ export function royal_flush(hand: Hand): Pokerhand {
 
 /**
  * Checks if a given hand is a straight flush.
- * @preconditions The parameter array is sorted in increasing value.
  * @param hand Array of cards to be evaluated
  * @returns A boolean that shows true if a straight flush exist and false if it doesn't
  */

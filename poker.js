@@ -104,21 +104,39 @@ function selection(player, allhands, board, gamestate, pot1, pot2) {
     }
     return selection(player, allhands, board, gamestate, pot1, pot2);
 }
+/**
+ * Asks for user input to decide how many chips you will bet, then adds that amount of chips to pot1
+ * @param color The color of the chips you're betting
+ * @param number The number of the color, 0 = white, 1 = red, 2 = blue, 3 = green
+ * @param gamestate an array of the players' stacks
+ * @param pot1 Player 1's pot
+ * @param pot2 Player 2's pot
+ */
 function bet_number(color, number, gamestate, pot1, pot2) {
-    var prompt3 = (0, readline_sync_1.question)("How much do you want to bet? You have ".concat(gamestate[0][number].number, " ").concat(color, " chips. "));
-    if (Number.isNaN(Number(prompt3))) {
-        console.log("Not a number. Type a number.");
-        bet_number(color, number, gamestate, pot1, pot2);
-    }
-    else if (gamestate[0][number].number < Number(prompt3)) {
-        console.log("Not enough chips.");
-        bet_number(color, number, gamestate, pot1, pot2);
+    if (gamestate[0][number].number === 0) {
+        console.log("You have no ".concat(color, " chips. "));
     }
     else {
-        (0, stack_bet_1.make_bet)([color, Number(prompt3)], gamestate[0], pot1);
-        return 0;
+        var prompt3 = (0, readline_sync_1.question)("How much do you want to bet? You have ".concat(gamestate[0][number].number, " ").concat(color, " chips. "));
+        if (Number.isNaN(Number(prompt3))) {
+            console.log("Not a number. Type a number.");
+            bet_number(color, number, gamestate, pot1, pot2);
+        }
+        else if (gamestate[0][number].number < Number(prompt3)) {
+            console.log("Not enough chips.");
+            bet_number(color, number, gamestate, pot1, pot2);
+        }
+        else {
+            (0, stack_bet_1.make_bet)([color, Number(prompt3)], gamestate[0], pot1);
+        }
     }
 }
+/**
+ * Asks for user input to decide which colour chips you will bet
+ * @param gamestate an array of the players' stacks
+ * @param pot1 Player 1's pot
+ * @param pot2 Player 2's pot
+ */
 function betting_selection(gamestate, pot1, pot2) {
     var test = 1;
     var prompt2 = (0, readline_sync_1.question)('What do you want to bet? ');
