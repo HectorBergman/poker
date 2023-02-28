@@ -136,7 +136,6 @@ export function add_pot(pot: Pot, stack: Stack): Stack {
 // ____________________________________________________________________________________
 /**
  * Counts what a given pot is worth
- * @precondition pot has 4 elements, that is four different colored chip piles
  * @param pot (Array) a Pot with Piles of chips with different values and sizes
  * @returns the value of the pot in dollar
  */
