@@ -25,13 +25,12 @@ function createdeck() {
 }
 /**
  * Initiates user input and either deals the next card or ends the round depending on user input
- * @param player The player making the choice, as of right now it does nothing || MAYBE DELETE?
  * @param board The current state of the board
  * @param deck The list of remaining cards in the deck
  * @param allhands Array of array of cards representing the player's hand and the computer's hand
  * @returns undefined if player folds, else it returns allhands
  */
-function roundstart(player, board, deck, allhands, gamestate, pot1, pot2) {
+function roundstart(board, deck, allhands, gamestate, pot1, pot2) {
     var selectionresult = selection(0, allhands, board, gamestate, pot1, pot2);
     if (selectionresult === undefined) {
         return undefined;
@@ -69,11 +68,13 @@ function roundstart(player, board, deck, allhands, gamestate, pot1, pot2) {
 function selection(player, allhands, board, gamestate, pot1, pot2) {
     var prompt = (0, readline_sync_1.question)('What do you want to do? ');
     if (prompt.toLowerCase() === "bet") {
+        console.log("You have 4 stacks of chips. White, red, blue, green.");
         betting_selection(gamestate, pot1, pot2);
+        (0, stack_bet_1.call_bet)(pot1, pot2, gamestate[1]);
         return 1;
     }
     else if (prompt.toLowerCase() === "help") {
-        console.log('Type "bet" to bet, "hand" to look at your cards, "board" to look at the board, and "fold" to fold.');
+        console.log("Type 'bet' to bet, 'hand' to look at your cards, 'board' to look at the board, 'fold' to fold and 'check' to check.");
     }
     else if (prompt.toLowerCase() === "hand") {
         (0, cardimages_1.displaycards)([(0, helpers_1.describe)(allhands[player][0]), (0, helpers_1.describe)(allhands[player][1])]);
@@ -96,11 +97,15 @@ function selection(player, allhands, board, gamestate, pot1, pot2) {
         }
     }
     else if (prompt.toLowerCase() === "fold") {
-        console.log("You fold");
+        console.log("You fold.");
         return undefined; //end round if 1 player left
     }
+    else if (prompt.toLowerCase() === "check") {
+        console.log("You check.");
+        return 1;
+    }
     else {
-        console.log('Not a proper input. Type "help" for help.');
+        console.log("Not a proper input. Type 'help' for help.");
     }
     return selection(player, allhands, board, gamestate, pot1, pot2);
 }
@@ -152,9 +157,17 @@ function betting_selection(gamestate, pot1, pot2) {
     else if (prompt2.toLowerCase() === "green") {
         bet_number("green", 3, gamestate, pot1, pot2);
     }
+    else if (prompt2.toLowerCase() === "all in") {
+        console.log("All in!");
+        (0, stack_bet_1.all_in)(gamestate[0], pot1);
+    }
     else if (prompt2.toLowerCase() === "help") {
-        console.log("Type the corresponding colour of your stack to select it.");
+        console.log("Type the corresponding colour of your stack to select it. 'all in' to bet all your chips.");
+        console.log("('Cancel' to cancel betting)");
         test = 2;
+    }
+    else if (prompt2.toLowerCase() === "cancel") {
+        return 1;
     }
     else {
         console.log('Not a proper input. Type "help" for help.');
@@ -203,7 +216,9 @@ function holdem(players, gamestate, pot1, pot2) {
         }
     }
     dealcards(2);
-    var roundstartresult = roundstart(0, board, newdeck, allhands, gamestate, pot1, pot2);
+    console.log("Cards have been dealt. Type 'hand' to look at your cards, and 'board' to see the cards on the board.");
+    console.log("('help' for a list of all commands)");
+    var roundstartresult = roundstart(board, newdeck, allhands, gamestate, pot1, pot2);
     if (roundstartresult === undefined) {
         return undefined;
     }

@@ -3,7 +3,7 @@ import {random_list, describe} from './helpers'
 import {Deck, Hand, Board, Pocketcards, Pokerhand, Card, Bet, Pot, Stack, Pile, GameState} from './poker_types'
 import {question} from 'readline-sync'
 import {displaycards} from './cardimages'
-import {make_bet, call_bet, pot_value, make_pot, show_game_state} from './stack_bet';
+import {make_bet, call_bet, pot_value, make_pot, show_game_state, all_in} from './stack_bet';
 
 
 /**
@@ -26,16 +26,15 @@ function createdeck(): Deck{
 
 /**
  * Initiates user input and either deals the next card or ends the round depending on user input
- * @param player The player making the choice, as of right now it does nothing || MAYBE DELETE?
  * @param board The current state of the board
  * @param deck The list of remaining cards in the deck
  * @param allhands Array of array of cards representing the player's hand and the computer's hand
  * @returns undefined if player folds, else it returns allhands
  */
 
-function roundstart(player: number, board: Hand, deck: Deck, allhands: Array<Hand>, gamestate:GameState, pot1: Pot, pot2: Pot): Array<Hand> | undefined{ 
+function roundstart(board: Hand, deck: Deck, allhands: Array<Hand>, gamestate:GameState, pot1: Pot, pot2: Pot): Array<Hand> | undefined{ 
     let selectionresult = selection(0, allhands, board, gamestate, pot1, pot2);
-    if(selectionresult === undefined){
+    if (selectionresult === undefined){
         return undefined;
     }
     else{
@@ -71,14 +70,16 @@ function roundstart(player: number, board: Hand, deck: Deck, allhands: Array<Han
  * NOTE: Number is nothing of importance, just had to be anything except allhands or undefined.
  */
 
-function selection(player: number, allhands: Array<Hand>, board: Hand, gamestate:GameState, pot1: Pot, pot2: Pot): number | undefined{
+function selection(player: number, allhands: Array<Hand>, board: Hand, gamestate: GameState, pot1: Pot, pot2: Pot): number | undefined{
     var prompt = question('What do you want to do? ');
     if (prompt.toLowerCase() === "bet"){
+        console.log("You have 4 stacks of chips. White, red, blue, green.");
         betting_selection(gamestate, pot1, pot2);
+        call_bet(pot1, pot2, gamestate[1])
         return 1;
     }
     else if (prompt.toLowerCase() === "help"){
-        console.log('Type "bet" to bet, "hand" to look at your cards, "board" to look at the board, and "fold" to fold.')
+        console.log("Type 'bet' to bet, 'hand' to look at your cards, 'board' to look at the board, 'fold' to fold and 'check' to check.")
     }
     else if (prompt.toLowerCase() === "hand"){
         displaycards([describe(allhands[player][0]), describe(allhands[player][1])])
@@ -101,11 +102,15 @@ function selection(player: number, allhands: Array<Hand>, board: Hand, gamestate
         }
     }
     else if (prompt.toLowerCase() === "fold" ){
-        console.log("You fold");
+        console.log("You fold.");
         return undefined; //end round if 1 player left
     }
+    else if (prompt.toLowerCase() === "check"){
+        console.log("You check.");
+        return 1;
+    }
     else{
-        console.log('Not a proper input. Type "help" for help.')
+        console.log("Not a proper input. Type 'help' for help.")
     }
     return selection(player, allhands, board, gamestate, pot1, pot2);
 }
@@ -158,9 +163,19 @@ function betting_selection(gamestate: GameState, pot1: Pot, pot2: Pot){
     else if (prompt2.toLowerCase() === "green"){
         bet_number("green", 3, gamestate, pot1, pot2);
     }
+    else if (prompt2.toLowerCase() === "all in"){
+        console.log("All in!")
+        all_in(gamestate[0], pot1);
+        return 5;
+        
+    }
     else if (prompt2.toLowerCase() === "help"){
-        console.log("Type the corresponding colour of your stack to select it.");
+        console.log("Type the corresponding colour of your stack to select it. 'all in' to bet all your chips.");
+        console.log("('Cancel' to cancel betting)");
         test = 2;
+    }
+    else if (prompt2.toLowerCase() === "cancel"){
+        return 1;
     }
     else{
         console.log('Not a proper input. Type "help" for help.');
@@ -188,7 +203,6 @@ function betting_selection(gamestate: GameState, pot1: Pot, pot2: Pot){
 }
 
 export function holdem(players: number, gamestate: GameState, pot1: Pot, pot2: Pot): Array<Hand> | undefined{
-
     let newdeck: Deck = createdeck();
     let allhands: Array<Hand> = []; //Player one's hand is index 0, player two index 1, and so on.
     let board: Hand = []
@@ -210,7 +224,9 @@ export function holdem(players: number, gamestate: GameState, pot1: Pot, pot2: P
         }
     }
     dealcards(2);
-    let roundstartresult = roundstart(0, board, newdeck, allhands, gamestate, pot1, pot2);
+    console.log("Cards have been dealt. Type 'hand' to look at your cards, and 'board' to see the cards on the board.");
+    console.log("('help' for a list of all commands)");
+    let roundstartresult = roundstart(board, newdeck, allhands, gamestate, pot1, pot2);
     if (roundstartresult === undefined){
         return undefined
     }
