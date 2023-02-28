@@ -20,7 +20,7 @@ function round(gs: GameState) {
             console.log("Player 1 wins");
             add_pot(pot1, gs[0]);
             add_pot(pot2, gs[0]);
-            if (pot_value(gs[1]) === 0) {
+            if (pot_value(gs[0]) === 0) {
                 console.log("Player 1 wins the game");
                 poker_main();
             }
