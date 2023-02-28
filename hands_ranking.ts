@@ -1,33 +1,35 @@
 import {Hand, Pokerhand, Hands, Card} from './poker_types';
 import {has_four_of_akind, has_fullhouse, has_pair, has_three_of_akind, has_two_pairs, royal_flush, straight_flush, flush, straight} from './poker_hands'
+import { sorter } from './sorting';
 
 /**
  * Checks how much the hand is worth.
- * @precondition The hand evaluated is a valid hand, hand is sorted in value order.
+ * @precondition The hand evaluated is a valid hand.
  * @param hand Hand to be evaluated
  * @returns a number which represent how much each hand is worth
  */
 
 export function hand_rating(hand: Hand): Pokerhand {
-    return royal_flush(hand).exists
+    const sorted = sorter(hand);
+    return royal_flush(sorted).exists
            ? {exists: true, rang: 1}
-           : straight_flush(hand).exists
-           ? {exists: true, value: straight_flush(hand).value, rang: 2}
-           :has_four_of_akind(hand).exists
+           : straight_flush(sorted).exists
+           ? {exists: true, value: straight_flush(sorted).value, rang: 2}
+           :has_four_of_akind(sorted).exists
            ? {exists: true, rang: 3}
-           : has_fullhouse(hand).exists
-           ? {exists: true, value: has_fullhouse(hand).value, value2: has_fullhouse(hand).value2, rang: 4}
-           : flush(hand).exists
+           : has_fullhouse(sorted).exists
+           ? {exists: true, value: has_fullhouse(sorted).value, value2: has_fullhouse(sorted).value2, rang: 4}
+           : flush(sorted).exists
            ? {exists: true, rang: 5}
-           : straight(hand).exists
-           ? {exists: true, value: straight(hand).value, rang: 6}
-           : has_three_of_akind(hand).exists
-           ? {exists: true, value: has_three_of_akind(hand).value, rang: 7}
-           : has_two_pairs(hand).exists
-           ? {exists: true, value: has_two_pairs(hand).value, value2: has_two_pairs(hand).value2, rang: 8}
-           : has_pair(hand).exists
-           ? {exists: true, value: has_pair(hand).value, rang: 9}
-           : {exists: true, value: hand[hand.length - 1].value, rang: 10};
+           : straight(sorted).exists
+           ? {exists: true, value: straight(sorted).value, rang: 6}
+           : has_three_of_akind(sorted).exists
+           ? {exists: true, value: has_three_of_akind(sorted).value, rang: 7}
+           : has_two_pairs(sorted).exists
+           ? {exists: true, value: has_two_pairs(sorted).value, value2: has_two_pairs(sorted).value2, rang: 8}
+           : has_pair(sorted).exists
+           ? {exists: true, value: has_pair(sorted).value, rang: 9}
+           : {exists: true, value: sorted[sorted.length - 1].value, rang: 10};
 }
 
 /*
