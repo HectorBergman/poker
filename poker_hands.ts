@@ -2,16 +2,10 @@ import {find_suit, find_value} from './helpers'
 import {Hand, Card, Pokerhand } from './poker_types';
 import { sorter } from './sorting';
 
-/*
-function highcard(hand: Hand): number {
-    const highest: Card = hand[hand.length - 1]
-    return highest.value
-}
-*/
-
 
 /**
  * Checks if a given hand has a pair or not
+ * @preconditions The hand only contains valid cards.
  * @param hand (Hand) a hand of cards
  * @returns a Pokerhand tagged with "pair", with a boolean and the value of the pair
  */
@@ -56,8 +50,8 @@ function count_same_cards(hand: Hand, value: number, i = 0, j = 0): number {
 
 /**
  * Checks if a hand has a three of a kind
+ * @preconditions The hand only contains valid cards.
  * @param hand (Hand) a hand of cards
- * @param card_number (number) states how many cards the hand has
  * @returns a Pokerhand tagged with "three of a kind", with a boolean and the value of the three of a kind
  */
 export function has_three_of_akind(hand: Hand): Pokerhand {
@@ -74,6 +68,7 @@ export function has_three_of_akind(hand: Hand): Pokerhand {
 
 /**
  * Checks if a hand has a four of a kind
+ * @preconditions The hand only contains valid cards.
  * @param hand (Hand) a hand of cards
  * @returns a Pokerhand tagged with "four of a kind", with a boolean and the value of the four of a kind
  */
@@ -113,6 +108,7 @@ function make_new_hand(hand: Hand, new_hand: Hand, value: number, i = 0, j = 0):
 
 /**
  * Checks if a hand has two pairs
+ * @preconditions The hand only contains valid cards
  * @param hand (Hand) a hand of cards
  * @returns a Pokerhand tagged with "two pairs", with a boolean and values of the two pairs
  */
@@ -132,7 +128,8 @@ export function has_two_pairs(hand: Hand): Pokerhand {
 }
 
 /**
-* Checks if a hand has full house 
+* Checks if a hand has full house
+* @preconditions The hand only contains valid cards
 * @param hand (Hand) a hand of cards
 * @returns a Pokerhand tagged with "full house", with a boolean and values of the three of a kind and the pair
 */
@@ -152,7 +149,7 @@ export function has_fullhouse(hand: Hand): Pokerhand {
 
 /**
  * Checks if a given hand is a royal flush
- * @preconditions The array is sorted in increasing value.
+ * @preconditions The hand only contains valid cards.
  * @param hand Array of cards to be evaluated
  * @returns A boolean that shows if there is a royal flush or not.
  */
@@ -170,7 +167,7 @@ export function royal_flush(hand: Hand): Pokerhand {
 
 /**
  * Checks if a given hand is a straight flush.
- * @preconditions The parameter array is sorted in increasing value.
+ * @preconditions The hand only contains valid cards.
  * @param hand Array of cards to be evaluated
  * @returns A boolean that shows true if a straight flush exist and false if it doesn't
  */
@@ -232,12 +229,11 @@ export function flush(hand: Hand): Pokerhand {
 
 /**
  * Checks whether a given hand contains a straight of not.
- * @preconditions Array is sorted in increasing value order.
+ * @preconditions The hand only contains valid cards.
  * @param hand Array of cards that is to be evaluated
  * @returns Returns a boolean which shows true if it contains a straight and false if it doesn't.
  */
 export function straight(hand: Hand): Pokerhand {
-    const sorted = sorter(hand);
     function straight_helper(arr: Hand): Hand {
         let conseq_array: Array<Card> = [];
         let adder = 0;
@@ -259,7 +255,7 @@ export function straight(hand: Hand): Pokerhand {
         }
         return conseq_array;
     }
-    const help_arr = straight_helper(sorted);
+    const help_arr = straight_helper(hand);
     if (help_arr.length >= 5) {
         const highest = help_arr[help_arr.length - 1]
         return {exists: true, value: highest.value, name: 'straight', rang: 6};
