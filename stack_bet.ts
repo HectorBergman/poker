@@ -342,8 +342,7 @@ export function show_game_state(gs: GameState, pot: Pot): void {
     console.log("blue                    " +  gs[0][2].number + "                               " + gs[1][2].number );
     console.log("green                   " +  gs[0][3].number + "                               " + gs[1][3].number );
     console.log("");
-    console.log("pot value = " + pot_value(pot));
-    
+    console.log("pot value = " + pot_value(pot) * 2);
 }
 
 
