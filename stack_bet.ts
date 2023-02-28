@@ -343,8 +343,8 @@ export function reverse_bet(stack: Stack, pot1: Pot, pot2): void {
     function call(bet_value: number, pot1: Stack): void {
         function change_helper(change_to: number): void {
             for (let c = change_to + 1; c < 4; c += 1) {
-                if (stack2[c].number > 0) {
-                    change_currency(stack2, c, change_to);
+                if (stack[c].number > 0) {
+                    change_currency(stack, c, change_to);
                     break; 
                 }
             }    
@@ -474,10 +474,36 @@ console.log("pot1 value    " + pot_value(pot1));
 console.log("pot2 value    " + pot_value(pot2));
 
 */
+pot1 = make_pot();
+pot2 = make_pot();
+//4
+min_wager(stack1, pot1);
+min_wager(stack2, pot2);
+show_game_state([stack1, stack2], pot1);
+console.log("pot1 value    " + pot_value(pot1));
+console.log("pot2 value    " + pot_value(pot2));
+
+make_bet(["red", 1], stack1, pot1);
+call_bet(pot1, pot2, stack2);
+show_game_state([stack1, stack2], pot1);
+console.log("pot1 value    " + pot_value(pot1));
+console.log("pot2 value    " + pot_value(pot2));
 
 
 
+make_bet(["red", 1], stack1, pot1);
+//call_bet(pot1, pot2, stack2);
+show_game_state([stack1, stack2], pot1);
+console.log("pot1 value    " + pot_value(pot1));
+console.log("pot2 value    " + pot_value(pot2));
 
+
+reverse_bet(stack1, pot1, pot2);
+
+
+show_game_state([stack1, stack2], pot1);
+console.log("pot1 value    " + pot_value(pot1));
+console.log("pot2 value    " + pot_value(pot2));
 
 
 
