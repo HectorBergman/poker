@@ -5,6 +5,7 @@ import {has_four_of_akind, has_fullhouse, has_pair, has_three_of_akind, has_two_
 import {Stack} from './poker_types';
 import {make_pot, make_new_stack, add_pot, make_bet, call_bet, pot_value,
         auto_change, manual_change } from "./stack_bet";
+import { winners } from './hands_ranking';
         
 test('straight function is valid', () => {
     const card1: Card = {suit: 0, value: 7};
@@ -192,4 +193,10 @@ test('Stack_bet: add pot test', () => {
     add_pot(pot2, stack1);
     const v2: number = pot_value(stack1);
     expect(v2).toBe(64 + 25);
+});
+
+test('winners give correct winner', () => {
+    const handa = [{suit: 3, value: 13}, {suit: 1, value: 3}, {suit: 2, value: 9}, {suit: 1, value: 10}, {suit: 3, value: 2}, {suit: 3, value: 7}, {suit: 0, value: 8}];
+    const handb = [{suit: 3, value: 13}, {suit: 1, value: 3}, {suit: 2, value: 9}, {suit: 1, value: 10}, {suit: 3, value: 2}, {suit: 2, value: 2}, {suit: 2, value: 3}];
+    expect(winners(handa, handb)).toBe("Player 2 wins");
 });

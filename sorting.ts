@@ -2,13 +2,8 @@
 
 import { Hand, Card } from "./poker_types";
 
-type MyRecord = {
-    [key: string]: number | string;
-  };
-
-
-export function sorter(hand: Hand): any {
-  function sortRecordsByValue(records: MyRecord[], key: string): MyRecord[] {
+export function sorter(hand: Hand): Hand {
+  function sortRecordsByValue(records: Card[], key: string): Card[] {
     return records.sort((a, b) => {
       if (a[key] < b[key]) {
         return -1;
