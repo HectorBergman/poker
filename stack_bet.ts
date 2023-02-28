@@ -186,7 +186,7 @@ function can_call(bet_value: number, stack2: Stack): boolean {
  * @param stack2 Array of chip piles of a given player
  * @param pot2 Array for player's chip wager
  */
-function all_in(stack2: Stack, pot2: Pot): void {
+export function all_in(stack2: Stack, pot2: Pot): void {
     for (let i = 0; i < 4; i += 1) {
         make_bet([to_string(i), stack2[i].number], stack2, pot2);
     }
@@ -256,6 +256,7 @@ export function auto_change(stack: Stack, color: number, needed: number): void {
 
 /**
  * Automated betting system for when a player choses to call a bet
+ * @precondition pot and stack both have 4 elements
  * @param pot1 the wagered chips of the betting player
  * @param pot2 new pot which contains the calling player's wager
  * @param stack2 the stack of the calling player
@@ -277,17 +278,7 @@ export function call_bet(pot1: Pot, pot2: Pot, stack2: Stack): void {
                 if (bet_value <= 0) {
                     break;
                 } else if (bet_value < max) {
-                    continue; 
-               /* } else if (i == 0 && bet_value > max) {
-                    if (bet_value >= 10) {
-                        change_helper(2);
-                    } else if (bet_value >= 5) {
-                        change_helper(1);
-                    } else {
-                        change_helper(0);
-                    }
-                    call(bet_value, stack2);
-                    break; */
+                    continue;     
                 } else if (max == 0 && i != 0) {
                     break;
                 } else if (bet_value >= max) {
@@ -315,6 +306,7 @@ export function call_bet(pot1: Pot, pot2: Pot, stack2: Stack): void {
 
 /**
  * Puts in minimal wager for a player at the start of a round, that is one white chip worth 1 dollar
+ * @precondition pot and stack both have 4 elements
  * @param stack Stack of the player, where one white chip is removed
  * @param pot Pot of the player, where one white chip is placed
  */
@@ -342,8 +334,7 @@ export function show_game_state(gs: GameState, pot: Pot): void {
     console.log("blue                    " +  gs[0][2].number + "                               " + gs[1][2].number );
     console.log("green                   " +  gs[0][3].number + "                               " + gs[1][3].number );
     console.log("");
-    console.log("pot value = " + pot_value(pot));
-    
+    console.log("pot value = " + pot_value(pot) * 2);
 }
 
 
