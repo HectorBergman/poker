@@ -39,6 +39,14 @@ const hand2 = [{suit: 3, value: 13}, {suit: 1, value: 3}, {suit: 2, value: 9}, {
 console.log(hand_rating(hand1));
 console.log(hand_rating(hand2));
 */
+const hand3 = [{suit: 2, value: 9}, {suit: 3, value: 8}, {suit: 3, value: 3}, {suit: 0, value: 10}, {suit: 0, value: 11}, {suit: 3, value: 12}, {suit: 3, value: 6}];
+const hand4 = [{suit: 2, value: 9}, {suit: 3, value: 8}, {suit: 3, value: 3}, {suit: 0, value: 10}, {suit: 0, value: 11}, {suit: 2, value: 3}, {suit: 3, value: 13}];
+console.log(hand_rating(hand3));
+console.log(hand_rating(hand4));
+const hand1 = [{suit: 3, value: 4}, {suit: 1, value: 9}, {suit: 1, value: 6}, {suit: 1, value: 5}, {suit: 1, value: 14}, {suit: 1, value: 10}, {suit: 3, value: 6}];
+const hand2 = [{suit: 3, value: 4}, {suit: 1, value: 9}, {suit: 1, value: 6}, {suit: 1, value: 5}, {suit: 1, value: 14}, {suit: 0, value: 11}, {suit: 2, value: 8}];
+console.log(hand_rating(hand1));
+console.log(hand_rating(hand2));
 
 /*
 New implementation in order, should work if more than two players are playing.
@@ -97,4 +105,4 @@ export function winners(one: Hand, two: Hand): string {
     return "Unvalid game";
 }
 
-//console.log(winners(hand1, hand2));
+console.log(winners(hand3, hand4));
