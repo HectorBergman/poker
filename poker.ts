@@ -3,7 +3,7 @@ import {random_list, describe} from './helpers'
 import {Deck, Hand, Board, Pocketcards, Pokerhand, Card, Bet, Pot, Stack, Pile, GameState} from './poker_types'
 import {question} from 'readline-sync'
 import {displaycards} from './cardimages'
-import {make_bet, call_bet, pot_value, make_pot, show_game_state, all_in} from './stack_bet';
+import {make_bet, call_bet, pot_value, make_pot, show_game_state, all_in, reverse_bet} from './stack_bet';
 
 
 /**
@@ -75,7 +75,11 @@ function selection(player: number, allhands: Array<Hand>, board: Hand, gamestate
     if (prompt.toLowerCase() === "bet"){
         console.log("You have 4 stacks of chips. White, red, blue, green.");
         betting_selection(gamestate, pot1, pot2);
-        call_bet(pot1, pot2, gamestate[1])
+        show_game_state([pot1,pot2], []);
+        call_bet(pot1, pot2, gamestate[1]);
+        show_game_state([pot1,pot2], []);
+        reverse_bet(gamestate[1], pot1, pot2);
+        show_game_state([pot1,pot2], []);
         return 1;
     }
     else if (prompt.toLowerCase() === "help"){
@@ -166,6 +170,7 @@ function betting_selection(gamestate: GameState, pot1: Pot, pot2: Pot){
     else if (prompt2.toLowerCase() === "all in"){
         console.log("All in!")
         all_in(gamestate[0], pot1);
+        show_game_state([pot1,pot2], []);
         return 5;
         
     }
@@ -201,7 +206,11 @@ function betting_selection(gamestate: GameState, pot1: Pot, pot2: Pot){
         return betmore();
     }
 }
-
+function addboard(hand: Hand, board: Board){
+    for (let i = 2; i < 6; i++) {
+        hand[i] = board[i-2];
+      }
+}
 export function holdem(players: number, gamestate: GameState, pot1: Pot, pot2: Pot): Array<Hand> | undefined{
     let newdeck: Deck = createdeck();
     let allhands: Array<Hand> = []; //Player one's hand is index 0, player two index 1, and so on.
@@ -231,7 +240,12 @@ export function holdem(players: number, gamestate: GameState, pot1: Pot, pot2: P
         return undefined
     }
     else if (roundstartresult === allhands){
-        console.log(allhands);
+        displaycards([describe(allhands[0][0]), describe(allhands[0][1])])
+        console.log(`You had the ${describe(allhands[0][0])} and the ${describe(allhands[0][1])}`);
+        displaycards([describe(allhands[1][0]), describe(allhands[1][1])])
+        console.log(`Computer had the ${describe(allhands[1][0])} and the ${describe(allhands[1][1])}`);
+        addboard(allhands[0], board);
+        addboard(allhands[1], board);
         return allhands
     }  
 }

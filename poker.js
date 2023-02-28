@@ -70,7 +70,11 @@ function selection(player, allhands, board, gamestate, pot1, pot2) {
     if (prompt.toLowerCase() === "bet") {
         console.log("You have 4 stacks of chips. White, red, blue, green.");
         betting_selection(gamestate, pot1, pot2);
+        (0, stack_bet_1.show_game_state)([pot1, pot2], []);
         (0, stack_bet_1.call_bet)(pot1, pot2, gamestate[1]);
+        (0, stack_bet_1.show_game_state)([pot1, pot2], []);
+        (0, stack_bet_1.reverse_bet)(gamestate[1], pot1, pot2);
+        (0, stack_bet_1.show_game_state)([pot1, pot2], []);
         return 1;
     }
     else if (prompt.toLowerCase() === "help") {
@@ -160,6 +164,8 @@ function betting_selection(gamestate, pot1, pot2) {
     else if (prompt2.toLowerCase() === "all in") {
         console.log("All in!");
         (0, stack_bet_1.all_in)(gamestate[0], pot1);
+        (0, stack_bet_1.show_game_state)([pot1, pot2], []);
+        return 5;
     }
     else if (prompt2.toLowerCase() === "help") {
         console.log("Type the corresponding colour of your stack to select it. 'all in' to bet all your chips.");
@@ -194,6 +200,11 @@ function betting_selection(gamestate, pot1, pot2) {
         return betmore();
     }
 }
+function addboard(hand, board) {
+    for (var i = 2; i < 6; i++) {
+        hand[i] = board[i - 2];
+    }
+}
 function holdem(players, gamestate, pot1, pot2) {
     var newdeck = createdeck();
     var allhands = []; //Player one's hand is index 0, player two index 1, and so on.
@@ -223,7 +234,12 @@ function holdem(players, gamestate, pot1, pot2) {
         return undefined;
     }
     else if (roundstartresult === allhands) {
-        console.log(allhands);
+        (0, cardimages_1.displaycards)([(0, helpers_1.describe)(allhands[0][0]), (0, helpers_1.describe)(allhands[0][1])]);
+        console.log("You had the ".concat((0, helpers_1.describe)(allhands[0][0]), " and the ").concat((0, helpers_1.describe)(allhands[0][1])));
+        (0, cardimages_1.displaycards)([(0, helpers_1.describe)(allhands[1][0]), (0, helpers_1.describe)(allhands[1][1])]);
+        console.log("Computer had the ".concat((0, helpers_1.describe)(allhands[1][0]), " and the ").concat((0, helpers_1.describe)(allhands[1][1])));
+        addboard(allhands[0], board);
+        addboard(allhands[1], board);
         return allhands;
     }
 }
