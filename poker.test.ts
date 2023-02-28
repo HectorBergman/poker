@@ -198,5 +198,5 @@ test('Stack_bet: add pot test', () => {
 test('winners give correct winner', () => {
     const handa = [{suit: 3, value: 13}, {suit: 1, value: 3}, {suit: 2, value: 9}, {suit: 1, value: 10}, {suit: 3, value: 2}, {suit: 3, value: 7}, {suit: 0, value: 8}];
     const handb = [{suit: 3, value: 13}, {suit: 1, value: 3}, {suit: 2, value: 9}, {suit: 1, value: 10}, {suit: 3, value: 2}, {suit: 2, value: 2}, {suit: 2, value: 3}];
-    expect(winners(handa, handb)).toBe(handb);
+    expect(winners(handa, handb)).toBe("Player 2 wins");
 });

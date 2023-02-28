@@ -3,7 +3,12 @@ import {random_list, describe} from './helpers'
 import {Deck, Hand, Board, Pocketcards, Pokerhand, Card, Bet, Pot, Stack, Pile, GameState} from './poker_types'
 import {question} from 'readline-sync'
 import {displaycards} from './cardimages'
+<<<<<<< HEAD
 import {make_bet, call_bet, pot_value, make_pot} from './stack_bet';
+=======
+import {make_bet, call_bet, pot_value, make_pot, show_game_state} from './stack_bet';
+
+>>>>>>> 8447f0c39402d8da29db9ac5409d4125b7bdd61f
 
 /**
  * Generates a list of 52 unique cards with suit 0-3 and value 2-14 (11 = jack, 12 = queen, 13 = king, 14 = ace)
@@ -109,22 +114,39 @@ function selection(player: number, allhands: Array<Hand>, board: Hand, gamestate
     return selection(player, allhands, board, gamestate, pot1, pot2);
 }
 
-function bet_number(color: string, number: number, gamestate: GameState, pot1: Pot, pot2: Pot){
-    var prompt3 = question(`How much do you want to bet? You have ${gamestate[0][number].number} ${color} chips. `)
-    if (Number.isNaN(Number(prompt3))){
-        console.log("Not a number. Type a number.");
-        bet_number(color, number, gamestate, pot1, pot2)
-    }
-    else if(gamestate[0][number].number < Number(prompt3)){
-        console.log("Not enough chips.");
-        bet_number(color, number, gamestate, pot1, pot2)
-    }else{
-        make_bet([color, Number(prompt3)], gamestate[0] ,pot1);
-        return 0;
-    }
-    
-}
+/**
+ * Asks for user input to decide how many chips you will bet, then adds that amount of chips to pot1
+ * @param color The color of the chips you're betting
+ * @param number The number of the color, 0 = white, 1 = red, 2 = blue, 3 = green
+ * @param gamestate an array of the players' stacks
+ * @param pot1 Player 1's pot
+ * @param pot2 Player 2's pot
+ */
 
+function bet_number(color: string, number: number, gamestate: GameState, pot1: Pot, pot2: Pot){
+    if (gamestate[0][number].number === 0){
+        console.log(`You have no ${color} chips. `)
+    }
+    else{
+        var prompt3 = question(`How much do you want to bet? You have ${gamestate[0][number].number} ${color} chips. `)
+        if (Number.isNaN(Number(prompt3))){
+            console.log("Not a number. Type a number.");
+            bet_number(color, number, gamestate, pot1, pot2)
+        }
+        else if(gamestate[0][number].number < Number(prompt3)){
+            console.log("Not enough chips.");
+            bet_number(color, number, gamestate, pot1, pot2)
+        }else{
+            make_bet([color, Number(prompt3)], gamestate[0] ,pot1);
+        }
+    }
+}
+/**
+ * Asks for user input to decide which colour chips you will bet
+ * @param gamestate an array of the players' stacks
+ * @param pot1 Player 1's pot
+ * @param pot2 Player 2's pot
+ */
 function betting_selection(gamestate: GameState, pot1: Pot, pot2: Pot){
     let test = 1;
     var prompt2 = question('What do you want to bet? ')

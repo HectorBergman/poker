@@ -8,15 +8,14 @@ function round(gs) {
     (0, stack_bet_1.show_game_state)(gs);
     var pot1 = (0, stack_bet_1.make_pot)();
     var pot2 = (0, stack_bet_1.make_pot)();
-    (0, stack_bet_1.min_wager)(gs[0], pot1);
-    (0, stack_bet_1.min_wager)(gs[1], pot2);
     var hands = (0, poker_1.holdem)(2, gs, pot1, pot2);
     if (hands == undefined) {
         (0, stack_bet_1.add_pot)(pot1, gs[1]);
         (0, stack_bet_1.add_pot)(pot2, gs[1]);
     }
     else {
-        if ((0, hands_ranking_1.winners)(hands[0], hands[1]) === "Player 1 wins") {
+        var result = (0, hands_ranking_1.winners)(hands[0], hands[1]);
+        if (result === "Player 1 wins") {
             console.log("Player 1 wins");
             (0, stack_bet_1.add_pot)(pot1, gs[0]);
             (0, stack_bet_1.add_pot)(pot2, gs[0]);
@@ -25,7 +24,7 @@ function round(gs) {
                 poker_main();
             }
         }
-        else if ((0, hands_ranking_1.winners)(hands[0], hands[1]) === "Player 2 wins") {
+        else if (result === "Player 2 wins") {
             console.log("Player 2 wins");
             (0, stack_bet_1.add_pot)(pot1, gs[1]);
             (0, stack_bet_1.add_pot)(pot2, gs[1]);
@@ -34,7 +33,7 @@ function round(gs) {
                 poker_main();
             }
         }
-        else if ((0, hands_ranking_1.winners)(hands[0], hands[1]) === "It's a tie") {
+        else {
             console.log("It's a tie");
             (0, stack_bet_1.add_pot)(pot1, gs[0]);
             (0, stack_bet_1.add_pot)(pot2, gs[1]);
