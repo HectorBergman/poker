@@ -183,7 +183,7 @@ export function make_bet(bet: Bet, stack: Stack, pot: Pot): void {
  * @returns wether the player can hot true/false
  */
 function can_call(bet_value: number, stack2: Stack): boolean {
-    return bet_value <= pot_value(stack2);
+    return bet_value < pot_value(stack2);
 }
 
 /**
@@ -338,7 +338,7 @@ export function min_wager(stack: Stack, pot: Pot): void {
  * @param pot1 the wagered chips of the betting player
  * @param pot2 new pot which contains the calling player's wager
  */
-export function reverse_bet(stack: Stack, pot1: Pot, pot2): void {
+export function reverse_bet(stack: Stack, pot1: Pot, pot2: Pot): void {
     let pot_dif = pot_value(pot1) - pot_value(pot2);
     function call(bet_value: number, pot1: Stack): void {
         function change_helper(change_to: number): void {
@@ -483,6 +483,15 @@ show_game_state([stack1, stack2], pot1);
 console.log("pot1 value    " + pot_value(pot1));
 console.log("pot2 value    " + pot_value(pot2));
 
+all_in(stack1, pot1)
+show_game_state([stack1, stack2], pot1);
+console.log("pot1 value    " + pot_value(pot1));
+console.log("pot2 value    " + pot_value(pot2));
+call_bet(pot1, pot2, stack2)
+show_game_state([stack1, stack2], pot1);
+console.log("pot1 value    " + pot_value(pot1));
+console.log("pot2 value    " + pot_value(pot2));
+/*
 make_bet(["red", 1], stack1, pot1);
 call_bet(pot1, pot2, stack2);
 show_game_state([stack1, stack2], pot1);
@@ -505,5 +514,5 @@ show_game_state([stack1, stack2], pot1);
 console.log("pot1 value    " + pot_value(pot1));
 console.log("pot2 value    " + pot_value(pot2));
 
-
+*/
 

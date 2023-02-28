@@ -176,7 +176,7 @@ exports.make_bet = make_bet;
  * @returns wether the player can hot true/false
  */
 function can_call(bet_value, stack2) {
-    return bet_value <= pot_value(stack2);
+    return bet_value < pot_value(stack2);
 }
 /**
  * Makes an all in
@@ -479,17 +479,35 @@ min_wager(stack2, pot2);
 show_game_state([stack1, stack2], pot1);
 console.log("pot1 value    " + pot_value(pot1));
 console.log("pot2 value    " + pot_value(pot2));
+all_in(stack1, pot1);
+show_game_state([stack1, stack2], pot1);
+console.log("pot1 value    " + pot_value(pot1));
+console.log("pot2 value    " + pot_value(pot2));
+call_bet(pot1, pot2, stack2);
+show_game_state([stack1, stack2], pot1);
+console.log("pot1 value    " + pot_value(pot1));
+console.log("pot2 value    " + pot_value(pot2));
+/*
 make_bet(["red", 1], stack1, pot1);
 call_bet(pot1, pot2, stack2);
 show_game_state([stack1, stack2], pot1);
 console.log("pot1 value    " + pot_value(pot1));
 console.log("pot2 value    " + pot_value(pot2));
+
+
+
 make_bet(["red", 1], stack1, pot1);
 //call_bet(pot1, pot2, stack2);
 show_game_state([stack1, stack2], pot1);
 console.log("pot1 value    " + pot_value(pot1));
 console.log("pot2 value    " + pot_value(pot2));
+
+
 reverse_bet(stack1, pot1, pot2);
+
+
 show_game_state([stack1, stack2], pot1);
 console.log("pot1 value    " + pot_value(pot1));
 console.log("pot2 value    " + pot_value(pot2));
+
+*/
