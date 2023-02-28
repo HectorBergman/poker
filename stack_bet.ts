@@ -81,6 +81,7 @@ function parse_bet(bet: Bet): Pile {
 
 /**
  * Removes a bet from a stack
+ * @precondition pot and stack both have 4 elements, that is four different colored chip piles
  * @param stack (array) an array of different colored piles 
  * @param bet (array) an array of a string which gives the color and a number which give the number of chips
  * @returns The initial stack but with the bet pile removed
@@ -119,6 +120,7 @@ function place_bet(pot: Pot, bet: Bet): Pot {
 
 /**
  * Adds pot to the rounds' winners' stack
+ * @precondition pot and stack both have 4 elements, that is four different colored chip piles
  * @param pot an array which marks the places for chip piles according to color
  * @param stack an array of chip piles with color as index
  * @returns the original stack with the pot added
@@ -134,6 +136,7 @@ export function add_pot(pot: Pot, stack: Stack): Stack {
 // ____________________________________________________________________________________
 /**
  * Counts what a given pot is worth
+ * @precondition pot has 4 elements, that is four different colored chip piles
  * @param pot (Array) a Pot with Piles of chips with different values and sizes
  * @returns the value of the pot in dollar
  */
@@ -147,6 +150,7 @@ export function pot_value(pot: Pot): number {
 
 /**
  * Checks if a bet made by a player is valid
+ * @precondition stack has 4 elements, that is four different colored chip piles
  * @param bet an array of a string wich specifies the color of the bet's chips, and their number
  * @param stack the stack of the player who made the bet
  * @returns If the bet is valid True/false
@@ -172,7 +176,8 @@ export function make_bet(bet: Bet, stack: Stack, pot: Pot): void {
 }
 
 /**
- * Decides if the player can call a bet or not 
+ * Decides if the player can call a bet or not
+ * @precondition stack has 4 elements, that is four different colored chip piles
  * @param bet value of the other player's bet
  * @param stack2 The stack of the player which wants to call
  * @returns wether the player can hot true/false
@@ -183,6 +188,7 @@ function can_call(bet_value: number, stack2: Stack): boolean {
 
 /**
  * Makes an all in
+ * @precondition pot and stack both have 4 elements, that is four different colored chip piles
  * @param stack2 Array of chip piles of a given player
  * @param pot2 Array for player's chip wager
  */
@@ -192,8 +198,11 @@ export function all_in(stack2: Stack, pot2: Pot): void {
     }
 }
 
+
+
 /**
- * Changes from a higher value chip to a lower chip pile, 
+ * Changes from a higher value chip to a lower chip pile,
+ * @precondition stack has 4 elements, that is four different colored chip piles
  * @param stack2 Array of chip piles of a given player
  * @param high the higher chip value which the player wants to change from
  * @param low the lower chip value which the player wants to change into
@@ -217,6 +226,7 @@ export function change_currency(stack2: Stack, high: number, low = 0): void {
 
 /**
  * Alloes player to manually change a higher value chip pile into a pile with a lower value
+ * @precondition stack has 4 elements, that is four different colored chip piles
  * @param stack  Array of chip piles of a given player
  * @param to the lower chip value which the player wants to change into
  * @param from the higher chip value which the player wants to change from
@@ -234,6 +244,7 @@ export function manual_change(stack: Stack, to: string, from: string, count = 1)
 
 /**
  * changes higher value coins to arrange the wanted valaue made up of the chips of the given value 
+ * @precondition stack has 4 elements, that is four different colored chip piles
  * @param stack Array of chip piles of a given player
  * @param color Gives the color of the chips the player wants
  * @param needed Amount which is needed in the given chip
@@ -256,7 +267,7 @@ export function auto_change(stack: Stack, color: number, needed: number): void {
 
 /**
  * Automated betting system for when a player choses to call a bet
- * @precondition pot and stack both have 4 elements
+ * @precondition pot and stack both have 4 elements, that is four different colored chip piles
  * @param pot1 the wagered chips of the betting player
  * @param pot2 new pot which contains the calling player's wager
  * @param stack2 the stack of the calling player
@@ -306,7 +317,7 @@ export function call_bet(pot1: Pot, pot2: Pot, stack2: Stack): void {
 
 /**
  * Puts in minimal wager for a player at the start of a round, that is one white chip worth 1 dollar
- * @precondition pot and stack both have 4 elements
+ * @precondition pot and stack both have 4 elements, that is four different colored chip piles
  * @param stack Stack of the player, where one white chip is removed
  * @param pot Pot of the player, where one white chip is placed
  */
@@ -319,11 +330,61 @@ export function min_wager(stack: Stack, pot: Pot): void {
     }
 }
 
+/**
+ * Gives back the betting player as much as the calling player couldn't call: if pot1's value is larger that pot2,
+ *           it is reduced by the difference, which is added to stack 1
+ * @precondition pot and stack both have 4 elements, that is four different colored chip piles
+ * @param stack the stack of the calling player
+ * @param pot1 the wagered chips of the betting player
+ * @param pot2 new pot which contains the calling player's wager
+ */
+export function reverse_bet(stack: Stack, pot1: Pot, pot2): void {
+    let pot_dif = pot_value(pot1) - pot_value(pot2);
+    function call(bet_value: number, pot1: Stack): void {
+        function change_helper(change_to: number): void {
+            for (let c = change_to + 1; c < 4; c += 1) {
+                if (stack2[c].number > 0) {
+                    change_currency(stack2, c, change_to);
+                    break; 
+                }
+            }    
+        }
+        for (let i = 3; i >= 0; i -= 1) {
+            for (let j = pot1[i].number; j >= 0 ; j -= 1) {
+                const max = pot1[i].chip.value * j; 
+                if (bet_value <= 0) {
+                    break;
+                } else if (bet_value < max) {
+                    continue;     
+                } else if (max == 0 && i != 0) {
+                    break;
+                } else if (bet_value >= max) {
+                    make_bet([to_string(i), j], pot1, stack);
+                    bet_value = bet_value - max;
+                    if (i == 0 && bet_value > 0) {
+                        if (bet_value >= 10) {
+                            change_helper(2);
+                        } else if (bet_value >= 5) {
+                            change_helper(1);
+                        } else {
+                            change_helper(0);
+                        }
+                        call(bet_value, pot1);
+                    }
+                    break;
+                }  
+            }
+        }
+    } if (pot_dif > 0) {
+        return call(pot_dif, pot1)
+    } else {}
+}
 
 
 
 /**
  * Prints the players' chip stack
+ * @precondition stack has 4 elements, that is four different colored chip piles
  * @param gs (Gamestate) an array of the players' stacks
  */ 
 export function show_game_state(gs: GameState, pot: Pot): void {
