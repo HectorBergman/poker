@@ -128,7 +128,6 @@ exports.add_pot = add_pot;
 // ____________________________________________________________________________________
 /**
  * Counts what a given pot is worth
- * @precondition pot has 4 elements, that is four different colored chip piles
  * @param pot (Array) a Pot with Piles of chips with different values and sizes
  * @returns the value of the pot in dollar
  */
@@ -245,7 +244,7 @@ function auto_change(stack, color, needed) {
         for (var h = color + 1; h <= green; h += 1) {
             if (stack[h].number > 0) {
                 change_currency(stack, h, color);
-                auto_change(stack, color, needed - stack2[h].chip.value);
+                auto_change(stack, color, needed - stack[h].chip.value);
                 break;
             }
         }
@@ -401,14 +400,18 @@ function show_game_state(gs, pot) {
 }
 exports.show_game_state = show_game_state;
 //test
-var stack1 = make_new_stack();
-var stack2 = make_new_stack();
-var pot1 = make_pot();
-var pot2 = make_pot();
+/*
+const stack1: Stack = make_new_stack();
+const stack2: Stack = make_new_stack();
+let pot1 = make_pot();
+let pot2 = make_pot();
+
 console.log(pot_value(stack1));
+
 //manual_change(stack1, "red", "blue", 2);
 //all_in(stack1, pot1);
-/*
+
+
 
 //0
 show_game_state([stack1, stack2]);
@@ -470,7 +473,7 @@ show_game_state([stack1, stack2]);
 console.log("pot1 value    " + pot_value(pot1));
 console.log("pot2 value    " + pot_value(pot2));
 
-*/
+
 pot1 = make_pot();
 pot2 = make_pot();
 //4
@@ -479,15 +482,16 @@ min_wager(stack2, pot2);
 show_game_state([stack1, stack2], pot1);
 console.log("pot1 value    " + pot_value(pot1));
 console.log("pot2 value    " + pot_value(pot2));
-all_in(stack1, pot1);
+
+all_in(stack1, pot1)
 show_game_state([stack1, stack2], pot1);
 console.log("pot1 value    " + pot_value(pot1));
 console.log("pot2 value    " + pot_value(pot2));
-call_bet(pot1, pot2, stack2);
+call_bet(pot1, pot2, stack2)
 show_game_state([stack1, stack2], pot1);
 console.log("pot1 value    " + pot_value(pot1));
 console.log("pot2 value    " + pot_value(pot2));
-/*
+
 make_bet(["red", 1], stack1, pot1);
 call_bet(pot1, pot2, stack2);
 show_game_state([stack1, stack2], pot1);
