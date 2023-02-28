@@ -75,11 +75,10 @@ function selection(player: number, allhands: Array<Hand>, board: Hand, gamestate
     if (prompt.toLowerCase() === "bet"){
         console.log("You have 4 stacks of chips. White, red, blue, green.");
         betting_selection(gamestate, pot1, pot2);
-        show_game_state([pot1,pot2], []);
         call_bet(pot1, pot2, gamestate[1]);
-        show_game_state([pot1,pot2], []);
         reverse_bet(gamestate[1], pot1, pot2);
-        show_game_state([pot1,pot2], []);
+        console.log(pot1);
+        console.log(pot2);
         return 1;
     }
     else if (prompt.toLowerCase() === "help"){
@@ -170,7 +169,7 @@ function betting_selection(gamestate: GameState, pot1: Pot, pot2: Pot){
     else if (prompt2.toLowerCase() === "all in"){
         console.log("All in!")
         all_in(gamestate[0], pot1);
-        show_game_state([pot1,pot2], []);
+        console.log(pot1);
         return 5;
         
     }
