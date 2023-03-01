@@ -76,7 +76,7 @@ function selection(player: number, allhands: Array<Hand>, board: Hand, gamestate
         console.log("You have 4 stacks of chips. White, red, blue, green.");
         betting_selection(gamestate, pot1, pot2);
         call_bet(pot1, pot2, gamestate[1]);
-        reverse_bet(gamestate[1], pot1, pot2);
+        reverse_bet(gamestate[0], pot1, pot2);
         console.log(pot1);
         console.log(pot2);
         return 1;
