@@ -7,33 +7,33 @@ import {question} from 'readline-sync'
 import {cardimages} from './cardimages'
 
 function round(gs: GameState) {
-    menu();
     let pot1 = make_pot();
     let pot2 = make_pot();
     min_wager(gs[0], pot1);
     min_wager(gs[1], pot2);
     show_game_state(gs, pot1);
     const hands: Hands | undefined = holdem(2, gs, pot1, pot2);
+    console.log(hands);
     if (hands == undefined) {
         add_pot(pot1, gs[1]);
         add_pot(pot2, gs[1]);
     } else {
         let result = winners(hands[0], hands[1])
         if (result === "Player 1 wins") {
-            console.log("Player 1 wins");
+            console.log("Player wins the round");
             add_pot(pot1, gs[0]);
             add_pot(pot2, gs[0]);
             if (pot_value(gs[1]) === 0) {
-                console.log("Player 1 wins the game");
+                console.log("Player wins the game");
                 poker_main();
             }
         }
         else if (result === "Player 2 wins") {
-            console.log("Player 2 wins");
+            console.log("Computer wins the round");
             add_pot(pot1, gs[1]);
             add_pot(pot2, gs[1]);
             if (pot_value(gs[1]) === 0) {
-                console.log("Player 1 wins the game");
+                console.log("Computer wins the game");
                 poker_main();
             } 
         }
@@ -47,6 +47,7 @@ function round(gs: GameState) {
 }
 
 function poker_main(): void {
+    menu();
     console.log("Poker");
     console.log("");
     const pn = 2;
@@ -56,7 +57,6 @@ function poker_main(): void {
     }
     round(gs);
 }
-round([make_new_stack(), make_new_stack()]);
 
 function menu(): void{
     console.log(cardimages['Intro']);
@@ -79,3 +79,5 @@ function menu(): void{
     }
     return minimenu();
 }
+
+poker_main();

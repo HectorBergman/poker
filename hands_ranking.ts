@@ -141,4 +141,4 @@ export function winners(one: Hand, two: Hand): string {
     return "Unvalid game";
 }
 
-console.log(winners(hand1, hand2));
+//console.log(winners(hand3, hand4));
