@@ -21,8 +21,11 @@ export type Pocketcards = Array<Card>;
 export type Pokerhand = {
     exists: boolean,
     value?: number,
+    valid1?: Hand,
     value2?: number, 
+    valid2?: Hand,
     flush?: Hand,
+    best_hand?: Hand,
     rang: number,
     name?: string,
     suit?: string,

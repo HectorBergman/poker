@@ -16,7 +16,7 @@ export function hand_rating(hand: Hand): Pokerhand {
            : straight_flush(sorted).exists
            ? {exists: true, value: straight_flush(sorted).value, rang: 2}
            :has_four_of_akind(sorted).exists
-           ? {exists: true, rang: 3}
+           ? {exists: true, rang: 3, best_hand: has_four_of_akind(sorted).best_hand}
            : has_fullhouse(sorted).exists
            ? {exists: true, value: has_fullhouse(sorted).value, value2: has_fullhouse(sorted).value2, rang: 4}
            : flush(sorted).exists
@@ -32,6 +32,11 @@ export function hand_rating(hand: Hand): Pokerhand {
            : {exists: true, value: sorted[sorted.length - 1].value, rang: 10};
 }
 
+const hand1: Hand = [{suit: 0, value: 5}, {suit: 0, value: 3}, {suit: 1, value: 2}, 
+    {suit: 2, value: 5}, {suit: 1, value: 5}, {suit: 3, value: 4}, {suit: 2, value: 5}];
+
+console.log(hand_rating(hand1));
+
 /*
 const hand1 = [{suit: 3, value: 13}, {suit: 1, value: 3}, {suit: 2, value: 9}, {suit: 1, value: 10}, {suit: 3, value: 2}, {suit: 3, value: 7}, {suit: 0, value: 8}];
 const hand2 = [{suit: 3, value: 13}, {suit: 1, value: 3}, {suit: 2, value: 9}, {suit: 1, value: 10}, {suit: 3, value: 2}, {suit: 2, value: 2}, {suit: 2, value: 3}];
@@ -39,6 +44,7 @@ const hand2 = [{suit: 3, value: 13}, {suit: 1, value: 3}, {suit: 2, value: 9}, {
 console.log(hand_rating(hand1));
 console.log(hand_rating(hand2));
 */
+/*
 const hand3 = [{suit: 2, value: 9}, {suit: 3, value: 8}, {suit: 3, value: 3}, {suit: 0, value: 10}, {suit: 0, value: 11}, {suit: 3, value: 12}, {suit: 3, value: 6}];
 const hand4 = [{suit: 2, value: 9}, {suit: 3, value: 8}, {suit: 3, value: 3}, {suit: 0, value: 10}, {suit: 0, value: 11}, {suit: 2, value: 3}, {suit: 3, value: 13}];
 console.log(hand_rating(hand3));
@@ -47,6 +53,7 @@ const hand1 = [{suit: 3, value: 4}, {suit: 1, value: 9}, {suit: 1, value: 6}, {s
 const hand2 = [{suit: 3, value: 4}, {suit: 1, value: 9}, {suit: 1, value: 6}, {suit: 1, value: 5}, {suit: 1, value: 14}, {suit: 0, value: 11}, {suit: 2, value: 8}];
 console.log(hand_rating(hand1));
 console.log(hand_rating(hand2));
+*/
 
 /*
 New implementation in order, should work if more than two players are playing.
@@ -105,4 +112,4 @@ export function winners(one: Hand, two: Hand): string {
     return "Unvalid game";
 }
 
-console.log(winners(hand3, hand4));
+//console.log(winners(hand3, hand4));
