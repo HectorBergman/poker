@@ -113,3 +113,6 @@ export function winners(one: Hand, two: Hand): string {
 }
 
 //console.log(winners(hand3, hand4));
+const hand3 = [{suit: 3, value: 11}, {suit: 1, value: 6}, {suit: 1, value: 13}, {suit: 2, value: 2}, {suit: 1, value: 8}, {suit: 3, value: 6}, {suit: 0, value: 6}];
+const hand4 = [{suit: 2, value: 8}, {suit: 0, value: 3},{suit: 1, value: 13}, {suit: 2, value: 2}, {suit: 1, value: 8}, {suit: 3, value: 6}, {suit: 0, value: 6}];
+console.log(winners(hand3, hand4));
