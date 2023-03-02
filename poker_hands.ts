@@ -211,13 +211,18 @@ function make_new_hand(hand: Hand, new_hand: Hand, value: number, i = 0, j = 0):
  * @returns a Pokerhand tagged with "two pairs", with a boolean and values of the two pairs
  */
 export function has_two_pairs(hand: Hand): Pokerhand {
-    const pair = has_pair(hand);
+    const pair: Pokerhand = has_pair(hand);
     if (pair.exists && pair.value !== undefined) {
         const new_hand: Hand = make_new_hand(hand, [], pair.value);
         const second_pair =  has_pair(new_hand);
-        if (second_pair.exists && second_pair.valid1 != undefined && pair.valid1 != undefined) {
-            let best = two_hands_best(hand, second_pair.valid1, pair.valid1);
-            return {exists: true, value: second_pair.value, value2: pair.value, name: "two pairs", rang: 8, best_hand: best};
+        if (second_pair.exists && second_pair.valid1 != undefined && second_pair.value != undefined) {
+            //let best = two_hands_best(hand, second_pair.valid1, pair.valid1);
+            const new_hand2: Hand = make_new_hand(new_hand, [], second_pair.value);
+            const third_pair: Pokerhand =  has_pair(new_hand2);
+            if (third_pair.exists && third_pair.value !== undefined) {
+                return {exists: true, value: third_pair.value, value2: second_pair.value, name: "two pairs", rang: 8};
+            } else { return {exists: true, value: second_pair.value, value2: pair.value, name: "two pairs", rang: 8};
+        }
         } else {
             return  {exists: false, name: "two pairs", rang: 0};
         }
@@ -251,8 +256,8 @@ function two_hands_best(hand: Hand, one: Hand, two: Hand): Hand {
     return temp_arr;
 }
 
-const hand1: Hand = [{suit: 0, value: 4}, {suit: 0, value: 3}, {suit: 1, value: 4}, 
-    {suit: 2, value: 7}, {suit: 1, value: 2}, {suit: 3, value: 7}, {suit: 2, value: 3}];
+const hand1: Hand = [{suit: 3, value: 3}, {suit: 2, value: 3}, {suit: 0, value: 4}, {suit: 0, value: 8}, {suit: 1, value: 4}, 
+    {suit: 2, value: 7}, {suit: 1, value: 7}];
 
 console.log(has_two_pairs(hand1));
 
