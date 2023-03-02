@@ -4,7 +4,7 @@ import {has_four_of_akind, has_fullhouse, has_pair, has_three_of_akind, has_two_
 
 import {Stack} from './poker_types';
 import {make_pot, make_new_stack, add_pot, make_bet, call_bet, pot_value,
-        auto_change, manual_change } from "./stack_bet";
+        auto_change, manual_change, reverse_bet, all_in, min_wager } from "./stack_bet";
 import { winners } from './hands_ranking';
         
 test('straight function is valid', () => {
@@ -192,7 +192,32 @@ test('Stack_bet: add pot test', () => {
     add_pot(pot1, stack1);
     add_pot(pot2, stack1);
     const v2: number = pot_value(stack1);
-    expect(v2).toBe(64 + 25);
+    expect(v2).toBe(65 + 25);
+});
+
+test('Stack_bet: reverse bet returns correct value to first stack', () => {
+    const stack1: Stack = make_new_stack();
+    const stack2: Stack = make_new_stack();
+    let pot1 = make_pot();
+    let pot2 = make_pot();
+    make_bet(["white", 5], stack2, pot2);
+    pot2 = make_pot();
+    all_in(stack1, pot1);
+    call_bet(pot1, pot2, stack2);
+    reverse_bet(stack1, pot1, pot2);
+    const k = pot_value(stack1);
+    expect(k).toBe(5);
+});
+
+test('Stack_bet: min_wager puts ', () => {
+    const stack1: Stack = make_new_stack();
+    const stack2: Stack = make_new_stack();
+    let pot1 = make_pot();
+    let pot2 = make_pot();
+    min_wager(stack1, pot1);
+    min_wager(stack2, pot2)
+    const k = pot_value(pot1) + pot_value(pot2) ;
+    expect(k).toBe(2);
 });
 
 test('winners give correct winner', () => {
