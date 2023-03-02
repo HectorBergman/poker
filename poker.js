@@ -205,7 +205,7 @@ function betting_selection(gamestate, pot1, pot2) {
  * @param board The cards on the board
  */
 function addboard(hand, board) {
-    for (var i = 2; i < 6; i++) {
+    for (var i = 2; i < 7; i++) {
         hand[i] = board[i - 2];
     }
 }

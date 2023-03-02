@@ -4,11 +4,16 @@ exports.__esModule = true;
 var poker_1 = require("./poker");
 var stack_bet_1 = require("./stack_bet");
 var hands_ranking_1 = require("./hands_ranking");
+var readline_sync_1 = require("readline-sync");
+var cardimages_1 = require("./cardimages");
 function round(gs) {
-    (0, stack_bet_1.show_game_state)(gs);
     var pot1 = (0, stack_bet_1.make_pot)();
     var pot2 = (0, stack_bet_1.make_pot)();
+    (0, stack_bet_1.min_wager)(gs[0], pot1);
+    (0, stack_bet_1.min_wager)(gs[1], pot2);
+    (0, stack_bet_1.show_game_state)(gs, pot1);
     var hands = (0, poker_1.holdem)(2, gs, pot1, pot2);
+    console.log(hands);
     if (hands == undefined) {
         (0, stack_bet_1.add_pot)(pot1, gs[1]);
         (0, stack_bet_1.add_pot)(pot2, gs[1]);
@@ -16,24 +21,24 @@ function round(gs) {
     else {
         var result = (0, hands_ranking_1.winners)(hands[0], hands[1]);
         if (result === "Player 1 wins") {
-            console.log("Player 1 wins");
+            console.log("Player wins the round");
             (0, stack_bet_1.add_pot)(pot1, gs[0]);
             (0, stack_bet_1.add_pot)(pot2, gs[0]);
             if ((0, stack_bet_1.pot_value)(gs[1]) === 0) {
-                console.log("Player 1 wins the game");
+                console.log("Player wins the game");
                 poker_main();
             }
         }
         else if (result === "Player 2 wins") {
-            console.log("Player 2 wins");
+            console.log("Computer wins the round");
             (0, stack_bet_1.add_pot)(pot1, gs[1]);
             (0, stack_bet_1.add_pot)(pot2, gs[1]);
             if ((0, stack_bet_1.pot_value)(gs[1]) === 0) {
-                console.log("Player 1 wins the game");
+                console.log("Computer wins the game");
                 poker_main();
             }
         }
-        else {
+        else if (result === "It's a tie") {
             console.log("It's a tie");
             (0, stack_bet_1.add_pot)(pot1, gs[0]);
             (0, stack_bet_1.add_pot)(pot2, gs[1]);
@@ -42,6 +47,7 @@ function round(gs) {
     round(gs);
 }
 function poker_main() {
+    menu();
     console.log("Poker");
     console.log("");
     var pn = 2;
@@ -51,4 +57,25 @@ function poker_main() {
     }
     round(gs);
 }
-round([(0, stack_bet_1.make_new_stack)(), (0, stack_bet_1.make_new_stack)()]);
+function menu() {
+    console.log(cardimages_1.cardimages['Intro']);
+    console.log(cardimages_1.cardimages['Introtext']);
+    console.log();
+    console.log('START');
+    console.log('INSTRUCTIONS');
+    function minimenu() {
+        var prompt = (0, readline_sync_1.question)('What do you want to do? ');
+        if (prompt.toLowerCase() === 'start') {
+            return;
+        }
+        else if (prompt.toLowerCase() === 'instructions') {
+            console.log('instructions');
+        }
+        else {
+            console.log("Not a valid command. Type 'start' or 'instructions'.");
+        }
+        return minimenu();
+    }
+    return minimenu();
+}
+poker_main();

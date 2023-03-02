@@ -105,7 +105,23 @@ function winners(one, two) {
                         return "Player 2 wins";
                     }
                     else {
+                        if (player1.best_hand != undefined && player2.best_hand != undefined) {
+                            if (player1.best_hand[4].value > player2.best_hand[4].value) {
+                                return "Player 1 wins";
+                            }
+                            else {
+                                return "Player 2 wins";
+                            }
+                        }
                         return "It's a tie";
+                    }
+                }
+                if (player1.best_hand != undefined && player2.best_hand != undefined) {
+                    if (player1.best_hand[4].value > player2.best_hand[4].value) {
+                        return "Player 1 wins";
+                    }
+                    else {
+                        return "Player 2 wins";
                     }
                 }
                 return "It's a tie";
@@ -124,4 +140,4 @@ function winners(one, two) {
     return "Unvalid game";
 }
 exports.winners = winners;
-console.log(winners(hand1, hand2));
+//console.log(winners(hand3, hand4));
