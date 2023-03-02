@@ -400,21 +400,13 @@ function show_game_state(gs, pot) {
 }
 exports.show_game_state = show_game_state;
 //test
+var stack1 = make_new_stack();
+var stack2 = make_new_stack();
+var pot1 = make_pot();
+var pot2 = make_pot();
 /*
-const stack1: Stack = make_new_stack();
-const stack2: Stack = make_new_stack();
-let pot1 = make_pot();
-let pot2 = make_pot();
-
-console.log(pot_value(stack1));
-
-//manual_change(stack1, "red", "blue", 2);
-//all_in(stack1, pot1);
-
-
-
 //0
-show_game_state([stack1, stack2]);
+show_game_state([stack1, stack2], pot1);
 console.log("pot2 value    " + pot_value(pot1));
 console.log("pot1 value    " + pot_value(pot2));
 
@@ -422,14 +414,14 @@ console.log("pot1 value    " + pot_value(pot2));
 make_bet(["white", 3], stack1, pot1);
 make_bet(["green", 1], stack1, pot1);
 call_bet(pot1, pot2, stack2);
-show_game_state([stack1, stack2]);
+show_game_state([stack1, stack2], pot1);
 console.log("pot1 value    " + pot_value(pot1));
 console.log("pot2 value    " + pot_value(pot2));
 
 //2
 make_bet(["red", 1], stack1, pot1);
 call_bet(pot1, pot2, stack2);
-show_game_state([stack1, stack2]);
+show_game_state([stack1, stack2], pot1);
 console.log("pot1 value    " + pot_value(pot1));
 console.log("pot2 value    " + pot_value(pot2));
 
@@ -442,7 +434,7 @@ pot2 = make_pot();
 make_bet(["red", 1], stack1, pot1);
 make_bet(["white", 4], stack1, pot1);
 call_bet(pot1, pot2, stack2);
-show_game_state([stack1, stack2]);
+show_game_state([stack1, stack2], pot1);
 console.log("pot1 value    " + pot_value(pot1));
 console.log("pot2 value    " + pot_value(pot2));
 
@@ -452,66 +444,16 @@ pot2 = make_pot();
 make_bet(["red", 1], stack1, pot1);
 make_bet(["white", 3], stack1, pot1);
 call_bet(pot1, pot2, stack2);
-show_game_state([stack1, stack2]);
+show_game_state([stack1, stack2], pot1);
 console.log("pot1 value    " + pot_value(pot1));
 console.log("pot2 value    " + pot_value(pot2));
 
 //5
-make_bet(["red", 1], stack1, pot1);
+all_in(stack1, pot1);
 call_bet(pot1, pot2, stack2);
-show_game_state([stack1, stack2]);
-console.log("pot1 value    " + pot_value(pot1));
-console.log("pot2 value    " + pot_value(pot2));
-
-
-pot1 = make_pot();
-pot2 = make_pot();
-//4
-min_wager(stack1, pot1);
-min_wager(stack2, pot2);
-show_game_state([stack1, stack2]);
-console.log("pot1 value    " + pot_value(pot1));
-console.log("pot2 value    " + pot_value(pot2));
-
-
-pot1 = make_pot();
-pot2 = make_pot();
-//4
-min_wager(stack1, pot1);
-min_wager(stack2, pot2);
+reverse_bet(stack1, pot1, pot2)
 show_game_state([stack1, stack2], pot1);
 console.log("pot1 value    " + pot_value(pot1));
 console.log("pot2 value    " + pot_value(pot2));
 
-all_in(stack1, pot1)
-show_game_state([stack1, stack2], pot1);
-console.log("pot1 value    " + pot_value(pot1));
-console.log("pot2 value    " + pot_value(pot2));
-call_bet(pot1, pot2, stack2)
-show_game_state([stack1, stack2], pot1);
-console.log("pot1 value    " + pot_value(pot1));
-console.log("pot2 value    " + pot_value(pot2));
-
-make_bet(["red", 1], stack1, pot1);
-call_bet(pot1, pot2, stack2);
-show_game_state([stack1, stack2], pot1);
-console.log("pot1 value    " + pot_value(pot1));
-console.log("pot2 value    " + pot_value(pot2));
-
-
-
-make_bet(["red", 1], stack1, pot1);
-//call_bet(pot1, pot2, stack2);
-show_game_state([stack1, stack2], pot1);
-console.log("pot1 value    " + pot_value(pot1));
-console.log("pot2 value    " + pot_value(pot2));
-
-
-reverse_bet(stack1, pot1, pot2);
-
-
-show_game_state([stack1, stack2], pot1);
-console.log("pot1 value    " + pot_value(pot1));
-console.log("pot2 value    " + pot_value(pot2));
-
-*/
+*/ 
