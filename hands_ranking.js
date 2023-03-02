@@ -11,47 +11,49 @@ var sorting_1 = require("./sorting");
  */
 function hand_rating(hand) {
     var sorted = (0, sorting_1.sorter)(hand);
-    return (0, poker_hands_1.royal_flush)(sorted).exists
-        ? { exists: true, rang: 1 }
-        : (0, poker_hands_1.straight_flush)(sorted).exists
-            ? { exists: true, value: (0, poker_hands_1.straight_flush)(sorted).value, rang: 2 }
-            : (0, poker_hands_1.has_four_of_akind)(sorted).exists
-                ? { exists: true, rang: 3, best_hand: (0, poker_hands_1.has_four_of_akind)(sorted).best_hand }
-                : (0, poker_hands_1.has_fullhouse)(sorted).exists
-                    ? { exists: true, value: (0, poker_hands_1.has_fullhouse)(sorted).value, value2: (0, poker_hands_1.has_fullhouse)(sorted).value2, rang: 4 }
-                    : (0, poker_hands_1.flush)(sorted).exists
-                        ? { exists: true, rang: 5 }
-                        : (0, poker_hands_1.straight)(sorted).exists
-                            ? { exists: true, value: (0, poker_hands_1.straight)(sorted).value, rang: 6 }
-                            : (0, poker_hands_1.has_three_of_akind)(sorted).exists
-                                ? { exists: true, value: (0, poker_hands_1.has_three_of_akind)(sorted).value, rang: 7 }
-                                : (0, poker_hands_1.has_two_pairs)(sorted).exists
-                                    ? { exists: true, value: (0, poker_hands_1.has_two_pairs)(sorted).value, value2: (0, poker_hands_1.has_two_pairs)(sorted).value2, rang: 8 }
-                                    : (0, poker_hands_1.has_pair)(sorted).exists
-                                        ? { exists: true, value: (0, poker_hands_1.has_pair)(sorted).value, rang: 9 }
-                                        : { exists: true, value: sorted[sorted.length - 1].value, rang: 10 };
+    var rf = (0, poker_hands_1.royal_flush)(sorted);
+    var sf = (0, poker_hands_1.straight_flush)(sorted);
+    var four = (0, poker_hands_1.has_four_of_akind)(sorted);
+    var full = (0, poker_hands_1.has_fullhouse)(sorted);
+    var flu = (0, poker_hands_1.flush)(sorted);
+    var strai = (0, poker_hands_1.straight)(sorted);
+    var three = (0, poker_hands_1.has_three_of_akind)(sorted);
+    var two = (0, poker_hands_1.has_two_pairs)(sorted);
+    var pai = (0, poker_hands_1.has_pair)(sorted);
+    var base = (0, poker_hands_1.best_straight_hand)(sorted);
+    return rf.exists
+        ? { exists: true, name: rf.name, rang: 1, best_hand: rf.best_hand }
+        : sf.exists
+            ? { exists: true, name: sf.name, value: sf.value, rang: 2, best_hand: sf.best_hand }
+            : four.exists
+                ? { exists: true, name: four.name, rang: 3, best_hand: four.best_hand }
+                : full.exists
+                    ? { exists: true, name: full.name, value: full.value, value2: full.value2, rang: 4, best_hand: full.best_hand }
+                    : flu.exists
+                        ? { exists: true, name: flu.name, rang: 5, best_hand: flu.best_hand }
+                        : strai.exists
+                            ? { exists: true, name: strai.name, value: strai.value, rang: 6, best_hand: strai.best_hand }
+                            : three.exists
+                                ? { exists: true, name: three.name, value: three.value, rang: 7, best_hand: three.best_hand }
+                                : two.exists
+                                    ? { exists: true, name: two.name, value: two.value, value2: two.value2, rang: 8, best_hand: two.best_hand }
+                                    : pai.exists
+                                        ? { exists: true, name: pai.name, value: pai.value, rang: 9, best_hand: pai.best_hand }
+                                        : { exists: true, name: 'highcard', value: sorted[sorted.length - 1].value, rang: 10, best_hand: base };
 }
 exports.hand_rating = hand_rating;
-var hand1 = [{ suit: 0, value: 5 }, { suit: 0, value: 3 }, { suit: 1, value: 2 },
-    { suit: 2, value: 5 }, { suit: 1, value: 5 }, { suit: 3, value: 4 }, { suit: 2, value: 5 }];
-console.log(hand_rating(hand1));
-/*
-const hand1 = [{suit: 3, value: 13}, {suit: 1, value: 3}, {suit: 2, value: 9}, {suit: 1, value: 10}, {suit: 3, value: 2}, {suit: 3, value: 7}, {suit: 0, value: 8}];
-const hand2 = [{suit: 3, value: 13}, {suit: 1, value: 3}, {suit: 2, value: 9}, {suit: 1, value: 10}, {suit: 3, value: 2}, {suit: 2, value: 2}, {suit: 2, value: 3}];
-
-console.log(hand_rating(hand1));
-console.log(hand_rating(hand2));
-*/
-/*
-const hand3 = [{suit: 2, value: 9}, {suit: 3, value: 8}, {suit: 3, value: 3}, {suit: 0, value: 10}, {suit: 0, value: 11}, {suit: 3, value: 12}, {suit: 3, value: 6}];
-const hand4 = [{suit: 2, value: 9}, {suit: 3, value: 8}, {suit: 3, value: 3}, {suit: 0, value: 10}, {suit: 0, value: 11}, {suit: 2, value: 3}, {suit: 3, value: 13}];
-console.log(hand_rating(hand3));
-console.log(hand_rating(hand4));
-const hand1 = [{suit: 3, value: 4}, {suit: 1, value: 9}, {suit: 1, value: 6}, {suit: 1, value: 5}, {suit: 1, value: 14}, {suit: 1, value: 10}, {suit: 3, value: 6}];
-const hand2 = [{suit: 3, value: 4}, {suit: 1, value: 9}, {suit: 1, value: 6}, {suit: 1, value: 5}, {suit: 1, value: 14}, {suit: 0, value: 11}, {suit: 2, value: 8}];
-console.log(hand_rating(hand1));
-console.log(hand_rating(hand2));
-*/
+//const hand1 = [{suit: 3, value: 13}, {suit: 1, value: 3}, {suit: 2, value: 9}, {suit: 1, value: 10}, {suit: 3, value: 2}, {suit: 3, value: 7}, {suit: 0, value: 8}];
+//const hand2 = [{suit: 0, value: 9}, {suit: 1, value: 8}, {suit: 2, value: 9}, {suit: 1, value: 3}, {suit: 3, value: 9}, {suit: 2, value: 2}, {suit: 2, value: 3}];
+//console.log(hand_rating(hand1));
+//console.log(hand_rating(hand2));
+var hand3 = [{ suit: 2, value: 9 }, { suit: 3, value: 8 }, { suit: 3, value: 3 }, { suit: 0, value: 10 }, { suit: 0, value: 11 }, { suit: 3, value: 12 }, { suit: 3, value: 6 }];
+var hand4 = [{ suit: 2, value: 9 }, { suit: 3, value: 8 }, { suit: 3, value: 3 }, { suit: 0, value: 10 }, { suit: 0, value: 11 }, { suit: 2, value: 12 }, { suit: 3, value: 13 }];
+//console.log(hand_rating(hand3));
+//console.log(hand_rating(hand4));
+var hand1 = [{ suit: 3, value: 4 }, { suit: 1, value: 9 }, { suit: 1, value: 6 }, { suit: 1, value: 5 }, { suit: 1, value: 14 }, { suit: 1, value: 10 }, { suit: 3, value: 6 }];
+var hand2 = [{ suit: 3, value: 4 }, { suit: 1, value: 9 }, { suit: 1, value: 6 }, { suit: 1, value: 5 }, { suit: 1, value: 13 }, { suit: 1, value: 11 }, { suit: 2, value: 8 }];
+//console.log(hand_rating(hand1));
+//console.log(hand_rating(hand2));
 /*
 New implementation in order, should work if more than two players are playing.
 
@@ -109,9 +111,17 @@ function winners(one, two) {
                 return "It's a tie";
             }
         }
+        if (player1.best_hand != undefined && player2.best_hand != undefined) {
+            if (player1.best_hand[4].value > player2.best_hand[4].value) {
+                return "Player 1 wins";
+            }
+            else {
+                return "Player 2 wins";
+            }
+        }
         return "It's a tie";
     }
     return "Unvalid game";
 }
 exports.winners = winners;
-//console.log(winners(hand3, hand4));
+console.log(winners(hand1, hand2));

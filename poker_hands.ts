@@ -13,22 +13,44 @@ export function has_pair(hand: Hand, j = 0): Pokerhand {
     if (hand[j] === undefined) {
         return {exists: false, name: "pair", rang: 0};
     } else {
-    const card: Card = hand[j];
-    for (let i = j + 1; hand[i] !== undefined; i += 1) {
-        if (card.value === hand[i].value) {
-            let valid: Hand = [{suit: hand[i].suit, value: hand[i].value}, {suit: card.suit, value: card.value}];
-            return {exists: true, value: card.value, name: "pair", rang: 9, valid1: valid};
-        } else {
-            continue;
+        const card: Card = hand[j];
+        for (let i = j + 1; hand[i] !== undefined; i += 1) {
+            if (card.value === hand[i].value) {
+                let valid: Hand = [{suit: hand[i].suit, value: hand[i].value}, {suit: card.suit, value: card.value}];
+                let best = best_pair_hand(hand, valid);
+                return {exists: true, value: card.value, name: "pair", rang: 9, valid1: valid, best_hand: best};
+            } else {
+                continue;
+            }
+        }
+    return has_pair(hand, j+1);
+    }
+}
+
+function best_pair_hand(hand: Hand, i: Hand): Hand {
+    let temp_arr: Hand = []
+    let new_hand = make_new_hand(hand, [], i[0].value);
+    if (new_hand[new_hand.length - 1].value < i[0].value) {
+        temp_arr[0] = new_hand[new_hand.length - 3];
+        temp_arr[1] = new_hand[new_hand.length - 2];
+        temp_arr[2] = new_hand[new_hand.length - 1];
+        for (let j = 3; j < 5; j++) {
+            temp_arr[j] = i[j - 3];
+        }
+    } else {
+        temp_arr[0] = new_hand[new_hand.length - 3];
+        temp_arr[1] = new_hand[new_hand.length - 2];
+        temp_arr[4] = new_hand[new_hand.length - 1];
+        for (let j = 2; j < 4; j++) {
+            temp_arr[j] = i[j - 2];
         }
     }
-    return has_pair(hand, j+1);
-}
+    return temp_arr;
 }
 
 /*
 const hand1: Hand = [{suit: 3, value: 7}, {suit: 0, value: 2}, {suit: 1, value: 8}, 
-    {suit: 1, value: 5}, {suit: 1, value: 2}, {suit: 3, value: 1}, {suit: 2, value: 3}];
+    {suit: 1, value: 5}, {suit: 1, value: 2}, {suit: 3, value: 5}, {suit: 2, value: 3}];
 
 console.log(has_pair(hand1));
 */
@@ -92,16 +114,24 @@ export function has_three_of_akind(hand: Hand): Pokerhand {
         if (pair2.exists && pair2.value !== undefined) {
             const j = count_same_cards(hand, pair2.value);
             const n = counter(hand, pair2.value);
-            return j >= 3 
-                ? {exists: true, value: pair2.value, name: "three of a kind", rang: 7, valid1: n}
-                : i >= 3 
-                ? {exists: true, value: pair.value, name: "three of a kind", rang: 7, valid1: m}
-                : {exists:false, name:"three of a kind", rang: 0};
+            if (j >= 3) { 
+                let best = three_of_akind_best(hand, n);
+                return {exists: true, value: pair2.value, name: "three of a kind", rang: 7, valid1: n, best_hand: best}
+            } else if (i >= 3) {
+                let best = three_of_akind_best(hand, m)
+                return {exists: true, value: pair.value, name: "three of a kind", rang: 7, valid1: m, best_hand: best}
+            } else {
+                return {exists:false, name:"three of a kind", rang: 0};
+            }
         }
         else {
-            return i >= 3 
-                ? {exists: true, value: pair.value, name: "three of a kind", rang: 7, valid1: m}
-                : {exists:false, name:"three of a kind", rang: 0}; }
+            if (i >= 3) {
+                let best = three_of_akind_best(hand, m)
+                return {exists: true, value: pair.value, name: "three of a kind", rang: 7, valid1: m, best_hand: best}
+            } else {
+                return {exists:false, name:"three of a kind", rang: 0};
+            }
+         }
     } else {
         return {exists:false, name:"three of a kind", rang: 0};
     } 
@@ -212,17 +242,19 @@ function make_new_hand(hand: Hand, new_hand: Hand, value: number, i = 0, j = 0):
  */
 export function has_two_pairs(hand: Hand): Pokerhand {
     const pair: Pokerhand = has_pair(hand);
-    if (pair.exists && pair.value !== undefined) {
+    if (pair.exists && pair.value !== undefined && pair.valid1 != undefined) {
         const new_hand: Hand = make_new_hand(hand, [], pair.value);
         const second_pair =  has_pair(new_hand);
         if (second_pair.exists && second_pair.valid1 != undefined && second_pair.value != undefined) {
-            //let best = two_hands_best(hand, second_pair.valid1, pair.valid1);
             const new_hand2: Hand = make_new_hand(new_hand, [], second_pair.value);
             const third_pair: Pokerhand =  has_pair(new_hand2);
-            if (third_pair.exists && third_pair.value !== undefined) {
-                return {exists: true, value: third_pair.value, value2: second_pair.value, name: "two pairs", rang: 8};
-            } else { return {exists: true, value: second_pair.value, value2: pair.value, name: "two pairs", rang: 8};
-        }
+            if (third_pair.exists && third_pair.value !== undefined && third_pair.valid1 != undefined) {
+                let best = two_hands_best(hand, third_pair.valid1, second_pair.valid1)
+                return {exists: true, value: third_pair.value, value2: second_pair.value, name: "two pairs", rang: 8, best_hand: best};
+            } else { 
+                let best = two_hands_best(hand, second_pair.valid1, pair.valid1);
+                return {exists: true, value: second_pair.value, value2: pair.value, name: "two pairs", rang: 8, best_hand: best};
+            }
         } else {
             return  {exists: false, name: "two pairs", rang: 0};
         }
@@ -256,10 +288,12 @@ function two_hands_best(hand: Hand, one: Hand, two: Hand): Hand {
     return temp_arr;
 }
 
+/*
 const hand1: Hand = [{suit: 3, value: 3}, {suit: 2, value: 3}, {suit: 0, value: 4}, {suit: 0, value: 8}, {suit: 1, value: 4}, 
     {suit: 2, value: 7}, {suit: 1, value: 7}];
 
 console.log(has_two_pairs(hand1));
+*/
 
 /**
 * Checks if a hand has full house
@@ -286,11 +320,11 @@ export function has_fullhouse(hand: Hand): Pokerhand {
 function best_hand_fullhouse(trio: Hand, duo: Hand): Hand {
     let temp_arr: Hand = []
     if (trio != undefined && duo != undefined) {
-        for (let i = 0; i < 3; i++) {
-            temp_arr[i] = trio[i];
+        for (let i = 2; i < 5; i++) {
+            temp_arr[i] = trio[i - 2];
         }
-        for (let i = 3; i < 5; i++) {
-            temp_arr[i] = duo[i-3];
+        for (let i = 0; i < 2; i++) {
+            temp_arr[i] = duo[i];
         }
     }
     return temp_arr;
@@ -309,8 +343,7 @@ console.log(has_fullhouse(hand1));
  * @param hand Hand to be evaluated
  * @returns A hand which contains the five most valuable cards out of all possible cards.
  */
-
-function best_straight_hand(hand: Hand): Hand {
+export function best_straight_hand(hand: Hand): Hand {
     let temp_arr: Hand = []
     function best_helper(han: Hand, count: number, index: number): Hand {
         if (index < 0) {

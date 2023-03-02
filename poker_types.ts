@@ -23,7 +23,6 @@ export type Pokerhand = {
     value?: number,
     valid1?: Hand,
     value2?: number, 
-    valid2?: Hand,
     flush?: Hand,
     best_hand?: Hand,
     rang: number,

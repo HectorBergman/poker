@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-exports.straight = exports.flush = exports.straight_flush = exports.royal_flush = exports.has_fullhouse = exports.has_two_pairs = exports.has_four_of_akind = exports.has_three_of_akind = exports.has_pair = void 0;
+exports.straight = exports.flush = exports.straight_flush = exports.royal_flush = exports.best_straight_hand = exports.has_fullhouse = exports.has_two_pairs = exports.has_four_of_akind = exports.has_three_of_akind = exports.has_pair = void 0;
 var helpers_1 = require("./helpers");
 /**
  * Checks if a given hand has a pair or not
@@ -18,7 +18,8 @@ function has_pair(hand, j) {
         for (var i = j + 1; hand[i] !== undefined; i += 1) {
             if (card.value === hand[i].value) {
                 var valid = [{ suit: hand[i].suit, value: hand[i].value }, { suit: card.suit, value: card.value }];
-                return { exists: true, value: card.value, name: "pair", rang: 9, valid1: valid };
+                var best = best_pair_hand(hand, valid);
+                return { exists: true, value: card.value, name: "pair", rang: 9, valid1: valid, best_hand: best };
             }
             else {
                 continue;
@@ -28,9 +29,30 @@ function has_pair(hand, j) {
     }
 }
 exports.has_pair = has_pair;
+function best_pair_hand(hand, i) {
+    var temp_arr = [];
+    var new_hand = make_new_hand(hand, [], i[0].value);
+    if (new_hand[new_hand.length - 1].value < i[0].value) {
+        temp_arr[0] = new_hand[new_hand.length - 3];
+        temp_arr[1] = new_hand[new_hand.length - 2];
+        temp_arr[2] = new_hand[new_hand.length - 1];
+        for (var j = 3; j < 5; j++) {
+            temp_arr[j] = i[j - 3];
+        }
+    }
+    else {
+        temp_arr[0] = new_hand[new_hand.length - 3];
+        temp_arr[1] = new_hand[new_hand.length - 2];
+        temp_arr[4] = new_hand[new_hand.length - 1];
+        for (var j = 2; j < 4; j++) {
+            temp_arr[j] = i[j - 2];
+        }
+    }
+    return temp_arr;
+}
 /*
 const hand1: Hand = [{suit: 3, value: 7}, {suit: 0, value: 2}, {suit: 1, value: 8},
-    {suit: 1, value: 5}, {suit: 1, value: 2}, {suit: 3, value: 1}, {suit: 2, value: 3}];
+    {suit: 1, value: 5}, {suit: 1, value: 2}, {suit: 3, value: 5}, {suit: 2, value: 3}];
 
 console.log(has_pair(hand1));
 */
@@ -96,16 +118,26 @@ function has_three_of_akind(hand) {
         if (pair2.exists && pair2.value !== undefined) {
             var j = count_same_cards(hand, pair2.value);
             var n = counter(hand, pair2.value);
-            return j >= 3
-                ? { exists: true, value: pair2.value, name: "three of a kind", rang: 7, valid1: n }
-                : i >= 3
-                    ? { exists: true, value: pair.value, name: "three of a kind", rang: 7, valid1: m }
-                    : { exists: false, name: "three of a kind", rang: 0 };
+            if (j >= 3) {
+                var best = three_of_akind_best(hand, n);
+                return { exists: true, value: pair2.value, name: "three of a kind", rang: 7, valid1: n, best_hand: best };
+            }
+            else if (i >= 3) {
+                var best = three_of_akind_best(hand, m);
+                return { exists: true, value: pair.value, name: "three of a kind", rang: 7, valid1: m, best_hand: best };
+            }
+            else {
+                return { exists: false, name: "three of a kind", rang: 0 };
+            }
         }
         else {
-            return i >= 3
-                ? { exists: true, value: pair.value, name: "three of a kind", rang: 7, valid1: m }
-                : { exists: false, name: "three of a kind", rang: 0 };
+            if (i >= 3) {
+                var best = three_of_akind_best(hand, m);
+                return { exists: true, value: pair.value, name: "three of a kind", rang: 7, valid1: m, best_hand: best };
+            }
+            else {
+                return { exists: false, name: "three of a kind", rang: 0 };
+            }
         }
     }
     else {
@@ -222,18 +254,19 @@ function make_new_hand(hand, new_hand, value, i, j) {
  */
 function has_two_pairs(hand) {
     var pair = has_pair(hand);
-    if (pair.exists && pair.value !== undefined) {
+    if (pair.exists && pair.value !== undefined && pair.valid1 != undefined) {
         var new_hand = make_new_hand(hand, [], pair.value);
         var second_pair = has_pair(new_hand);
         if (second_pair.exists && second_pair.valid1 != undefined && second_pair.value != undefined) {
-            //let best = two_hands_best(hand, second_pair.valid1, pair.valid1);
             var new_hand2 = make_new_hand(new_hand, [], second_pair.value);
             var third_pair = has_pair(new_hand2);
-            if (third_pair.exists && third_pair.value !== undefined) {
-                return { exists: true, value: third_pair.value, value2: second_pair.value, name: "two pairs", rang: 8 };
+            if (third_pair.exists && third_pair.value !== undefined && third_pair.valid1 != undefined) {
+                var best = two_hands_best(hand, third_pair.valid1, second_pair.valid1);
+                return { exists: true, value: third_pair.value, value2: second_pair.value, name: "two pairs", rang: 8, best_hand: best };
             }
             else {
-                return { exists: true, value: second_pair.value, value2: pair.value, name: "two pairs", rang: 8 };
+                var best = two_hands_best(hand, second_pair.valid1, pair.valid1);
+                return { exists: true, value: second_pair.value, value2: pair.value, name: "two pairs", rang: 8, best_hand: best };
             }
         }
         else {
@@ -269,9 +302,12 @@ function two_hands_best(hand, one, two) {
     }
     return temp_arr;
 }
-var hand1 = [{ suit: 3, value: 3 }, { suit: 2, value: 3 }, { suit: 0, value: 4 }, { suit: 0, value: 8 }, { suit: 1, value: 4 },
-    { suit: 2, value: 7 }, { suit: 1, value: 7 }];
+/*
+const hand1: Hand = [{suit: 3, value: 3}, {suit: 2, value: 3}, {suit: 0, value: 4}, {suit: 0, value: 8}, {suit: 1, value: 4},
+    {suit: 2, value: 7}, {suit: 1, value: 7}];
+
 console.log(has_two_pairs(hand1));
+*/
 /**
 * Checks if a hand has full house
 * @preconditions The hand only contains valid cards
@@ -299,11 +335,11 @@ exports.has_fullhouse = has_fullhouse;
 function best_hand_fullhouse(trio, duo) {
     var temp_arr = [];
     if (trio != undefined && duo != undefined) {
-        for (var i = 0; i < 3; i++) {
-            temp_arr[i] = trio[i];
+        for (var i = 2; i < 5; i++) {
+            temp_arr[i] = trio[i - 2];
         }
-        for (var i = 3; i < 5; i++) {
-            temp_arr[i] = duo[i - 3];
+        for (var i = 0; i < 2; i++) {
+            temp_arr[i] = duo[i];
         }
     }
     return temp_arr;
@@ -333,6 +369,7 @@ function best_straight_hand(hand) {
     }
     return best_helper(hand, (hand.length - 1), 4);
 }
+exports.best_straight_hand = best_straight_hand;
 //const hand1 = [{suit: 3, value: 13}, {suit: 1, value: 3}, {suit: 2, value: 9}, {suit: 1, value: 10}, {suit: 3, value: 2}, {suit: 3, value: 7}, {suit: 0, value: 8}];
 //console.log(best_straight_hand(hand1))
 /**
