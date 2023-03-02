@@ -3,8 +3,11 @@ import {holdem} from "./poker";
 import {Pot, GameState, Hands} from "./poker_types";
 import {make_pot, make_new_stack, show_game_state, add_pot, min_wager, call_bet, pot_value} from "./stack_bet"
 import {winners}  from "./hands_ranking"
+import {question} from 'readline-sync'
+import {cardimages} from './cardimages'
 
 function round(gs: GameState) {
+    menu();
     let pot1 = make_pot();
     let pot2 = make_pot();
     min_wager(gs[0], pot1);
@@ -20,7 +23,7 @@ function round(gs: GameState) {
             console.log("Player 1 wins");
             add_pot(pot1, gs[0]);
             add_pot(pot2, gs[0]);
-            if (pot_value(gs[0]) === 0) {
+            if (pot_value(gs[1]) === 0) {
                 console.log("Player 1 wins the game");
                 poker_main();
             }
@@ -54,3 +57,25 @@ function poker_main(): void {
     round(gs);
 }
 round([make_new_stack(), make_new_stack()]);
+
+function menu(): void{
+    console.log(cardimages['Intro']);
+    console.log(cardimages['Introtext']);
+    console.log();
+    console.log('START');
+    console.log('INSTRUCTIONS');
+    function minimenu(): void{
+        var prompt = question('What do you want to do? ');
+        if (prompt.toLowerCase() === 'start'){
+            return;
+        }
+        else if (prompt.toLowerCase() === 'instructions'){
+            console.log('instructions');
+        }
+        else{
+            console.log("Not a valid command. Type 'start' or 'instructions'.")
+        }
+        return minimenu();
+    }
+    return minimenu();
+}

@@ -205,11 +205,25 @@ function betting_selection(gamestate: GameState, pot1: Pot, pot2: Pot){
         return betmore();
     }
 }
+/**
+ * Modifies a players hand to include the cards on board
+ * @param hand The 2 cards a player has on their hand
+ * @param board The cards on the board
+ */
 function addboard(hand: Hand, board: Board){
     for (let i = 2; i < 6; i++) {
         hand[i] = board[i-2];
       }
 }
+
+/**
+ * Runs through a round of poker
+ * @param players The amount of players playing
+ * @param gamestate An array of both players' chips
+ * @param pot1 Player 1's pot
+ * @param pot2 Player 2's pot
+ * @returns The cards on the board + each players hand or undefined if player1 folded.
+ */
 export function holdem(players: number, gamestate: GameState, pot1: Pot, pot2: Pot): Array<Hand> | undefined{
     let newdeck: Deck = createdeck();
     let allhands: Array<Hand> = []; //Player one's hand is index 0, player two index 1, and so on.

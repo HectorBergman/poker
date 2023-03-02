@@ -70,11 +70,10 @@ function selection(player, allhands, board, gamestate, pot1, pot2) {
     if (prompt.toLowerCase() === "bet") {
         console.log("You have 4 stacks of chips. White, red, blue, green.");
         betting_selection(gamestate, pot1, pot2);
-        (0, stack_bet_1.show_game_state)([pot1, pot2], []);
         (0, stack_bet_1.call_bet)(pot1, pot2, gamestate[1]);
-        (0, stack_bet_1.show_game_state)([pot1, pot2], []);
-        (0, stack_bet_1.reverse_bet)(gamestate[1], pot1, pot2);
-        (0, stack_bet_1.show_game_state)([pot1, pot2], []);
+        (0, stack_bet_1.reverse_bet)(gamestate[0], pot1, pot2);
+        console.log(pot1);
+        console.log(pot2);
         return 1;
     }
     else if (prompt.toLowerCase() === "help") {
@@ -164,7 +163,7 @@ function betting_selection(gamestate, pot1, pot2) {
     else if (prompt2.toLowerCase() === "all in") {
         console.log("All in!");
         (0, stack_bet_1.all_in)(gamestate[0], pot1);
-        (0, stack_bet_1.show_game_state)([pot1, pot2], []);
+        console.log(pot1);
         return 5;
     }
     else if (prompt2.toLowerCase() === "help") {
@@ -200,11 +199,24 @@ function betting_selection(gamestate, pot1, pot2) {
         return betmore();
     }
 }
+/**
+ * Modifies a players hand to include the cards on board
+ * @param hand The 2 cards a player has on their hand
+ * @param board The cards on the board
+ */
 function addboard(hand, board) {
     for (var i = 2; i < 6; i++) {
         hand[i] = board[i - 2];
     }
 }
+/**
+ * Runs through a round of poker
+ * @param players The amount of players playing
+ * @param gamestate An array of both players' chips
+ * @param pot1 Player 1's pot
+ * @param pot2 Player 2's pot
+ * @returns The cards on the board + each players hand or undefined if player1 folded.
+ */
 function holdem(players, gamestate, pot1, pot2) {
     var newdeck = createdeck();
     var allhands = []; //Player one's hand is index 0, player two index 1, and so on.
