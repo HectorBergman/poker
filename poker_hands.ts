@@ -85,10 +85,21 @@ function counter(hand: Hand, value: number): Hand{
 export function has_three_of_akind(hand: Hand): Pokerhand {
     const pair = has_pair(hand);
     if (pair.exists && pair.value !== undefined) {
+        const new_hand = make_new_hand(hand, [], pair.value)
+        const pair2 = has_pair(new_hand);
         const i = count_same_cards(hand, pair.value);
-        return i >= 3 
-            ? {exists: true, value: pair.value, name: "three of a kind", rang: 7}
-            : {exists: false, name: "three of a kind", rang: 0};
+        if (pair2.exists && pair2.value !== undefined) {
+            const j = count_same_cards(hand, pair.value);
+            return i >= 3 
+                ? {exists: true, value: pair2.value, name: "three of a kind", rang: 7}
+                : i >= 3 
+                ? {exists: true, value: pair.value, name: "three of a kind", rang: 7}
+                : {exists:false, name:"three of a kind", rang: 0};
+        }
+        else {
+            return i >= 3 
+                ? {exists: true, value: pair.value, name: "three of a kind", rang: 7}
+                : {exists:false, name:"three of a kind", rang: 0}; }
     } else {
         return {exists:false, name:"three of a kind", rang: 0};
     } 
@@ -113,7 +124,9 @@ export function has_four_of_akind(hand: Hand): Pokerhand {
         const i = count_same_cards(hand, pair.value);
         return i === 4 
             ? {exists: true, value: pair.value, name: "four of a kind", rang: 3}
-            : {exists: false, name: "four of a kind", rang: 0};
+            : has_four_of_akind(make_new_hand(hand, [], pair.value))
+    } else if (hand.length == 0) {
+        return {exists:false, name:"four of a kind", rang: 0};
     } else {
         return {exists:false, name:"four of a kind", rang: 0};
     }
@@ -178,7 +191,7 @@ export function has_two_pairs(hand: Hand): Pokerhand {
         const new_hand: Hand = make_new_hand(hand, [], pair.value);
         const second_pair =  has_pair(new_hand);
         if (second_pair.exists) {
-            return {exists: true, value: pair.value, value2: second_pair.value, name: "two pairs", rang: 8};
+            return {exists: true, value: second_pair.value, value2: pair.value, name: "two pairs", rang: 8};
         } else {
             return  {exists: false, name: "two pairs", rang: 0};
         }
@@ -196,11 +209,13 @@ export function has_two_pairs(hand: Hand): Pokerhand {
 export function has_fullhouse(hand: Hand): Pokerhand {
     const trio: Pokerhand = has_three_of_akind(hand);
     if (trio.exists && trio.value !== undefined) {
-        const new_hand = make_new_hand(hand, [], trio.value);
-        const add_pair = has_pair(new_hand);
-        return add_pair.exists
-            ? {exists: true, value: trio.value, value2: add_pair.value, name: "full house", rang: 4}
-            : {exists: false, name: "full house", rang: 0};
+        const new_hand: Hand = make_new_hand(hand, [], trio.value);
+        const add_pair: Pokerhand = has_pair(new_hand);
+        if (add_pair.exists) {
+            return {exists: true, value: trio.value, value2: add_pair.value, name: "full house", rang: 4}; 
+        } else {
+            return {exists: false, name: "full house", rang: 0};
+        }
     } else {
         return {exists: false, name: "full house", rang: 0};
     }
@@ -380,8 +395,9 @@ export function straight(hand: Hand): Pokerhand {
     }
     return {exists: false, name: 'straight', rang: 0};
 }
-/*
+
 const hand1 = [{suit: 3, value: 13}, {suit: 1, value: 3}, {suit: 2, value: 9}, {suit: 1, value: 10}, {suit: 3, value: 2}, {suit: 3, value: 7}, {suit: 0, value: 8}];
+
 const hand2 = [{suit: 3, value: 2}, {suit: 1, value: 2}, {suit: 2, value: 2}, {suit: 1, value: 3}, {suit: 3, value: 3}, {suit: 2, value: 3}, {suit: 2, value: 3}];
 
 console.log(has_fullhouse(hand2));
