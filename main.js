@@ -6,6 +6,7 @@ var stack_bet_1 = require("./stack_bet");
 var hands_ranking_1 = require("./hands_ranking");
 var readline_sync_1 = require("readline-sync");
 var cardimages_1 = require("./cardimages");
+var list_1 = require("../lib/list");
 function round(gs) {
     var pot1 = (0, stack_bet_1.make_pot)();
     var pot2 = (0, stack_bet_1.make_pot)();
@@ -20,7 +21,7 @@ function round(gs) {
     }
     else {
         var result = (0, hands_ranking_1.winners)(hands[0], hands[1]);
-        if (result === "Player 1 wins") {
+        if ((0, list_1.head)(result) === "Player 1 wins") {
             console.log("Player wins the round");
             (0, stack_bet_1.add_pot)(pot1, gs[0]);
             (0, stack_bet_1.add_pot)(pot2, gs[0]);
@@ -29,7 +30,7 @@ function round(gs) {
                 poker_main();
             }
         }
-        else if (result === "Player 2 wins") {
+        else if ((0, list_1.head)(result) === "Player 2 wins") {
             console.log("Computer wins the round");
             (0, stack_bet_1.add_pot)(pot1, gs[1]);
             (0, stack_bet_1.add_pot)(pot2, gs[1]);
@@ -38,7 +39,7 @@ function round(gs) {
                 poker_main();
             }
         }
-        else if (result === "It's a tie") {
+        else if ((0, list_1.head)(result) === "It's a tie") {
             console.log("It's a tie");
             (0, stack_bet_1.add_pot)(pot1, gs[0]);
             (0, stack_bet_1.add_pot)(pot2, gs[1]);

@@ -3,6 +3,7 @@ exports.__esModule = true;
 exports.winners = exports.hand_rating = void 0;
 var poker_hands_1 = require("./poker_hands");
 var sorting_1 = require("./sorting");
+var list_1 = require("../lib/list");
 /**
  * Checks how much the hand is worth.
  * @precondition The hand evaluated is a valid hand.
@@ -82,62 +83,68 @@ function winner(hands: Hands): string {
 function winners(one, two) {
     var player1 = hand_rating(one);
     var player2 = hand_rating(two);
-    if (player1.rang < player2.rang) {
-        return "Player 1 wins";
-    }
-    else if (player1.rang > player2.rang) {
-        return "Player 2 wins";
-    }
-    else {
-        if (player1.value !== undefined && player2.value !== undefined) {
-            if (player1.value > player2.value) {
-                return "Player 1 wins";
-            }
-            else if (player1.value < player2.value) {
-                return "Player 2 wins";
-            }
-            else {
-                if (player1.value2 !== undefined && player2.value2 !== undefined) {
-                    if (player1.value2 > player2.value2) {
-                        return "Player 1 wins";
-                    }
-                    else if (player1.value2 < player2.value2) {
-                        return "Player 2 wins";
-                    }
-                    else {
-                        if (player1.best_hand != undefined && player2.best_hand != undefined) {
-                            if (player1.best_hand[4].value > player2.best_hand[4].value) {
-                                return "Player 1 wins";
-                            }
-                            else {
-                                return "Player 2 wins";
-                            }
+    if (player1.best_hand != undefined && player2.best_hand != undefined) {
+        if (player1.rang < player2.rang) {
+            return (0, list_1.pair)("Player 1 wins", player1.best_hand);
+        }
+        else if (player1.rang > player2.rang) {
+            return (0, list_1.pair)("Player 2 wins", player2.best_hand);
+        }
+        else {
+            if (player1.value !== undefined && player2.value !== undefined) {
+                if (player1.value > player2.value) {
+                    return (0, list_1.pair)("Player 1 wins", player1.best_hand);
+                }
+                else if (player1.value < player2.value) {
+                    return (0, list_1.pair)("Player 2 wins", player2.best_hand);
+                }
+                else {
+                    if (player1.value2 !== undefined && player2.value2 !== undefined) {
+                        if (player1.value2 > player2.value2) {
+                            return (0, list_1.pair)("Player 1 wins", player1.best_hand);
                         }
-                        return "It's a tie";
+                        else if (player1.value2 < player2.value2) {
+                            return (0, list_1.pair)("Player 2 wins", player2.best_hand);
+                        }
+                        else {
+                            if (player1.best_hand != undefined && player2.best_hand != undefined) {
+                                if (player1.best_hand[4].value > player2.best_hand[4].value) {
+                                    return (0, list_1.pair)("Player 1 wins", player1.best_hand);
+                                }
+                                else {
+                                    return (0, list_1.pair)("Player 2 wins", player2.best_hand);
+                                }
+                            }
+                            var hand_1 = [];
+                            return (0, list_1.pair)("It's a tie", hand_1);
+                        }
                     }
+                    if (player1.best_hand != undefined && player2.best_hand != undefined) {
+                        if (player1.best_hand[4].value > player2.best_hand[4].value) {
+                            return (0, list_1.pair)("Player 1 wins", player1.best_hand);
+                        }
+                        else {
+                            return (0, list_1.pair)("Player 2 wins", player2.best_hand);
+                        }
+                    }
+                    var hand_2 = [];
+                    return (0, list_1.pair)("It's a tie", hand_2);
                 }
-                if (player1.best_hand != undefined && player2.best_hand != undefined) {
-                    if (player1.best_hand[4].value > player2.best_hand[4].value) {
-                        return "Player 1 wins";
-                    }
-                    else {
-                        return "Player 2 wins";
-                    }
+            }
+            if (player1.best_hand != undefined && player2.best_hand != undefined) {
+                if (player1.best_hand[4].value > player2.best_hand[4].value) {
+                    return (0, list_1.pair)("Player 1 wins", player1.best_hand);
                 }
-                return "It's a tie";
+                else {
+                    return (0, list_1.pair)("Player 2 wins", player2.best_hand);
+                }
             }
+            var hand_3 = [];
+            return (0, list_1.pair)("It's a tie", hand_3);
         }
-        if (player1.best_hand != undefined && player2.best_hand != undefined) {
-            if (player1.best_hand[4].value > player2.best_hand[4].value) {
-                return "Player 1 wins";
-            }
-            else {
-                return "Player 2 wins";
-            }
-        }
-        return "It's a tie";
     }
-    return "Unvalid game";
+    var hand = [];
+    return (0, list_1.pair)("Unvalid game", hand);
 }
 exports.winners = winners;
 //console.log(winners(hand3, hand4));

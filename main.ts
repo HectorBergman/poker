@@ -5,6 +5,8 @@ import {make_pot, make_new_stack, show_game_state, add_pot, min_wager, call_bet,
 import {winners}  from "./hands_ranking"
 import {question} from 'readline-sync'
 import {cardimages} from './cardimages'
+import { head } from "../lib/list";
+
 
 function round(gs: GameState) {
     let pot1 = make_pot();
@@ -19,7 +21,7 @@ function round(gs: GameState) {
         add_pot(pot2, gs[1]);
     } else {
         let result = winners(hands[0], hands[1])
-        if (result === "Player 1 wins") {
+        if (head(result) === "Player 1 wins") {
             console.log("Player wins the round");
             add_pot(pot1, gs[0]);
             add_pot(pot2, gs[0]);
@@ -28,7 +30,7 @@ function round(gs: GameState) {
                 poker_main();
             }
         }
-        else if (result === "Player 2 wins") {
+        else if (head(result) === "Player 2 wins") {
             console.log("Computer wins the round");
             add_pot(pot1, gs[1]);
             add_pot(pot2, gs[1]);
@@ -37,7 +39,7 @@ function round(gs: GameState) {
                 poker_main();
             } 
         }
-        else if (result === "It's a tie") {
+        else if (head(result) === "It's a tie") {
             console.log("It's a tie");
             add_pot(pot1, gs[0]);
             add_pot(pot2, gs[1]);
