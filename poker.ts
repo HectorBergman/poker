@@ -145,13 +145,14 @@ function bet_number(color: string, number: number, gamestate: GameState, pot1: P
         }
     }
 }
+
 /**
  * Asks for user input to decide which colour chips you will bet
  * @param gamestate an array of the players' stacks
  * @param pot1 Player 1's pot
  * @param pot2 Player 2's pot
  */
-function betting_selection(gamestate: GameState, pot1: Pot, pot2: Pot){
+function betting_selection(gamestate: GameState, pot1: Pot, pot2: Pot): Number{
     let test = 1;
     var prompt2 = question('What do you want to bet? ')
     if (prompt2.toLowerCase() === "white"){
@@ -169,7 +170,6 @@ function betting_selection(gamestate: GameState, pot1: Pot, pot2: Pot){
     else if (prompt2.toLowerCase() === "all in"){
         console.log("All in!")
         all_in(gamestate[0], pot1);
-        console.log(pot1);
         return 5;
         
     }
@@ -188,10 +188,10 @@ function betting_selection(gamestate: GameState, pot1: Pot, pot2: Pot){
     if (test === 1){
         return betmore()
     }else{
-        betting_selection(gamestate, pot1, pot2)
+        return betting_selection(gamestate, pot1, pot2)
     };
     
-    function betmore(){
+    function betmore(): Number{
         var prompt4 = question('Do you want to bet more? y/n ');
         if (prompt4.toLowerCase() === "y"){
             return betting_selection(gamestate, pot1, pot2);

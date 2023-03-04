@@ -388,26 +388,29 @@ export let cardimages = {
   | |  __/>  < (_| \\__ \\ | | | | (_) | | (_| |   |  __/ | | | | |
   \\_/\\___/_/\\_\\__,_|___/ \\_| |_/\\___/|_|\\__,_|    \\___|_| |_| |_|`
 };
-/*
-** Takes an array of strings and prints an image of cards (given they're in the correct format)
-** prints the first 8 elements in each string, then the next 8, and so on. 
-** This results in cards side-by-side in the console.
-*/
+
+/**
+ * Takes an array of 5 strings and prints the first 8 characters of each string on one line, then the next 8 and so on.
+ * @param cards An array of the strings that will be printed
+ * @preconditions Array has to have 5 strings, and each string has to be at least 48 characters long, also it's assumed each
+ * string follows the card format in cardimages, otherwise it will still work but will look non-sensical.
+ */
 export function stepbystepdisplay(cards: Array<string>): void{
-    console.log(cardimages[cards[0]].substring(0,7), cardimages[cards[1]].substring(0,7),cardimages[cards[2]].substring(0,7),cardimages[cards[3]].substring(0,7),cardimages[cards[4]].substring(0,7));
-    console.log(cardimages[cards[0]].substring(8,15), cardimages[cards[1]].substring(8,15),cardimages[cards[2]].substring(8,15),cardimages[cards[3]].substring(8,15),cardimages[cards[4]].substring(8,15));
-    console.log(cardimages[cards[0]].substring(16,23), cardimages[cards[1]].substring(16,23),cardimages[cards[2]].substring(16,23),cardimages[cards[3]].substring(16,23),cardimages[cards[4]].substring(16,23));
-    console.log(cardimages[cards[0]].substring(24,31), cardimages[cards[1]].substring(24,31),cardimages[cards[2]].substring(24,31),cardimages[cards[3]].substring(24,31),cardimages[cards[4]].substring(24,31));
-    console.log(cardimages[cards[0]].substring(32,39), cardimages[cards[1]].substring(32,39),cardimages[cards[2]].substring(32,39),cardimages[cards[3]].substring(32,39),cardimages[cards[4]].substring(32,39));
-    console.log(cardimages[cards[0]].substring(40,47), cardimages[cards[1]].substring(40,47),cardimages[cards[2]].substring(40,47),cardimages[cards[3]].substring(40,47),cardimages[cards[4]].substring(40,47));
+    console.log(cardimages[cards[0] as keyof typeof cardimages].substring(0,7), cardimages[cards[1] as keyof typeof cardimages].substring(0,7),cardimages[cards[2] as keyof typeof cardimages].substring(0,7),cardimages[cards[3] as keyof typeof cardimages].substring(0,7),cardimages[cards[4] as keyof typeof cardimages].substring(0,7));
+    console.log(cardimages[cards[0] as keyof typeof cardimages].substring(8,15), cardimages[cards[1] as keyof typeof cardimages].substring(8,15),cardimages[cards[2] as keyof typeof cardimages].substring(8,15),cardimages[cards[3] as keyof typeof cardimages].substring(8,15),cardimages[cards[4] as keyof typeof cardimages].substring(8,15));
+    console.log(cardimages[cards[0] as keyof typeof cardimages].substring(16,23), cardimages[cards[1] as keyof typeof cardimages].substring(16,23),cardimages[cards[2] as keyof typeof cardimages].substring(16,23),cardimages[cards[3] as keyof typeof cardimages].substring(16,23),cardimages[cards[4] as keyof typeof cardimages].substring(16,23));
+    console.log(cardimages[cards[0] as keyof typeof cardimages].substring(24,31), cardimages[cards[1] as keyof typeof cardimages].substring(24,31),cardimages[cards[2] as keyof typeof cardimages].substring(24,31),cardimages[cards[3] as keyof typeof cardimages].substring(24,31),cardimages[cards[4] as keyof typeof cardimages].substring(24,31));
+    console.log(cardimages[cards[0] as keyof typeof cardimages].substring(32,39), cardimages[cards[1] as keyof typeof cardimages].substring(32,39),cardimages[cards[2] as keyof typeof cardimages].substring(32,39),cardimages[cards[3] as keyof typeof cardimages].substring(32,39),cardimages[cards[4] as keyof typeof cardimages].substring(32,39));
+    console.log(cardimages[cards[0] as keyof typeof cardimages].substring(40,47), cardimages[cards[1] as keyof typeof cardimages].substring(40,47),cardimages[cards[2] as keyof typeof cardimages].substring(40,47),cardimages[cards[3] as keyof typeof cardimages].substring(40,47),cardimages[cards[4] as keyof typeof cardimages].substring(40,47));
 }
 
-/*
-** Runs stepbystepdisplay but ensures that if a hand has less than 5 cards, 
-** the missing cards are replaced with a long line of blank space,
-** ensuring no errors occur.
-*/
-export function displaycards(cards: Array<string>){
+/**
+ * Initiates user input and either deals the next card or ends the round depending on user input
+ * @param cards An array containing the written name for each card.
+ * @example displaycards([Ace of Spades, 3 of Hearts, cardimages['blank'], cardimages['blank'], cardimages['blank']]) 
+ * displays the card Ace of Spades followed by the 3 of hearts on the same line
+ */
+export function displaycards(cards: Array<string>): void{
     let temp = cards;
     if (temp[2] === undefined){
         temp[2] = 'blank';
@@ -424,6 +427,4 @@ export function displaycards(cards: Array<string>){
     stepbystepdisplay(temp);
 }
 
-
-//stepbystepdisplay([cardimages['2 of Diamonds'], cardimages['3 of Hearts'], cardimages['4 of Clubs'],cardimages['5 of Spades'],cardimages['blank']]);
 

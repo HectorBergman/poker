@@ -15,7 +15,6 @@ function round(gs: GameState) {
     min_wager(gs[1], pot2);
     show_game_state(gs, pot1);
     const hands: Hands | undefined = holdem(2, gs, pot1, pot2);
-    console.log(hands);
     if (hands == undefined) {
         add_pot(pot1, gs[1]);
         add_pot(pot2, gs[1]);
