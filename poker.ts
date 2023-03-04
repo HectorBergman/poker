@@ -37,6 +37,16 @@ function roundstart(board: Hand, deck: Deck, allhands: Array<Hand>, gamestate:Ga
     if (selectionresult === undefined){
         return undefined;
     }
+    else if (selectionresult === 2)
+    {
+        board[3] = head(deck!); //turn
+        console.log(`The turn is a ${describe(board[3])}.`);
+        deck = tail(deck!); 
+        board[4] = head(deck!); //river
+        console.log(`${describe(board[4])} on the river!`);
+        deck = tail(deck!);
+        return allhands;
+    }
     else{
         board[3] = head(deck!); //turn
         console.log(`The turn is a ${describe(board[3])}.`);
@@ -45,7 +55,12 @@ function roundstart(board: Hand, deck: Deck, allhands: Array<Hand>, gamestate:Ga
         if(selectionresult === undefined){
             return undefined;
         }
-        else{
+        else if (selectionresult === 2){
+            board[4] = head(deck!); //river
+            console.log(`${describe(board[4])} on the river!`);
+            deck = tail(deck!);
+            return allhands;
+        }else{
             board[4] = head(deck!); //river
             console.log(`${describe(board[4])} on the river!`);
             deck = tail(deck!);
@@ -63,7 +78,7 @@ function roundstart(board: Hand, deck: Deck, allhands: Array<Hand>, gamestate:Ga
 
 /**
  * Asks for user input and prints out a message or an image or goes into the next stage of the round depending on input.
- * @param player The player making the choice, as of right now it does nothing of importance || MAYBE DELETE?
+ * @param player The player making the choice, this is only relevant if there was ever to be an implementation of multiple players.
  * @param allhands Array of array of cards representing the player's hand and the computer's hand
  * @param board The current state of the board
  * @returns number if player bets, undefined if folds
@@ -74,12 +89,15 @@ function selection(player: number, allhands: Array<Hand>, board: Hand, gamestate
     var prompt = question('What do you want to do? ');
     if (prompt.toLowerCase() === "bet"){
         console.log("You have 4 stacks of chips. White, red, blue, green.");
-        betting_selection(gamestate, pot1, pot2);
+        let bet: Number = betting_selection(gamestate, pot1, pot2);
         call_bet(pot1, pot2, gamestate[1]);
         reverse_bet(gamestate[0], pot1, pot2);
-        console.log(pot1);
-        console.log(pot2);
-        return 1;
+        if (bet === 5){
+            return 2;
+        }
+        else{
+            return 1;
+        }
     }
     else if (prompt.toLowerCase() === "help"){
         console.log("Type 'bet' to bet, 'hand' to look at your cards, 'board' to look at the board, 'fold' to fold and 'check' to check.")
@@ -232,9 +250,6 @@ export function holdem(players: number, gamestate: GameState, pot1: Pot, pot2: P
         board = [head(newdeck!), head(tail(newdeck!)!), head(tail(tail(newdeck!)!)!)];
         //this will be the 5 cards in the center of the table. Currently it's only the flop
         newdeck = tail(tail(tail(newdeck!)!)!);
-        /* Dealcardshelper gives a player the two cards on the top of the deck,
-        dealing cards like this would get you shot in the wild west,
-        but it works fine for a computer since it's completely random regardless*/
         function dealcardshelper(player: Hand): void { 
             player[0] = head(newdeck!);
             player[1] = head(tail(newdeck!)!);
@@ -253,6 +268,8 @@ export function holdem(players: number, gamestate: GameState, pot1: Pot, pot2: P
         return undefined
     }
     else if (roundstartresult === allhands){
+        displaycards([describe(board[0]), describe(board[1]),describe(board[2]),describe(board[3]),describe(board[4])])
+        console.log(`On the board there was the ${describe(board[0])}, the ${describe(board[1])}, the ${describe(board[2])}, the ${describe(board[3])} and the ${describe(board[4])}`)
         displaycards([describe(allhands[0][0]), describe(allhands[0][1])])
         console.log(`You had the ${describe(allhands[0][0])} and the ${describe(allhands[0][1])}`);
         displaycards([describe(allhands[1][0]), describe(allhands[1][1])])
