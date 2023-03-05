@@ -9,7 +9,6 @@ import { pair, Pair } from '../lib/list';
  * @param hand Hand to be evaluated
  * @returns a number which represent how much each hand is worth
  */
-
 export function hand_rating(hand: Hand): Pokerhand {
     const sorted = sorter(hand);
     const rf = royal_flush(sorted);
@@ -53,7 +52,7 @@ export function hand_rating(hand: Hand): Pokerhand {
 //console.log(hand_rating(hand1));
 //console.log(hand_rating(hand2));
 
-
+/*
 const hand3 = [{suit: 2, value: 9}, {suit: 3, value: 8}, {suit: 3, value: 3}, {suit: 0, value: 10}, {suit: 0, value: 11}, {suit: 3, value: 12}, {suit: 3, value: 6}];
 const hand4 = [{suit: 2, value: 9}, {suit: 3, value: 8}, {suit: 3, value: 3}, {suit: 0, value: 10}, {suit: 0, value: 11}, {suit: 2, value: 12}, {suit: 3, value: 13}];
 //console.log(hand_rating(hand3));
@@ -62,7 +61,7 @@ const hand1 = [{suit: 3, value: 4}, {suit: 1, value: 9}, {suit: 1, value: 6}, {s
 const hand2 = [{suit: 3, value: 4}, {suit: 1, value: 9}, {suit: 1, value: 6}, {suit: 1, value: 5}, {suit: 1, value: 13}, {suit: 1, value: 11}, {suit: 2, value: 8}];
 //console.log(hand_rating(hand1));
 //console.log(hand_rating(hand2));
-
+*/
 
 /*
 New implementation in order, should work if more than two players are playing.
@@ -114,8 +113,11 @@ export function winners(one: Hand, two: Hand): Pair<string, Hand> {
                             if (player1.best_hand != undefined && player2.best_hand != undefined) {
                                 if (player1.best_hand[4].value > player2.best_hand[4].value) {
                                     return pair("Player 1 wins", player1.best_hand);
-                                } else {
+                                } else if (player1.best_hand[4].value < player2.best_hand[4].value) {
                                     return pair("Player 2 wins", player2.best_hand);
+                                } else {
+                                    let hand: Hand = []
+                                    return pair("It's a tie", hand);
                                 }
                             }
                             let hand: Hand = [];
@@ -125,8 +127,11 @@ export function winners(one: Hand, two: Hand): Pair<string, Hand> {
                     if (player1.best_hand != undefined && player2.best_hand != undefined) {
                         if (player1.best_hand[4].value > player2.best_hand[4].value) {
                             return pair("Player 1 wins", player1.best_hand);
-                        } else {
+                        } else if (player1.best_hand[4].value < player2.best_hand[4].value) {
                             return pair("Player 2 wins", player2.best_hand);
+                        } else {
+                            let hand: Hand = []
+                            return pair("It's a tie", hand)
                         }
                     }
                     let hand: Hand = [];
@@ -136,8 +141,11 @@ export function winners(one: Hand, two: Hand): Pair<string, Hand> {
             if (player1.best_hand != undefined && player2.best_hand != undefined) {
                 if (player1.best_hand[4].value > player2.best_hand[4].value) {
                     return pair("Player 1 wins", player1.best_hand);
-                } else {
+                } else if (player1.best_hand[4].value < player2.best_hand[4].value) {
                     return pair("Player 2 wins", player2.best_hand);
+                } else {
+                    let hand: Hand = []
+                    return pair("It's a tie", hand);
                 }
             }
             let hand: Hand = []
@@ -148,4 +156,11 @@ export function winners(one: Hand, two: Hand): Pair<string, Hand> {
     return pair("Unvalid game", hand);
 }
 
+
+
 //console.log(winners(hand3, hand4));
+
+const hand1: Hand = [{suit: 3, value: 9}, {suit: 0, value: 14}, {suit: 2, value: 8}, {suit: 1, value: 11}, {suit: 3, value: 11}, {suit: 2, value: 11}, {suit: 2, value: 5}];
+const hand2: Hand = [{suit: 3, value: 9}, {suit: 0, value: 14}, {suit: 2, value: 8}, {suit: 1, value: 11}, {suit: 3, value: 11}, {suit: 0, value: 11}, {suit: 3, value: 4}];
+
+console.log(winners(hand1, hand2));
