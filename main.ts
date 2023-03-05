@@ -33,7 +33,7 @@ function round(gs: GameState) {
             console.log("Computer wins the round");
             add_pot(pot1, gs[1]);
             add_pot(pot2, gs[1]);
-            if (pot_value(gs[1]) === 0) {
+            if (pot_value(gs[0]) === 0) {
                 console.log("Computer wins the game");
                 poker_main();
             } 
