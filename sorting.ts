@@ -1,4 +1,4 @@
-//Found using ChatGPT
+//Found using ChatGPT, but modified to work better
 
 import { Hand, Card } from "./poker_types";
 
