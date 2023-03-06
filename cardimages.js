@@ -59,11 +59,12 @@ exports.cardimages = {
     'Intro': "\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\n\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\n\u2800\u2800\u2800\u2800\u2800\u2800\u28C0\u28E4\u28F4\u28C4\u2800\u2880\u28C0\u28C0\u28C0\u2840\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\n\u2800\u2800\u28E0\u28F4\u28FE\u28FF\u28FF\u28FF\u28FF\u28FF\u28C7\u28B8\u28FF\u28FF\u28FF\u28FF\u28FF\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\n\u2800\u2800\u28BF\u28FF\u28FF\u28FF\u281B\u283F\u28FF\u28FF\u28FF\u2840\u28BB\u28FF\u28FF\u28FF\u28FF\u2800\u28F8\u28FF\u28F6\u28E6\u28C4\u2800\u2800\u2800\u2800\u2800\u2800\u2800\n\u2800\u2800\u2818\u28FF\u28FF\u2803\u2800\u2800\u2800\u2808\u2819\u28E7\u2808\u28BF\u28FF\u28FF\u28FF\u2800\u28FF\u28FF\u28FF\u28FF\u285F\u2880\u2840\u2800\u2800\u2800\u2800\u2800\n\u2800\u2800\u2800\u28B9\u2847\u2800\u2800\u2800\u2800\u28C0\u28E0\u28FF\u28C7\u2818\u28FF\u28FF\u28FF\u2800\u28FF\u28FF\u28FF\u287F\u2800\u28FE\u28FF\u28F7\u28C4\u2800\u2800\u2800\n\u2800\u2800\u2800\u2800\u28BF\u28E6\u28E4\u28FE\u2846\u28F9\u28FF\u28FF\u28FF\u2844\u2839\u28FF\u28FF\u2800\u28FF\u28FF\u28FF\u2803\u28F8\u28FF\u28FF\u28FF\u28FF\u28F7\u2800\u2800\n\u2800\u2800\u2800\u2800\u2818\u28FF\u28FF\u28FF\u28FF\u28FF\u28FF\u28FF\u28FF\u2817\u2880\u28FF\u284F\u2800\u28FF\u28FF\u284F\u28A0\u28FF\u28FF\u28FF\u28FF\u281F\u2801\u2800\u2800\n\u2800\u2800\u2800\u2800\u2800\u2838\u28BF\u283F\u281F\u280B\u2809\u2801\u2800\u2810\u281A\u281B\u2803\u28F0\u28FF\u287F\u2800\u28FE\u28FF\u28FF\u287F\u2803\u2800\u2800\u2800\u2800\n\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2810\u283B\u283F\u283F\u2803\u28F8\u28FF\u28FF\u280B\u2800\u2800\u2800\u2800\u2800\u2800\n\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2822\u28E4\u28FE\u28FF\u281F\u2801\u2800\u2800\u2800\u2800\u2800\u2800\u2800\n\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2808\u281B\u2801\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800",
     'Introtext': " _____                    _   _       _     _   _                \n|_   _|                  | | | |     | |   | | ( )               \n  | | _____  ____ _ ___  | |_| | ___ | | __| | |/  ___ _ __ ___  \n  | |/ _ \\ \\/ / _` / __| |  _  |/ _ \\| |/ _` |    / _ \\ '_ ` _ \\ \n  | |  __/>  < (_| \\__ \\ | | | | (_) | | (_| |   |  __/ | | | | |\n  \\_/\\___/_/\\_\\__,_|___/ \\_| |_/\\___/|_|\\__,_|    \\___|_| |_| |_|"
 };
-/*
-** Takes an array of strings and prints an image of cards (given they're in the correct format)
-** prints the first 8 elements in each string, then the next 8, and so on.
-** This results in cards side-by-side in the console.
-*/
+/**
+ * Takes an array of 5 strings and prints the first 8 characters of each string on one line, then the next 8 and so on.
+ * @param cards An array of the strings that will be printed
+ * @preconditions Array has to have 5 strings, and each string has to be at least 48 characters long, also it's assumed each
+ * string follows the card format in cardimages, otherwise it will still work but will look non-sensical.
+ */
 function stepbystepdisplay(cards) {
     console.log(exports.cardimages[cards[0]].substring(0, 7), exports.cardimages[cards[1]].substring(0, 7), exports.cardimages[cards[2]].substring(0, 7), exports.cardimages[cards[3]].substring(0, 7), exports.cardimages[cards[4]].substring(0, 7));
     console.log(exports.cardimages[cards[0]].substring(8, 15), exports.cardimages[cards[1]].substring(8, 15), exports.cardimages[cards[2]].substring(8, 15), exports.cardimages[cards[3]].substring(8, 15), exports.cardimages[cards[4]].substring(8, 15));
@@ -73,11 +74,12 @@ function stepbystepdisplay(cards) {
     console.log(exports.cardimages[cards[0]].substring(40, 47), exports.cardimages[cards[1]].substring(40, 47), exports.cardimages[cards[2]].substring(40, 47), exports.cardimages[cards[3]].substring(40, 47), exports.cardimages[cards[4]].substring(40, 47));
 }
 exports.stepbystepdisplay = stepbystepdisplay;
-/*
-** Runs stepbystepdisplay but ensures that if a hand has less than 5 cards,
-** the missing cards are replaced with a long line of blank space,
-** ensuring no errors occur.
-*/
+/**
+ * Initiates user input and either deals the next card or ends the round depending on user input
+ * @param cards An array containing the written name for each card.
+ * @example displaycards([Ace of Spades, 3 of Hearts, cardimages['blank'], cardimages['blank'], cardimages['blank']])
+ * displays the card Ace of Spades followed by the 3 of hearts on the same line
+ */
 function displaycards(cards) {
     var temp = cards;
     if (temp[2] === undefined) {
@@ -95,4 +97,3 @@ function displaycards(cards) {
     stepbystepdisplay(temp);
 }
 exports.displaycards = displaycards;
-//stepbystepdisplay([cardimages['2 of Diamonds'], cardimages['3 of Hearts'], cardimages['4 of Clubs'],cardimages['5 of Spades'],cardimages['blank']]);

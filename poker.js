@@ -35,6 +35,15 @@ function roundstart(board, deck, allhands, gamestate, pot1, pot2) {
     if (selectionresult === undefined) {
         return undefined;
     }
+    else if (selectionresult === 2) {
+        board[3] = (0, list_1.head)(deck); //turn
+        console.log("The turn is a ".concat((0, helpers_1.describe)(board[3]), "."));
+        deck = (0, list_1.tail)(deck);
+        board[4] = (0, list_1.head)(deck); //river
+        console.log("".concat((0, helpers_1.describe)(board[4]), " on the river!"));
+        deck = (0, list_1.tail)(deck);
+        return allhands;
+    }
     else {
         board[3] = (0, list_1.head)(deck); //turn
         console.log("The turn is a ".concat((0, helpers_1.describe)(board[3]), "."));
@@ -42,6 +51,12 @@ function roundstart(board, deck, allhands, gamestate, pot1, pot2) {
         selectionresult = selection(0, allhands, board, gamestate, pot1, pot2);
         if (selectionresult === undefined) {
             return undefined;
+        }
+        else if (selectionresult === 2) {
+            board[4] = (0, list_1.head)(deck); //river
+            console.log("".concat((0, helpers_1.describe)(board[4]), " on the river!"));
+            deck = (0, list_1.tail)(deck);
+            return allhands;
         }
         else {
             board[4] = (0, list_1.head)(deck); //river
@@ -59,7 +74,7 @@ function roundstart(board, deck, allhands, gamestate, pot1, pot2) {
 }
 /**
  * Asks for user input and prints out a message or an image or goes into the next stage of the round depending on input.
- * @param player The player making the choice, as of right now it does nothing of importance || MAYBE DELETE?
+ * @param player The player making the choice, this is only relevant if there was ever to be an implementation of multiple players.
  * @param allhands Array of array of cards representing the player's hand and the computer's hand
  * @param board The current state of the board
  * @returns number if player bets, undefined if folds
@@ -69,12 +84,15 @@ function selection(player, allhands, board, gamestate, pot1, pot2) {
     var prompt = (0, readline_sync_1.question)('What do you want to do? ');
     if (prompt.toLowerCase() === "bet") {
         console.log("You have 4 stacks of chips. White, red, blue, green.");
-        betting_selection(gamestate, pot1, pot2);
+        var bet = betting_selection(gamestate, pot1, pot2);
         (0, stack_bet_1.call_bet)(pot1, pot2, gamestate[1]);
         (0, stack_bet_1.reverse_bet)(gamestate[0], pot1, pot2);
-        console.log(pot1);
-        console.log(pot2);
-        return 1;
+        if (bet === 5) {
+            return 2;
+        }
+        else {
+            return 1;
+        }
     }
     else if (prompt.toLowerCase() === "help") {
         console.log("Type 'bet' to bet, 'hand' to look at your cards, 'board' to look at the board, 'fold' to fold and 'check' to check.");
@@ -163,7 +181,6 @@ function betting_selection(gamestate, pot1, pot2) {
     else if (prompt2.toLowerCase() === "all in") {
         console.log("All in!");
         (0, stack_bet_1.all_in)(gamestate[0], pot1);
-        console.log(pot1);
         return 5;
     }
     else if (prompt2.toLowerCase() === "help") {
@@ -182,7 +199,7 @@ function betting_selection(gamestate, pot1, pot2) {
         return betmore();
     }
     else {
-        betting_selection(gamestate, pot1, pot2);
+        return betting_selection(gamestate, pot1, pot2);
     }
     ;
     function betmore() {
@@ -225,9 +242,6 @@ function holdem(players, gamestate, pot1, pot2) {
         board = [(0, list_1.head)(newdeck), (0, list_1.head)((0, list_1.tail)(newdeck)), (0, list_1.head)((0, list_1.tail)((0, list_1.tail)(newdeck)))];
         //this will be the 5 cards in the center of the table. Currently it's only the flop
         newdeck = (0, list_1.tail)((0, list_1.tail)((0, list_1.tail)(newdeck)));
-        /* Dealcardshelper gives a player the two cards on the top of the deck,
-        dealing cards like this would get you shot in the wild west,
-        but it works fine for a computer since it's completely random regardless*/
         function dealcardshelper(player) {
             player[0] = (0, list_1.head)(newdeck);
             player[1] = (0, list_1.head)((0, list_1.tail)(newdeck));
@@ -246,6 +260,8 @@ function holdem(players, gamestate, pot1, pot2) {
         return undefined;
     }
     else if (roundstartresult === allhands) {
+        (0, cardimages_1.displaycards)([(0, helpers_1.describe)(board[0]), (0, helpers_1.describe)(board[1]), (0, helpers_1.describe)(board[2]), (0, helpers_1.describe)(board[3]), (0, helpers_1.describe)(board[4])]);
+        console.log("On the board there was the ".concat((0, helpers_1.describe)(board[0]), ", the ").concat((0, helpers_1.describe)(board[1]), ", the ").concat((0, helpers_1.describe)(board[2]), ", the ").concat((0, helpers_1.describe)(board[3]), " and the ").concat((0, helpers_1.describe)(board[4])));
         (0, cardimages_1.displaycards)([(0, helpers_1.describe)(allhands[0][0]), (0, helpers_1.describe)(allhands[0][1])]);
         console.log("You had the ".concat((0, helpers_1.describe)(allhands[0][0]), " and the ").concat((0, helpers_1.describe)(allhands[0][1])));
         (0, cardimages_1.displaycards)([(0, helpers_1.describe)(allhands[1][0]), (0, helpers_1.describe)(allhands[1][1])]);

@@ -161,7 +161,3 @@ function winners(one, two) {
     return (0, list_1.pair)("Unvalid game", hand);
 }
 exports.winners = winners;
-//console.log(winners(hand3, hand4));
-var hand1 = [{ suit: 3, value: 9 }, { suit: 0, value: 14 }, { suit: 2, value: 8 }, { suit: 1, value: 11 }, { suit: 3, value: 11 }, { suit: 2, value: 11 }, { suit: 2, value: 5 }];
-var hand2 = [{ suit: 3, value: 9 }, { suit: 0, value: 14 }, { suit: 2, value: 8 }, { suit: 1, value: 11 }, { suit: 3, value: 11 }, { suit: 0, value: 11 }, { suit: 3, value: 4 }];
-console.log(winners(hand1, hand2));

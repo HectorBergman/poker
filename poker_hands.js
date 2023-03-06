@@ -59,6 +59,7 @@ function best_pair_hand(hand, i) {
 /**
  * Helper function: checks if a hand has more than a pair of a given value
  * @param hand (Hand) a hand of cards, which already contain a pair
+ * @param value (number) the value of the pair to compare and count the same cards as
  * @param i (number) is for indexing
  * @param j (number) count number of cards which are the same
  * @returns number of cards with the same value
@@ -514,18 +515,3 @@ function straight(hand) {
     return { exists: false, name: 'straight', rang: 0 };
 }
 exports.straight = straight;
-//const hand1 = [{suit: 3, value: 13}, {suit: 1, value: 3}, {suit: 2, value: 9}, {suit: 1, value: 10}, {suit: 3, value: 2}, {suit: 3, value: 7}, {suit: 0, value: 8}];
-var hand2 = [{ suit: 3, value: 2 }, { suit: 1, value: 2 }, { suit: 2, value: 2 }, { suit: 1, value: 3 }, { suit: 3, value: 3 }, { suit: 2, value: 3 }, { suit: 2, value: 3 }];
-//console.log(has_fullhouse(hand2));
-//console.log(has_three_of_akind(hand2));
-//console.log(has_two_pairs(hand2));
-//console.log(has_four_of_akind(hand2));
-//console.log(has_pair(hand2));
-//console.log(has_two_pairs(hand2));
-//console.log(has_three_of_akind(hand2));
-//console.log(straight(hand2));
-//console.log(flush(hand2));
-//console.log(has_four_of_akind(hand2));
-//console.log(has_fullhouse(hand2));
-//console.log(straight_flush(hand2));
-//console.log(royal_flush(hand2));

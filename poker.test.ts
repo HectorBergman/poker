@@ -6,6 +6,7 @@ import {Stack} from './poker_types';
 import {make_pot, make_new_stack, add_pot, make_bet, call_bet, pot_value,
         auto_change, manual_change, reverse_bet, all_in, min_wager } from "./stack_bet";
 import { winners } from './hands_ranking';
+import { head } from '../lib/list';
         
 test('straight function is valid', () => {
     const card1: Card = {suit: 0, value: 7};
@@ -223,5 +224,5 @@ test('Stack_bet: min_wager puts ', () => {
 test('winners give correct winner', () => {
     const handa = [{suit: 3, value: 13}, {suit: 1, value: 3}, {suit: 2, value: 9}, {suit: 1, value: 10}, {suit: 3, value: 2}, {suit: 3, value: 7}, {suit: 0, value: 8}];
     const handb = [{suit: 3, value: 13}, {suit: 1, value: 3}, {suit: 2, value: 9}, {suit: 1, value: 10}, {suit: 3, value: 2}, {suit: 2, value: 2}, {suit: 2, value: 3}];
-    expect(winners(handa, handb)).toBe("Player 2 wins");
+    expect(head(winners(handa, handb))).toBe("Player 2 wins");
 });

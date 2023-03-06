@@ -1,7 +1,12 @@
 "use strict";
-//Found using ChatGPT
+//Found using ChatGPT, but modified to work better
 exports.__esModule = true;
 exports.sorter = void 0;
+/**
+ * Sorts a hand in size order for values, lowest first
+ * @param hand Hand in random order that needs to be sorted
+ * @returns Same hand as before, but now sorted in size order from lowest to highest.
+ */
 function sorter(hand) {
     function sortRecordsByValue(records) {
         return records.sort(function (a, b) {
@@ -19,5 +24,3 @@ function sorter(hand) {
     return sortRecordsByValue(hand);
 }
 exports.sorter = sorter;
-var hand3 = [{ suit: 2, value: 9 }, { suit: 3, value: 8 }, { suit: 3, value: 3 }, { suit: 0, value: 10 }, { suit: 0, value: 11 }, { suit: 3, value: 12 }, { suit: 3, value: 6 }];
-console.log(sorter(hand3));
