@@ -72,7 +72,9 @@ function menu(): void{
             return;
         }
         else if (prompt.toLowerCase() === 'instructions'){
-            console.log('instructions');
+        console.log("Type 'start' to start.");
+        console.log("When in-game, type 'help' for further commands.");
+        console.log("Game ends when either player has no remaining chips.");
         }
         else{
             console.log("Not a valid command. Type 'start' or 'instructions'.")
