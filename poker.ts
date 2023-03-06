@@ -8,6 +8,7 @@ import {make_bet, call_bet, pot_value, make_pot, show_game_state, all_in, revers
 
 /**
  * Generates a list of 52 unique cards with suit 0-3 and value 2-14 (11 = jack, 12 = queen, 13 = king, 14 = ace)
+ * as a list of record type cards
  * @returns A list of cards
  */
 function createdeck(): Deck{
@@ -34,11 +35,10 @@ function createdeck(): Deck{
 
 function roundstart(board: Hand, deck: Deck, allhands: Array<Hand>, gamestate:GameState, pot1: Pot, pot2: Pot): Array<Hand> | undefined{ 
     let selectionresult = selection(0, allhands, board, gamestate, pot1, pot2);
-    if (selectionresult === undefined){
+    if (selectionresult === undefined){ //folded
         return undefined;
     }
-    else if (selectionresult === 2)
-    {
+    else if (selectionresult === 2) { //all in, round ends immediately
         board[3] = head(deck!); //turn
         console.log(`The turn is a ${describe(board[3])}.`);
         deck = tail(deck!); 
@@ -52,10 +52,9 @@ function roundstart(board: Hand, deck: Deck, allhands: Array<Hand>, gamestate:Ga
         console.log(`The turn is a ${describe(board[3])}.`);
         deck = tail(deck!);
         selectionresult = selection(0, allhands, board, gamestate, pot1, pot2);
-        if(selectionresult === undefined){
+        if(selectionresult === undefined){ //folded
             return undefined;
-        }
-        else if (selectionresult === 2){
+        } else if (selectionresult === 2){ //all in, round ends immediately
             board[4] = head(deck!); //river
             console.log(`${describe(board[4])} on the river!`);
             deck = tail(deck!);
@@ -65,7 +64,7 @@ function roundstart(board: Hand, deck: Deck, allhands: Array<Hand>, gamestate:Ga
             console.log(`${describe(board[4])} on the river!`);
             deck = tail(deck!);
             selectionresult = selection(0, allhands, board, gamestate, pot1, pot2);
-            if(selectionresult=== undefined){
+            if(selectionresult=== undefined){ //folded
                 return undefined;
             }
             else{
@@ -92,8 +91,10 @@ function selection(player: number, allhands: Array<Hand>, board: Hand, gamestate
         let bet: Number = betting_selection(gamestate, pot1, pot2);
         call_bet(pot1, pot2, gamestate[1]);
         reverse_bet(gamestate[0], pot1, pot2);
-        if (bet === 5){
-            return 2;
+        if (bet === 5){ //all in
+            return 2; 
+        }
+        else if (bet === 1){
         }
         else{
             return 1;
@@ -151,15 +152,20 @@ function bet_number(color: string, number: number, gamestate: GameState, pot1: P
     }
     else{
         var prompt3 = question(`How much do you want to bet? You have ${gamestate[0][number].number} ${color} chips. `)
-        if (Number.isNaN(Number(prompt3))){
+        const bet = parseInt(prompt3, 10)
+        if (Number.isNaN(bet)){
             console.log("Not a number. Type a number.");
-            bet_number(color, number, gamestate, pot1, pot2)
+            bet_number(color, number, gamestate, pot1, pot2);
         }
-        else if(gamestate[0][number].number < Number(prompt3)){
+        else if(gamestate[0][number].number < bet){
             console.log("Not enough chips.");
-            bet_number(color, number, gamestate, pot1, pot2)
-        }else{
-            make_bet([color, Number(prompt3)], gamestate[0] ,pot1);
+            bet_number(color, number, gamestate, pot1, pot2);
+        }else if (bet < 0){
+            console.log("Invalid number.");   
+            bet_number(color, number, gamestate, pot1, pot2);
+        }
+        else{
+            make_bet([color, bet], gamestate[0] ,pot1);
         }
     }
 }
