@@ -20,6 +20,7 @@ function round(gs: GameState) {
         add_pot(pot2, gs[1]);
     } else {
         let result = winners(hands[0], hands[1])
+        console.log(`You bet ${pot1[0].number} white chips, ${pot1[1].number} red chips, ${pot1[2].number} blue chips and ${pot1[3].number} green chips.`)
         if (head(result) === "Player 1 wins") {
             console.log("Player wins the round");
             add_pot(pot1, gs[0]);
@@ -33,7 +34,7 @@ function round(gs: GameState) {
             console.log("Computer wins the round");
             add_pot(pot1, gs[1]);
             add_pot(pot2, gs[1]);
-            if (pot_value(gs[1]) === 0) {
+            if (pot_value(gs[0]) === 0) {
                 console.log("Computer wins the game");
                 poker_main();
             } 
