@@ -59,6 +59,7 @@ function best_pair_hand(hand: Hand, i: Hand): Hand {
 /**
  * Helper function: checks if a hand has more than a pair of a given value
  * @param hand (Hand) a hand of cards, which already contain a pair
+ * @param value (number) the value of the pair to compare and count the same cards as
  * @param i (number) is for indexing
  * @param j (number) count number of cards which are the same
  * @returns number of cards with the same value

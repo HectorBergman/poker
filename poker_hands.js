@@ -514,12 +514,18 @@ function straight(hand) {
     return { exists: false, name: 'straight', rang: 0 };
 }
 exports.straight = straight;
-var card1 = { suit: 0, value: 7 };
-var card2 = { suit: 3, value: 2 };
-var card3 = { suit: 0, value: 3 };
-var card4 = { suit: 3, value: 4 };
-var card5 = { suit: 2, value: 5 };
-var card6 = { suit: 1, value: 6 };
-var card7 = { suit: 2, value: 14 };
-var hand1 = [card1, card2, card3, card4, card5, card6, card7];
-console.log(straight(hand1));
+//const hand1 = [{suit: 3, value: 13}, {suit: 1, value: 3}, {suit: 2, value: 9}, {suit: 1, value: 10}, {suit: 3, value: 2}, {suit: 3, value: 7}, {suit: 0, value: 8}];
+var hand2 = [{ suit: 3, value: 2 }, { suit: 1, value: 2 }, { suit: 2, value: 2 }, { suit: 1, value: 3 }, { suit: 3, value: 3 }, { suit: 2, value: 3 }, { suit: 2, value: 3 }];
+//console.log(has_fullhouse(hand2));
+//console.log(has_three_of_akind(hand2));
+//console.log(has_two_pairs(hand2));
+//console.log(has_four_of_akind(hand2));
+//console.log(has_pair(hand2));
+//console.log(has_two_pairs(hand2));
+//console.log(has_three_of_akind(hand2));
+//console.log(straight(hand2));
+//console.log(flush(hand2));
+//console.log(has_four_of_akind(hand2));
+//console.log(has_fullhouse(hand2));
+//console.log(straight_flush(hand2));
+//console.log(royal_flush(hand2));
