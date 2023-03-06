@@ -454,7 +454,7 @@ export function flush(hand: Hand): Pokerhand {
  */
 export function straight(hand: Hand): Pokerhand {
     function straight_helper(arr: Hand): Hand {
-        let conseq_array: Array<Card> = [];
+        let conseq_array: Hand = [];
         let adder = 0;
         for (let i = 0; i < (arr.length - 1); i++) {
             if (find_value(arr[i]) === (find_value(arr[i + 1]) - 1)) {
@@ -464,6 +464,17 @@ export function straight(hand: Hand): Pokerhand {
             } else if (find_value(arr[i]) === find_value(arr[i + 1])) {
                 continue;
             } else {
+                if (conseq_array[0] != undefined) {
+                if (conseq_array[0].value === 2 && conseq_array.length === 4 ) {
+                    if (arr[arr.length - 1].value ===  14) {
+                        let temp_ar: Hand = [];
+                        temp_ar[0] = arr[arr.length - 1];
+                        for (let i = 1; i < 5; i += 1) {
+                            temp_ar[i] = conseq_array[i - 1];
+                        }
+                        return temp_ar;
+                    }
+                } }
                 if (conseq_array.length >= 5) {
                     return conseq_array;
                 } else {

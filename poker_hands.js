@@ -482,6 +482,18 @@ function straight(hand) {
                 continue;
             }
             else {
+                if (conseq_array[0] != undefined) {
+                    if (conseq_array[0].value === 2 && conseq_array.length === 4) {
+                        if (arr[arr.length - 1].value === 14) {
+                            var temp_ar = [];
+                            temp_ar[0] = arr[arr.length - 1];
+                            for (var i_1 = 1; i_1 < 5; i_1 += 1) {
+                                temp_ar[i_1] = conseq_array[i_1 - 1];
+                            }
+                            return temp_ar;
+                        }
+                    }
+                }
                 if (conseq_array.length >= 5) {
                     return conseq_array;
                 }
@@ -502,3 +514,18 @@ function straight(hand) {
     return { exists: false, name: 'straight', rang: 0 };
 }
 exports.straight = straight;
+//const hand1 = [{suit: 3, value: 13}, {suit: 1, value: 3}, {suit: 2, value: 9}, {suit: 1, value: 10}, {suit: 3, value: 2}, {suit: 3, value: 7}, {suit: 0, value: 8}];
+var hand2 = [{ suit: 3, value: 2 }, { suit: 1, value: 2 }, { suit: 2, value: 2 }, { suit: 1, value: 3 }, { suit: 3, value: 3 }, { suit: 2, value: 3 }, { suit: 2, value: 3 }];
+//console.log(has_fullhouse(hand2));
+//console.log(has_three_of_akind(hand2));
+//console.log(has_two_pairs(hand2));
+//console.log(has_four_of_akind(hand2));
+//console.log(has_pair(hand2));
+//console.log(has_two_pairs(hand2));
+//console.log(has_three_of_akind(hand2));
+//console.log(straight(hand2));
+//console.log(flush(hand2));
+//console.log(has_four_of_akind(hand2));
+//console.log(has_fullhouse(hand2));
+//console.log(straight_flush(hand2));
+//console.log(royal_flush(hand2));

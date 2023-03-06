@@ -32,7 +32,8 @@ export type Pokerhand = {
 
 export type Chip = {
     value: number
-    color?: string };
+    color?: string 
+};
 
 export type Pile = {
     color: number

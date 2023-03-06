@@ -20,6 +20,7 @@ function round(gs: GameState) {
         add_pot(pot2, gs[1]);
     } else {
         let result = winners(hands[0], hands[1])
+        console.log(`You bet ${pot1[0].number} white chips, ${pot1[1].number} red chips, ${pot1[2].number} blue chips and ${pot1[3].number} green chips.`)
         if (head(result) === "Player 1 wins") {
             console.log("Player wins the round");
             add_pot(pot1, gs[0]);
@@ -71,7 +72,9 @@ function menu(): void{
             return;
         }
         else if (prompt.toLowerCase() === 'instructions'){
-            console.log('instructions');
+        console.log("Type 'start' to start.");
+        console.log("When in-game, type 'help' for further commands.");
+        console.log("Game ends when either player has no remaining chips.");
         }
         else{
             console.log("Not a valid command. Type 'start' or 'instructions'.")
