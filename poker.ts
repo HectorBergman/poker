@@ -17,8 +17,8 @@ function createdeck(): Deck{
         //0 = clubs 1 = diamond 2 = spades 3 = hearts
         for (let value = 2; value < 15; value++) {
             //ace 14, king 13, queen 12, jack 11
-            let newcard: Card = {suit, value};
-            let temp = append(newdeck, list(newcard));
+            const newcard: Card = {suit, value};
+            const temp = append(newdeck, list(newcard));
             newdeck = temp;
         }
     }
@@ -85,10 +85,10 @@ function roundstart(board: Hand, deck: Deck, allhands: Array<Hand>, gamestate:Ga
  */
 
 function selection(player: number, allhands: Array<Hand>, board: Hand, gamestate: GameState, pot1: Pot, pot2: Pot): number | undefined{
-    var prompt = question('What do you want to do? ');
+    const prompt = question('What do you want to do? ');
     if (prompt.toLowerCase() === "bet"){
         console.log("You have 4 stacks of chips. White, red, blue, green.");
-        let bet: Number = betting_selection(gamestate, pot1, pot2);
+        const bet: number = betting_selection(gamestate, pot1, pot2);
         call_bet(pot1, pot2, gamestate[1]);
         reverse_bet(gamestate[0], pot1, pot2);
         if (bet === 5){ //all in
@@ -151,7 +151,7 @@ function bet_number(color: string, number: number, gamestate: GameState, pot1: P
         console.log(`You have no ${color} chips. `)
     }
     else{
-        var prompt3 = question(`How much do you want to bet? You have ${gamestate[0][number].number} ${color} chips. `)
+        const prompt3 = question(`How much do you want to bet? You have ${gamestate[0][number].number} ${color} chips. `)
         const bet = parseInt(prompt3, 10)
         if (Number.isNaN(bet)){
             console.log("Not a number. Type a number.");
@@ -176,9 +176,9 @@ function bet_number(color: string, number: number, gamestate: GameState, pot1: P
  * @param pot1 Player 1's pot
  * @param pot2 Player 2's pot
  */
-function betting_selection(gamestate: GameState, pot1: Pot, pot2: Pot): Number{
+function betting_selection(gamestate: GameState, pot1: Pot, pot2: Pot): number{
     let test = 1;
-    var prompt2 = question('What do you want to bet? ')
+    const prompt2 = question('What do you want to bet? ')
     if (prompt2.toLowerCase() === "white"){
         bet_number("white", 0, gamestate, pot1, pot2)
     }
@@ -213,10 +213,10 @@ function betting_selection(gamestate: GameState, pot1: Pot, pot2: Pot): Number{
         return betmore()
     }else{
         return betting_selection(gamestate, pot1, pot2)
-    };
+    }
     
-    function betmore(): Number{
-        var prompt4 = question('Do you want to bet more? y/n ');
+    function betmore(): number{
+        const prompt4 = question('Do you want to bet more? y/n ');
         if (prompt4.toLowerCase() === "y"){
             return betting_selection(gamestate, pot1, pot2);
         }
@@ -250,7 +250,7 @@ function addboard(hand: Hand, board: Board){
  */
 export function holdem(players: number, gamestate: GameState, pot1: Pot, pot2: Pot): Array<Hand> | undefined{
     let newdeck: Deck = createdeck();
-    let allhands: Array<Hand> = []; //Player one's hand is index 0, player two index 1, and so on.
+    const allhands: Array<Hand> = []; //Player one's hand is index 0, player two index 1, and so on.
     let board: Hand = []
     function dealcards(players: number): void{
         board = [head(newdeck!), head(tail(newdeck!)!), head(tail(tail(newdeck!)!)!)];
@@ -269,7 +269,7 @@ export function holdem(players: number, gamestate: GameState, pot1: Pot, pot2: P
     dealcards(2);
     console.log("Cards have been dealt. Type 'hand' to look at your cards, and 'board' to see the cards on the board.");
     console.log("('help' for a list of all commands)");
-    let roundstartresult = roundstart(board, newdeck, allhands, gamestate, pot1, pot2);
+    const roundstartresult = roundstart(board, newdeck, allhands, gamestate, pot1, pot2);
     if (roundstartresult === undefined){
         return undefined
     }

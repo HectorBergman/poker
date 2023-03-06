@@ -1,6 +1,6 @@
 
 //Ascii art by ejm98
-export let cardimages = {
+export const cardimages = {
     'blank':'                                                                   ',
     'Ace of Diamonds':
     ` _____ 
@@ -411,7 +411,7 @@ export function stepbystepdisplay(cards: Array<string>): void{
  * displays the card Ace of Spades followed by the 3 of hearts on the same line
  */
 export function displaycards(cards: Array<string>): void{
-    let temp = cards;
+    const temp = cards;
     if (temp[2] === undefined){
         temp[2] = 'blank';
         temp[3] = 'blank';

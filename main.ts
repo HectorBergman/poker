@@ -9,8 +9,8 @@ import { head } from "../lib/list";
 
 
 function round(gs: GameState) {
-    let pot1 = make_pot();
-    let pot2 = make_pot();
+    const pot1 = make_pot();
+    const pot2 = make_pot();
     min_wager(gs[0], pot1);
     min_wager(gs[1], pot2);
     show_game_state(gs, pot1);
@@ -19,7 +19,7 @@ function round(gs: GameState) {
         add_pot(pot1, gs[1]);
         add_pot(pot2, gs[1]);
     } else {
-        let result = winners(hands[0], hands[1])
+        const result = winners(hands[0], hands[1])
         console.log(`You bet ${pot1[0].number} white chips, ${pot1[1].number} red chips, ${pot1[2].number} blue chips and ${pot1[3].number} green chips.`)
         if (head(result) === "Player 1 wins") {
             console.log("Player wins the round");
@@ -67,7 +67,7 @@ function menu(): void{
     console.log('START');
     console.log('INSTRUCTIONS');
     function minimenu(): void{
-        var prompt = question('What do you want to do? ');
+        const prompt = question('What do you want to do? ');
         if (prompt.toLowerCase() === 'start'){
             return;
         }
