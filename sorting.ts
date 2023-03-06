@@ -1,7 +1,12 @@
-//Found using ChatGPT
+//Found using ChatGPT, but modified to work better
 
 import { Hand, Card } from "./poker_types";
 
+/**
+ * Sorts a hand in size order for values, lowest first
+ * @param hand Hand in random order that needs to be sorted
+ * @returns Same hand as before, but now sorted in size order from lowest to highest.
+ */
 export function sorter(hand: Hand): Hand {
   function sortRecordsByValue(records: Card[]): Card[] {
     return records.sort((a, b) => {

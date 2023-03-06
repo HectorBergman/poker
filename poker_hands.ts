@@ -27,6 +27,13 @@ export function has_pair(hand: Hand, j = 0): Pokerhand {
     }
 }
 
+/**
+ * Helper function: Function that finds the best possible hand if the hand includes one pair
+ * @param hand hand that will be evaluated to find the best hand
+ * @param i pair that is included in the best possible hand
+ * @returns A hand where either the last element is the highest card in the hand or one of the elements in the pair.
+ */
+
 function best_pair_hand(hand: Hand, i: Hand): Hand {
     let temp_arr: Hand = []
     let new_hand = make_new_hand(hand, [], i[0].value);
@@ -48,16 +55,11 @@ function best_pair_hand(hand: Hand, i: Hand): Hand {
     return temp_arr;
 }
 
-/*
-const hand1: Hand = [{suit: 3, value: 7}, {suit: 0, value: 2}, {suit: 1, value: 8}, 
-    {suit: 1, value: 5}, {suit: 1, value: 2}, {suit: 3, value: 5}, {suit: 2, value: 3}];
-
-console.log(has_pair(hand1));
-*/
 
 /**
  * Helper function: checks if a hand has more than a pair of a given value
  * @param hand (Hand) a hand of cards, which already contain a pair
+ * @param value (number) the value of the pair to compare and count the same cards as
  * @param i (number) is for indexing
  * @param j (number) count number of cards which are the same
  * @returns number of cards with the same value
@@ -75,7 +77,7 @@ function count_same_cards(hand: Hand, value: number, i = 0, j = 0): number {
 }
 
 /**
- * Helper: Checks how many cards of a certain value that exists in a given hand
+ * Helper function: Checks how many cards of a certain value that exists in a given hand
  * @param hand hand of cards to be examined
  * @param value Value to check if the cards have or not
  * @returns hand of cards that includes the same values
@@ -137,6 +139,12 @@ export function has_three_of_akind(hand: Hand): Pokerhand {
     } 
 }
 
+/**
+ * Helper function: Finds the best possible hand if it contains three of the same kind
+ * @param hand Hand that is to be evaluated
+ * @param i A hand that only contains the trio that also is included in the best possible hand
+ * @returns A hand where the last element is either the highest card or part of the trio.
+ */
 function three_of_akind_best(hand: Hand, i: Hand): Hand {
     let temp_arr: Hand = []
     let new_hand = make_new_hand(hand, [], i[0].value)
@@ -156,12 +164,6 @@ function three_of_akind_best(hand: Hand, i: Hand): Hand {
     return temp_arr;
 }
 
-/*
-const hand1: Hand = [{suit: 0, value: 3}, {suit: 0, value: 2}, {suit: 1, value: 3}, 
-    {suit: 1, value: 5}, {suit: 1, value: 2}, {suit: 3, value: 3}, {suit: 2, value: 3}];
-
-console.log(has_three_of_akind(hand1));
-*/
 
 /**
  * Checks if a hand has a four of a kind
@@ -187,6 +189,12 @@ export function has_four_of_akind(hand: Hand): Pokerhand {
     }
 }
 
+/**
+ * Helper function: Finds the best possible hand if it contains a four of a kind
+ * @param hand Hand to be evaluated
+ * @param i Hand which only contains the four of a kind
+ * @returns A hand whose last element is either the highest card, or part of the four.
+ */
 function best_four_hand(hand: Hand, i: Hand): Hand {
     let temp_arr: Hand = [];
     let new_hand = make_new_hand(hand, [], i[0].value);
@@ -205,12 +213,6 @@ function best_four_hand(hand: Hand, i: Hand): Hand {
     }
 }
 
-/*
-const hand1: Hand = [{suit: 0, value: 4}, {suit: 0, value: 3}, {suit: 1, value: 4}, 
-    {suit: 2, value: 4}, {suit: 1, value: 2}, {suit: 3, value: 4}, {suit: 2, value: 3}];
-
-console.log(has_four_of_akind(hand1));
-*/
 
 /**
  * Makes a new hand by removing an already found pair
@@ -263,6 +265,13 @@ export function has_two_pairs(hand: Hand): Pokerhand {
     }
 }
 
+/**
+ * Helper function: Gives the best hand that will contain two pairs.
+ * @param hand Hand that is to be evaluated.
+ * @param one Hand which only contains the highest of the two pairs
+ * @param two Hand which only contains the lowest of the two pairs
+ * @returns A hand whose last card is either the highest value, or the highest of the two pairs.
+ */
 function two_hands_best(hand: Hand, one: Hand, two: Hand): Hand {
     let temp_arr: Hand = []
     let new_hand1: Hand = make_new_hand(hand, [], one[0].value);
@@ -288,12 +297,6 @@ function two_hands_best(hand: Hand, one: Hand, two: Hand): Hand {
     return temp_arr;
 }
 
-/*
-const hand1: Hand = [{suit: 3, value: 3}, {suit: 2, value: 3}, {suit: 0, value: 4}, {suit: 0, value: 8}, {suit: 1, value: 4}, 
-    {suit: 2, value: 7}, {suit: 1, value: 7}];
-
-console.log(has_two_pairs(hand1));
-*/
 
 /**
 * Checks if a hand has full house
@@ -317,6 +320,12 @@ export function has_fullhouse(hand: Hand): Pokerhand {
     }
 }
 
+/**
+ * Helper function: Collects the best possible hand that is played as a full house
+ * @param trio Hand of the trio that is involved in the full house
+ * @param duo Hand of the dup that is involved in the full house
+ * @returns A hand whose last element is part of the trio hand.
+ */
 function best_hand_fullhouse(trio: Hand, duo: Hand): Hand {
     let temp_arr: Hand = []
     if (trio != undefined && duo != undefined) {
@@ -330,15 +339,9 @@ function best_hand_fullhouse(trio: Hand, duo: Hand): Hand {
     return temp_arr;
 }
 
-/*
-const hand1: Hand = [{suit: 0, value: 2}, {suit: 2, value: 2}, {suit: 1, value: 3}, 
-    {suit: 1, value: 5}, {suit: 1, value: 2}, {suit: 3, value: 3}, {suit: 2, value: 3}];
-
-console.log(has_fullhouse(hand1));
-*/
 
 /**
- * Takes out the best hand avaliable out of all the cards
+ * Helper function: Takes out the best hand avaliable out of all the cards
  * @precondition The hand contains no multiples
  * @param hand Hand to be evaluated
  * @returns A hand which contains the five most valuable cards out of all possible cards.
@@ -356,9 +359,6 @@ export function best_straight_hand(hand: Hand): Hand {
     return best_helper(hand, (hand.length - 1), 4);
 }
 
-//const hand1 = [{suit: 3, value: 13}, {suit: 1, value: 3}, {suit: 2, value: 9}, {suit: 1, value: 10}, {suit: 3, value: 2}, {suit: 3, value: 7}, {suit: 0, value: 8}];
-
-//console.log(best_straight_hand(hand1))
 
 /**
  * Checks if a given hand is a royal flush
@@ -378,9 +378,6 @@ export function royal_flush(hand: Hand): Pokerhand {
     return {exists: false, name: 'royal flush', rang: 0};
 }
 
-//const hand2: Hand = [{suit: 3, value: 6}, {suit: 3, value: 9}, {suit: 3, value: 10}, {suit: 3, value: 11}, {suit: 3, value: 12}, {suit: 3, value: 13}, {suit: 3, value: 14}];
-
-//console.log(royal_flush(hand2));
 
 /**
  * Checks if a given hand is a straight flush.
@@ -400,9 +397,6 @@ export function straight_flush(hand: Hand): Pokerhand {
     return {exists: false, name: 'straight flush', rang: 0};
 }
 
-//const hand3: Hand = [{suit: 3, value: 6}, {suit: 3, value: 9}, {suit: 3, value: 10}, {suit: 3, value: 11}, {suit: 3, value: 12}, {suit: 3, value: 13}, {suit: 2, value: 14}];
-
-//console.log(straight_flush(hand3));
 
 /**
  * Checks if a given hand is a flush or not.
@@ -451,9 +445,6 @@ export function flush(hand: Hand): Pokerhand {
     return flush_helper(hand, 0, 0, 0, 0, 0);
 }
 
-//const hand2: Hand = [{suit: 0, value: 6}, {suit: 0, value: 9}, {suit: 0, value: 10}, {suit: 1, value: 11}, {suit: 0, value: 12}, {suit: 0, value: 13}, {suit: 1, value: 14}];
-
-//console.log(flush(hand2));
 
 /**
  * Checks whether a given hand contains a straight of not.
@@ -492,22 +483,3 @@ export function straight(hand: Hand): Pokerhand {
     return {exists: false, name: 'straight', rang: 0};
 }
 
-
-//const hand1 = [{suit: 3, value: 13}, {suit: 1, value: 3}, {suit: 2, value: 9}, {suit: 1, value: 10}, {suit: 3, value: 2}, {suit: 3, value: 7}, {suit: 0, value: 8}];
-
-const hand2 = [{suit: 3, value: 2}, {suit: 1, value: 2}, {suit: 2, value: 2}, {suit: 1, value: 3}, {suit: 3, value: 3}, {suit: 2, value: 3}, {suit: 2, value: 3}];
-
-//console.log(has_fullhouse(hand2));
-//console.log(has_three_of_akind(hand2));
-//console.log(has_two_pairs(hand2));
-//console.log(has_four_of_akind(hand2));
-
-//console.log(has_pair(hand2));
-//console.log(has_two_pairs(hand2));
-//console.log(has_three_of_akind(hand2));
-//console.log(straight(hand2));
-//console.log(flush(hand2));
-//console.log(has_four_of_akind(hand2));
-//console.log(has_fullhouse(hand2));
-//console.log(straight_flush(hand2));
-//console.log(royal_flush(hand2));
